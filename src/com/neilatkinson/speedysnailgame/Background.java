@@ -1,4 +1,4 @@
-package com.neilatkinson.robotgame;
+package com.neilatkinson.speedysnailgame;
 
 public class Background {
 	

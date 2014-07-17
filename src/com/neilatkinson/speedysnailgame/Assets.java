@@ -1,4 +1,4 @@
-package com.neilatkinson.robotgame;
+package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Music;
@@ -12,7 +12,7 @@ public class Assets {
 	public static Sound click;
 	public static Music theme;
 
-	public static void load(SampleGame sampleGame) {
+	public static void load(SpeedySnailGame sampleGame) {
 		theme = sampleGame.getAudio().createMusic("menutheme.mp3");
 		theme.setLooping(true);
 		theme.setVolume(0.85f);

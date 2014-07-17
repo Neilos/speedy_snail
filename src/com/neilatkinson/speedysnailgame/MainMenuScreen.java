@@ -1,4 +1,4 @@
-package com.neilatkinson.robotgame;
+package com.neilatkinson.speedysnailgame;
 
 import java.util.List;
 

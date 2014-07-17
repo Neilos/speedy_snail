@@ -1,4 +1,4 @@
-package com.neilatkinson.robotgame;
+package com.neilatkinson.speedysnailgame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import com.neilandluke.speedysnail.R;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.framework.implementation.AndroidGame;
 
-public class SampleGame extends AndroidGame {
+public class SpeedySnailGame extends AndroidGame {
 	
 	public static String map;
 	boolean firstTimeCreate = true;

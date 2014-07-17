@@ -1,4 +1,4 @@
-package com.neilatkinson.robotgame;
+package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;

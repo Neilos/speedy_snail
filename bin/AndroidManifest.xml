@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-           android:name="com.neilatkinson.robotgame.SampleGame"
+           android:name="com.neilatkinson.speedysnailgame.SpeedySnailGame"
            android:configChanges="keyboard|keyboardHidden|orientation"
            android:label="@string/app_name"
            android:screenOrientation="landscape" >
