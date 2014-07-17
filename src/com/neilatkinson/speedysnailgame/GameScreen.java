@@ -24,13 +24,13 @@ public class GameScreen extends Screen {
     // Variable Setup
 	private static Background bg1, bg2;
 	private static PlayerCharacter robot;
-	public static Heliboy hb, hb2;
 	
 	private Image currentSprite, character, character2, character3, heliboy,
 	heliboy2, heliboy3, heliboy4, heliboy5;
 	private Animation anim, hanim;
 	
 	private ArrayList tilearray = new ArrayList();
+	private ArrayList<Enemy> enemies = new ArrayList();
 
     int livesLeft = 1;
     Paint paint, paint2;
@@ -43,8 +43,9 @@ public class GameScreen extends Screen {
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
 		robot = new PlayerCharacter();
-		hb = new Heliboy(340, 360);
-		hb2 = new Heliboy(700, 360);
+		
+		enemies.add(new Heliboy(340, 360));
+		enemies.add(new Heliboy(700, 360));
 
 		character = Assets.character;
 		character2 = Assets.character2;
@@ -236,14 +237,21 @@ public class GameScreen extends Screen {
 //		}
 
 		updateTiles();
-		hb.update();
-		hb2.update();
+		updateEnemies();
 		bg1.update();
 		bg2.update();
 		animate();
 
 		if (robot.getCenterY() > 500) {
 			state = GameState.GameOver;
+		}
+	}
+
+
+	private void updateEnemies() {
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = (Enemy) enemies.get(i);
+			enemy.update();
 		}
 	}
 
@@ -317,8 +325,7 @@ public class GameScreen extends Screen {
 		bg1 = null;
 		bg2 = null;
 		robot = null;
-		hb = null;
-		hb2 = null;
+		enemies = null;
 		currentSprite = null;
 		character = null;
 		character2 = null;
@@ -351,10 +358,7 @@ public class GameScreen extends Screen {
 
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
 				robot.getCenterY() - 63);
-		g.drawImage(hanim.getImage(), hb.getCenterX() - 48,
-				hb.getCenterY() - 48);
-		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48,
-				hb2.getCenterY() - 48);
+		drawEnemies(g);
 
         // 2. draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -365,6 +369,14 @@ public class GameScreen extends Screen {
             drawPausedUI();
         if (state == GameState.GameOver)
             drawGameOverUI();
+	}
+
+
+	private void drawEnemies(Graphics g) {
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			g.drawImage(hanim.getImage(), enemy.getCenterX() - 48, enemy.getCenterY() - 48);
+		}
 	}
 
 	
