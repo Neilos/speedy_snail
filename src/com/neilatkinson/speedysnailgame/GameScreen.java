@@ -23,7 +23,7 @@ public class GameScreen extends Screen {
 
     // Variable Setup
 	private static Background bg1, bg2;
-	private static PlayerCharacter robot;
+	private static PlayerCharacter playerCharacter;
 	
 	private Image currentSprite, character, character2, character3, heliboy,
 	heliboy2, heliboy3, heliboy4, heliboy5;
@@ -42,7 +42,7 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		robot = new PlayerCharacter();
+		playerCharacter = new PlayerCharacter();
 		
 		enemies.add(new Heliboy(340, 360));
 		enemies.add(new Heliboy(700, 360));
@@ -169,24 +169,24 @@ public class GameScreen extends Screen {
 			if (event.type == TouchEvent.TOUCH_DOWN) {
 
 				if (inBounds(event, 0, 285, 65, 65)) {
-					robot.jump();
+					playerCharacter.jump();
 					currentSprite = anim.getImage();
-					robot.setDucked(false);
+					playerCharacter.setDucked(false);
 				}
 				else if (inBounds(event, 0, 350, 65, 65)) {
 					// shoot button pressed
 				}
 				else if (inBounds(event, 0, 415, 65, 65)
-						&& robot.isJumped() == false) {
+						&& playerCharacter.isJumped() == false) {
 					currentSprite = Assets.characterDown;
-					robot.setDucked(true);
-					robot.setSpeedX(0);
+					playerCharacter.setDucked(true);
+					playerCharacter.setSpeedX(0);
 				}
 
 				if (event.x > 400) {
 					// Move right.
-					robot.moveRight();
-					robot.setMovingRight(true);
+					playerCharacter.moveRight();
+					playerCharacter.setMovingRight(true);
 				}
 
 			}
@@ -195,7 +195,7 @@ public class GameScreen extends Screen {
 
 				if (inBounds(event, 0, 415, 65, 65)) {
 					currentSprite = anim.getImage();
-					robot.setDucked(false);
+					playerCharacter.setDucked(false);
 				}
 
 				if (inBounds(event, 0, 0, 35, 35)) {
@@ -204,7 +204,7 @@ public class GameScreen extends Screen {
 
 				if (event.x > 400) {
 					// Move right.
-					robot.stopRight();
+					playerCharacter.stopRight();
 				}
 			}
 
@@ -219,10 +219,10 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 		// For example, robot.update();
-		robot.update();
-		if (robot.isJumped()) {
+		playerCharacter.update();
+		if (playerCharacter.isJumped()) {
 			currentSprite = Assets.characterJump;
-		} else if (robot.isJumped() == false && robot.isDucked() == false) {
+		} else if (playerCharacter.isJumped() == false && playerCharacter.isDucked() == false) {
 			currentSprite = anim.getImage();
 		}
 
@@ -242,7 +242,7 @@ public class GameScreen extends Screen {
 		bg2.update();
 		animate();
 
-		if (robot.getCenterY() > 500) {
+		if (playerCharacter.getCenterY() > 500) {
 			state = GameState.GameOver;
 		}
 	}
@@ -324,7 +324,7 @@ public class GameScreen extends Screen {
 		paint2 = null;
 		bg1 = null;
 		bg2 = null;
-		robot = null;
+		playerCharacter = null;
 		enemies = null;
 		currentSprite = null;
 		character = null;
@@ -356,8 +356,8 @@ public class GameScreen extends Screen {
 		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
 		paintTiles(g);
 
-		g.drawImage(currentSprite, robot.getCenterX() - 61,
-				robot.getCenterY() - 63);
+		g.drawImage(currentSprite, playerCharacter.getCenterX() - 61,
+				playerCharacter.getCenterY() - 63);
 		drawEnemies(g);
 
         // 2. draw the UI above the game elements.
@@ -465,7 +465,7 @@ public class GameScreen extends Screen {
 	}
 
 	
-	public static PlayerCharacter getRobot() {
-		return robot;
+	public static PlayerCharacter getPlayerCharacter() {
+		return playerCharacter;
 	}
 }

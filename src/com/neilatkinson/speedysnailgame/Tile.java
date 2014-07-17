@@ -10,7 +10,7 @@ public class Tile {
     public int type;
     public Image tileImage;
 
-    private PlayerCharacter robot = GameScreen.getRobot();
+    private PlayerCharacter robot = GameScreen.getPlayerCharacter();
     private Background bg = GameScreen.getBg1();
     
     private Rect r;
