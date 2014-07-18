@@ -4,7 +4,7 @@ import android.graphics.Rect;
 
 public class Enemy {
 	
-	private int power, centerX, speedX, centerY;
+	private int centerX, speedX, centerY;
 	private Background bg = GameScreen.getBg1();
 	protected PlayerCharacter robot;
 	
@@ -61,10 +61,6 @@ public class Enemy {
 
     }
 
-    public int getPower() {
-        return power;
-    }
-
     public int getSpeedX() {
         return speedX;
     }
@@ -77,14 +73,6 @@ public class Enemy {
         return centerY;
     }
 
-    public Background getBg() {
-        return bg;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
     public void setSpeedX(int speedX) {
         this.speedX = speedX;
     }
@@ -95,10 +83,6 @@ public class Enemy {
 
     public void setCenterY(int centerY) {
         this.centerY = centerY;
-    }
-
-    public void setBg(Background bg) {
-        this.bg = bg;
     }
 
 }
