@@ -42,7 +42,7 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		playerCharacter = new PlayerCharacter();
+		playerCharacter = new PlayerCharacter(5, 100, 377);
 		
 		enemies.add(new Heliboy(this, 340, 360));
 		enemies.add(new Heliboy(this, 700, 360));
@@ -186,7 +186,6 @@ public class GameScreen extends Screen {
 				if (event.x > 400) {
 					// Move right.
 					playerCharacter.moveRight();
-					playerCharacter.setMovingRight(true);
 				}
 
 			}
@@ -204,7 +203,7 @@ public class GameScreen extends Screen {
 
 				if (event.x > 400) {
 					// Move right.
-					playerCharacter.stopRight();
+					playerCharacter.stop();
 				}
 			}
 

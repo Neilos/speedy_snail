@@ -1,23 +1,16 @@
 package com.neilatkinson.speedysnailgame;
 
+import com.neilatkinson.gameobject.Damageable;
+import com.neilatkinson.gameobject.GameObject;
+
 import android.graphics.Rect;
 
-public class PlayerCharacter {
+public class PlayerCharacter extends GameObject {
 
-	// Constants are Here
     final int JUMPSPEED = -15;
-    public int moveSpeed = 5;
 
-    private int centerX = 100;
-    private int centerY = 377;
-
-    private int speedX = 0;
-    private int speedY = 0;
-
-    private boolean jumped = false;
-    private boolean movingLeft = false;
-    private boolean movingRight = false;
-    private boolean ducked = false;
+    private boolean jumped;
+    private boolean ducked;
 
     public static Rect rect = new Rect(0, 0, 0, 0);
     public static Rect rect2 = new Rect(0, 0, 0, 0);
@@ -30,18 +23,13 @@ public class PlayerCharacter {
     private Background bg1 = GameScreen.getBg1();
     private Background bg2 = GameScreen.getBg2();
 
-    public PlayerCharacter() {
-        moveSpeed = 5;
-
-        centerX = 100;
-        centerY = 377;
-
-        speedX = 0;
-        speedY = 0;
+    public PlayerCharacter(
+    		int moveSpeed, 
+    		int startingCenterX, 
+    		int startingCenterY) {
+    	super(moveSpeed, startingCenterX, startingCenterY);
 
         jumped = false;
-        movingLeft = false;
-        movingRight = false;
         ducked = false;
 
         rect = new Rect(0, 0, 0, 0);
@@ -51,6 +39,8 @@ public class PlayerCharacter {
         yellowRed = new Rect(0, 0, 0, 0);
         footleft = new Rect(0,0,0,0);
         footright = new Rect(0,0,0,0);
+
+        setRegion();
 
         bg1 = GameScreen.getBg1();
         bg2 = GameScreen.getBg2();
@@ -80,7 +70,7 @@ public class PlayerCharacter {
 
         // Handles Jumping
 
-            speedY += 1;
+        speedY += 1;
 
         if (speedY > 3){
             jumped = true;
@@ -104,42 +94,6 @@ public class PlayerCharacter {
         footright.set(centerX, centerY + 20, centerX+50, centerY+35);
 	}
 
-    public void moveRight() {
-        if (ducked == false) {
-            speedX = moveSpeed;
-        }
-    }
-
-    public void moveLeft() {
-        if (ducked == false) {
-            speedX = -moveSpeed;
-        }
-    }
-
-    public void stopRight() {
-        setMovingRight(false);
-        stop();
-    }
-
-    public void stopLeft() {
-        setMovingLeft(false);
-        stop();
-    }
-
-    private void stop() {
-        if (isMovingRight() == false && isMovingLeft() == false) {
-            speedX = 0;
-        }
-
-        if (isMovingRight() == false && isMovingLeft() == true) {
-            moveLeft();
-        }
-
-        if (isMovingRight() == true && isMovingLeft() == false) {
-            moveRight();
-        }
-
-    }
 
     public void jump() {
         if (jumped == false) {
@@ -149,44 +103,13 @@ public class PlayerCharacter {
 
     }
 
-    public int getCenterX() {
-        return centerX;
-    }
-
-    public int getCenterY() {
-        return centerY;
-    }
-
     public boolean isJumped() {
         return jumped;
     }
 
-    public int getSpeedX() {
-        return speedX;
-    }
-
-    public int getSpeedY() {
-        return speedY;
-    }
-
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
 
     public void setJumped(boolean jumped) {
         this.jumped = jumped;
-    }
-
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
-    }
-
-    public void setSpeedY(int speedY) {
-        this.speedY = speedY;
     }
 
     public boolean isDucked() {
@@ -197,20 +120,31 @@ public class PlayerCharacter {
         this.ducked = ducked;
     }
 
-    public boolean isMovingRight() {
-        return movingRight;
-    }
 
-    public void setMovingRight(boolean movingRight) {
-        this.movingRight = movingRight;
-    }
+	@Override
+	public void resolveCollisions() {
+		// TODO Auto-generated method stub
+		
+	}
 
-    public boolean isMovingLeft() {
-        return movingLeft;
-    }
+	@Override
+	public void attack(Damageable damageable) {
+		
+	}
 
-    public void setMovingLeft(boolean movingLeft) {
-        this.movingLeft = movingLeft;
-    }
+	@Override
+	public void takeDamage(int damage) {
+		
+	}
+
+	@Override
+	public void heal(int damage) {
+		
+	}
+
+	@Override
+	public void die() {
+		
+	}
 
 }
