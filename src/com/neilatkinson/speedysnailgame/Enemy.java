@@ -1,88 +1,68 @@
 package com.neilatkinson.speedysnailgame;
 
+import com.neilatkinson.gameobject.Damageable;
+import com.neilatkinson.gameobject.DestroyableObject;
+
 import android.graphics.Rect;
 
-public class Enemy {
-	
-	private int centerX, speedX, centerY;
-	private Background bg = GameScreen.getBg1();
-	protected PlayerCharacter robot;
-	
-	public Rect r = new Rect(0, 0, 0, 0);
-	public int health = 5;
-	
-	private int movementSpeed;
+public class Enemy extends DestroyableObject {
 
-	public Enemy(GameScreen gameScreen) {
-		robot = gameScreen.getPlayerCharacter();
+	private Background bg = GameScreen.getBg1();
+	protected PlayerCharacter playerCharacter;
+
+	public Enemy(
+			GameScreen gameScreen,
+			int moveSpeed, 
+			int startingCenterX, 
+			int startingCenterY,
+			int startingHealth) {
+		super(moveSpeed, startingCenterX, startingCenterY, startingHealth);
+		playerCharacter = gameScreen.getPlayerCharacter();
+		setRegion();
 	}
 
 	public void update() {
         follow();
         centerX += speedX;
-        speedX = bg.getSpeedX() * 5 + movementSpeed;
-        r.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
-
-        if (Rect.intersects(r, PlayerCharacter.yellowRed)) {
-            checkCollision();
-        }
+        speedX = bg.getSpeedX() * 5 + moveSpeed;
+        setRegion();
+        resolveCollisions();
     }
 
-	private void checkCollision() {
-		if (Rect.intersects(r, PlayerCharacter.rect)
-			|| Rect.intersects(r, PlayerCharacter.rect2)
-            || Rect.intersects(r, PlayerCharacter.rect3)
-            || Rect.intersects(r, PlayerCharacter.rect4)) {
-			
+	public void setRegion() {
+		region.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
+	}
+
+	@Override
+	public void resolveCollisions() {
+		if (Rect.intersects(region, playerCharacter.yellowRed)) {
+			if (Rect.intersects(region, playerCharacter.rect)
+				|| Rect.intersects(region, playerCharacter.rect2)
+	            || Rect.intersects(region, playerCharacter.rect3)
+	            || Rect.intersects(region, playerCharacter.rect4)) {
+			}
         }
 	}
 
 	private void follow() {
 		if (centerX < -95 || centerX > 810){
-            movementSpeed = 0;
+            moveSpeed = 0;
         }
-        else if (Math.abs(robot.getCenterX() - centerX) < 5) {
-            movementSpeed = 0;
+        else if (Math.abs(playerCharacter.getCenterX() - centerX) < 5) {
+            moveSpeed = 0;
         }
         else {
-            if (robot.getCenterX() >= centerX) {
-                movementSpeed = 1;
+            if (playerCharacter.getCenterX() >= centerX) {
+                moveSpeed = 1;
             } else {
-                movementSpeed = -1;
+                moveSpeed = -1;
             }
         }
 	}
-	
-	public void die() {
 
-    }
-
-    public void attack() {
-
-    }
-
-    public int getSpeedX() {
-        return speedX;
-    }
-
-    public int getCenterX() {
-        return centerX;
-    }
-
-    public int getCenterY() {
-        return centerY;
-    }
-
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
-    }
-
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
+	@Override
+	public void attack(Damageable damageable) {
+		// TODO Auto-generated method stub
+	}
 
 }

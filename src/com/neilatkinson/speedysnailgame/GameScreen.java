@@ -44,8 +44,8 @@ public class GameScreen extends Screen {
 		bg2 = new Background(2160, 0);
 		playerCharacter = new PlayerCharacter(5, 100, 377);
 		
-		enemies.add(new Heliboy(this, 340, 360));
-		enemies.add(new Heliboy(this, 700, 360));
+		enemies.add(new Heliboy(this, 0, 340, 360, 5));
+		enemies.add(new Heliboy(this, 0, 700, 360, 5));
 
 		character = Assets.character;
 		character2 = Assets.character2;
@@ -217,23 +217,13 @@ public class GameScreen extends Screen {
 
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
-		// For example, robot.update();
+		// For example, playerCharacter.update();
 		playerCharacter.update();
 		if (playerCharacter.isJumped()) {
 			currentSprite = Assets.characterJump;
 		} else if (playerCharacter.isJumped() == false && playerCharacter.isDucked() == false) {
 			currentSprite = anim.getImage();
 		}
-
-//		ArrayList projectiles = robot.getProjectiles();
-//		for (int i = 0; i < projectiles.size(); i++) {
-//			Projectile p = (Projectile) projectiles.get(i);
-//			if (p.isVisible() == true) {
-//				p.update();
-//			} else {
-//				projectiles.remove(i);
-//			}
-//		}
 
 		updateTiles();
 		updateEnemies();

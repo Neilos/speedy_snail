@@ -45,9 +45,9 @@ public class Tile {
         tileX += speedX;
         r.set(tileX, tileY, tileX+40, tileY+40);
 
-        if (Rect.intersects(r, PlayerCharacter.yellowRed) && type != 0) {
-            checkVerticalCollision(PlayerCharacter.rect, PlayerCharacter.rect2);
-            checkSideCollision(PlayerCharacter.rect3, PlayerCharacter.rect4, PlayerCharacter.footleft, PlayerCharacter.footright);
+        if (Rect.intersects(r, robot.yellowRed) && type != 0) {
+            checkVerticalCollision(robot.rect, robot.rect2);
+            checkSideCollision(robot.rect3, robot.rect4, robot.footleft, robot.footright);
         }
     }
 

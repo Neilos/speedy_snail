@@ -11,7 +11,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected int speedY;
 	protected Rect region;
 
-	public GameObject( 
+	public GameObject(
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY) {
@@ -84,7 +84,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 	@Override
 	public int getSpeedX() {
-		return this.speedX;
+		return speedX;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 	@Override
 	public int getSpeedY() {
-		return this.speedY;
+		return speedY;
 	}
 
 	@Override

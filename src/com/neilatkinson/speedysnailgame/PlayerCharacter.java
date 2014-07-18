@@ -12,13 +12,13 @@ public class PlayerCharacter extends GameObject {
     private boolean jumped;
     private boolean ducked;
 
-    public static Rect rect = new Rect(0, 0, 0, 0);
-    public static Rect rect2 = new Rect(0, 0, 0, 0);
-    public static Rect rect3 = new Rect(0, 0, 0, 0);
-    public static Rect rect4 = new Rect(0, 0, 0, 0);
-    public static Rect yellowRed = new Rect(0, 0, 0, 0);
-    public static Rect footleft = new Rect(0,0,0,0);
-    public static Rect footright = new Rect(0,0,0,0);
+    public Rect rect = new Rect(0, 0, 0, 0);
+    public Rect rect2 = new Rect(0, 0, 0, 0);
+    public Rect rect3 = new Rect(0, 0, 0, 0);
+    public Rect rect4 = new Rect(0, 0, 0, 0);
+    public Rect yellowRed = new Rect(0, 0, 0, 0);
+    public Rect footleft = new Rect(0,0,0,0);
+    public Rect footright = new Rect(0,0,0,0);
     
     private Background bg1 = GameScreen.getBg1();
     private Background bg2 = GameScreen.getBg2();
