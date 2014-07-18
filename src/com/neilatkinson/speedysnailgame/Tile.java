@@ -10,12 +10,13 @@ public class Tile {
     public int type;
     public Image tileImage;
 
-    private PlayerCharacter robot = GameScreen.getPlayerCharacter();
+    private PlayerCharacter robot;
     private Background bg = GameScreen.getBg1();
     
     private Rect r;
     
-    public Tile(int x, int y, int typeInt) {
+    public Tile(GameScreen gameScreen, int x, int y, int typeInt) {
+    	robot = gameScreen.getPlayerCharacter();
         tileX = x * 40;
         tileY = y * 40;
 

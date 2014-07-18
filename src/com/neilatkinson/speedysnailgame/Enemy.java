@@ -6,12 +6,16 @@ public class Enemy {
 	
 	private int power, centerX, speedX, centerY;
 	private Background bg = GameScreen.getBg1();
-	private PlayerCharacter robot = GameScreen.getPlayerCharacter();
+	protected PlayerCharacter robot;
 	
 	public Rect r = new Rect(0, 0, 0, 0);
 	public int health = 5;
 	
 	private int movementSpeed;
+
+	public Enemy(GameScreen gameScreen) {
+		robot = gameScreen.getPlayerCharacter();
+	}
 
 	public void update() {
         follow();

@@ -6,7 +6,7 @@ public class PlayerCharacter {
 
 	// Constants are Here
     final int JUMPSPEED = -15;
-    final int MOVESPEED = 5;
+    public int moveSpeed = 5;
 
     private int centerX = 100;
     private int centerY = 377;
@@ -30,6 +30,32 @@ public class PlayerCharacter {
     private Background bg1 = GameScreen.getBg1();
     private Background bg2 = GameScreen.getBg2();
 
+    public PlayerCharacter() {
+        moveSpeed = 5;
+
+        centerX = 100;
+        centerY = 377;
+
+        speedX = 0;
+        speedY = 0;
+
+        jumped = false;
+        movingLeft = false;
+        movingRight = false;
+        ducked = false;
+
+        rect = new Rect(0, 0, 0, 0);
+        rect2 = new Rect(0, 0, 0, 0);
+        rect3 = new Rect(0, 0, 0, 0);
+        rect4 = new Rect(0, 0, 0, 0);
+        yellowRed = new Rect(0, 0, 0, 0);
+        footleft = new Rect(0,0,0,0);
+        footright = new Rect(0,0,0,0);
+
+        bg1 = GameScreen.getBg1();
+        bg2 = GameScreen.getBg2();
+    }
+
     public void update() {
         // Moves Character or Scrolls Background accordingly.
 
@@ -45,8 +71,8 @@ public class PlayerCharacter {
             centerX += speedX;
         }
         if (speedX > 0 && centerX > 200) {
-            bg1.setSpeedX(-MOVESPEED / 5);
-            bg2.setSpeedX(-MOVESPEED / 5);
+            bg1.setSpeedX(-moveSpeed / 5);
+            bg2.setSpeedX(-moveSpeed / 5);
         }
 
         // Updates Y Position
@@ -65,24 +91,28 @@ public class PlayerCharacter {
             centerX = 61;
         }
 
-        rect.set(centerX - 34, centerY - 63, centerX + 34, centerY);
+        setRegion();
+    }
+    
+    public void setRegion() {
+    	rect.set(centerX - 34, centerY - 63, centerX + 34, centerY);
         rect2.set(rect.left, rect.top + 63, rect.left+68, rect.top + 128);
         rect3.set(rect.left - 26, rect.top+32, rect.left, rect.top+52);
         rect4.set(rect.left + 68, rect.top+32, rect.left+94, rect.top+52);
         yellowRed.set(centerX - 110, centerY - 110, centerX + 70, centerY + 70);
         footleft.set(centerX - 50, centerY + 20, centerX, centerY + 35);
         footright.set(centerX, centerY + 20, centerX+50, centerY+35);
-    }
+	}
 
     public void moveRight() {
         if (ducked == false) {
-            speedX = MOVESPEED;
+            speedX = moveSpeed;
         }
     }
 
     public void moveLeft() {
         if (ducked == false) {
-            speedX = -MOVESPEED;
+            speedX = -moveSpeed;
         }
     }
 

@@ -23,14 +23,14 @@ public class GameScreen extends Screen {
 
     // Variable Setup
 	private static Background bg1, bg2;
-	private static PlayerCharacter playerCharacter;
 	
 	private Image currentSprite, character, character2, character3, heliboy,
 	heliboy2, heliboy3, heliboy4, heliboy5;
 	private Animation anim, hanim;
 	
-	private ArrayList tilearray = new ArrayList();
-	private ArrayList<Enemy> enemies = new ArrayList();
+	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
+	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	public PlayerCharacter playerCharacter;
 
     int livesLeft = 1;
     Paint paint, paint2;
@@ -44,8 +44,8 @@ public class GameScreen extends Screen {
 		bg2 = new Background(2160, 0);
 		playerCharacter = new PlayerCharacter();
 		
-		enemies.add(new Heliboy(340, 360));
-		enemies.add(new Heliboy(700, 360));
+		enemies.add(new Heliboy(this, 340, 360));
+		enemies.add(new Heliboy(this, 700, 360));
 
 		character = Assets.character;
 		character2 = Assets.character2;
@@ -120,7 +120,7 @@ public class GameScreen extends Screen {
 
 				if (i < line.length()) {
 					char ch = line.charAt(i);
-					Tile t = new Tile(i, j, Character.getNumericValue(ch));
+					Tile t = new Tile(this, i, j, Character.getNumericValue(ch));
 					tilearray.add(t);
 				}
 
@@ -465,7 +465,7 @@ public class GameScreen extends Screen {
 	}
 
 	
-	public static PlayerCharacter getPlayerCharacter() {
+	public PlayerCharacter getPlayerCharacter() {
 		return playerCharacter;
 	}
 }
