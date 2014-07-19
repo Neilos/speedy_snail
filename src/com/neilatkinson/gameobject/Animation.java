@@ -1,4 +1,4 @@
-package com.neilatkinson.speedysnailgame;
+package com.neilatkinson.gameobject;
 
 import java.util.ArrayList;
 
@@ -6,13 +6,13 @@ import com.neilatkinson.framework.Image;
 
 public class Animation {
 	
-	private ArrayList frames;
+	private ArrayList<AnimFrame> frames;
     private int currentFrame;
     private long animTime;
     private long totalDuration;
 
 	public Animation() {
-		frames = new ArrayList();
+		frames = new ArrayList<AnimFrame>();
         totalDuration = 0;
 
         synchronized (this) {
@@ -21,7 +21,7 @@ public class Animation {
         }
 	}
 	
-	
+
 	public synchronized void addFrame(Image image, long duration) {
         totalDuration += duration;
         frames.add(new AnimFrame(image, totalDuration));

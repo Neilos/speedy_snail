@@ -12,6 +12,7 @@ import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.gameobject.Animation;
 
 public class GameScreen extends Screen {
 
@@ -24,7 +25,7 @@ public class GameScreen extends Screen {
     // Variable Setup
 	private static Background bg1, bg2;
 	
-	private Image currentSprite, character, character2, character3, heliboy,
+	private Image character, character2, character3, characterDown, characterJump, heliboy,
 	heliboy2, heliboy3, heliboy4, heliboy5;
 	private Animation anim, hanim;
 	
@@ -42,26 +43,31 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		playerCharacter = new PlayerCharacter(this, 5, 100, 377);
 		
-		enemies.add(new Heliboy(this, 0, 340, 360, 5));
-		enemies.add(new Heliboy(this, 0, 700, 360, 5));
-
 		character = Assets.character;
 		character2 = Assets.character2;
 		character3 = Assets.character3;
-
-		heliboy = Assets.heliboy;
-		heliboy2 = Assets.heliboy2;
-		heliboy3 = Assets.heliboy3;
-		heliboy4 = Assets.heliboy4;
-		heliboy5 = Assets.heliboy5;
+		characterDown = Assets.characterDown;
+		characterJump = Assets.characterJump;
 
 		anim = new Animation();
 		anim.addFrame(character, 1250);
 		anim.addFrame(character2, 50);
 		anim.addFrame(character3, 50);
 		anim.addFrame(character2, 50);
+		Animation ducked = new Animation();
+		ducked.addFrame(characterDown, 1000);
+
+		Animation jumped = new Animation();
+		jumped.addFrame(characterJump, 1000);
+
+		playerCharacter = new PlayerCharacter(this, 5, 100, 377, jumped, anim, ducked, anim);
+
+		heliboy = Assets.heliboy;
+		heliboy2 = Assets.heliboy2;
+		heliboy3 = Assets.heliboy3;
+		heliboy4 = Assets.heliboy4;
+		heliboy5 = Assets.heliboy5;
 
 		hanim = new Animation();
 		hanim.addFrame(heliboy, 100);
@@ -73,7 +79,9 @@ public class GameScreen extends Screen {
 		hanim.addFrame(heliboy3, 100);
 		hanim.addFrame(heliboy2, 100);
 
-		currentSprite = anim.getImage();
+		enemies.add(new Heliboy(this, 0, 340, 360, hanim, hanim, hanim, hanim, 5));
+		enemies.add(new Heliboy(this, 0, 700, 360, hanim, hanim, hanim, hanim, 5));
+
 
 		loadMap();
 
@@ -113,9 +121,12 @@ public class GameScreen extends Screen {
 			}
 		}
 		height = lines.size();
-		
+		int moveSpeed = 0;
 		int startingCenterX;
 		int startingCenterY;
+		int type;
+		Animation tileAnimation = new Animation();
+		Image staticFrame;
 		for (int j = 0; j < height; j++) {
 			String line = (String) lines.get(j);
 			for (int i = 0; i < width; i++) {
@@ -124,7 +135,26 @@ public class GameScreen extends Screen {
 					startingCenterX = i * 40;
 					startingCenterY = j * 40;
 					char ch = line.charAt(i);
-					Tile t = new Tile(this, 0, startingCenterX, startingCenterY, Character.getNumericValue(ch));
+					
+					type = Character.getNumericValue(ch);
+					if (type == 5) {
+						staticFrame = Assets.tiledirt;
+			        } else if (type == 8) {
+			        	staticFrame = Assets.tilegrassTop;
+			        } else if (type == 4) {
+			        	staticFrame = Assets.tilegrassLeft;
+			        } else if (type == 6) {
+			        	staticFrame = Assets.tilegrassRight;
+			        } else if (type == 2) {
+			        	staticFrame = Assets.tilegrassBot;
+			        } else {
+			            type = 0;
+			            staticFrame = null;
+			        }
+					tileAnimation.addFrame(staticFrame, 1000);
+					Tile t = new Tile(this, moveSpeed,
+							startingCenterX, startingCenterY,
+							tileAnimation, type);
 					tilearray.add(t);
 				}
 
@@ -174,22 +204,17 @@ public class GameScreen extends Screen {
 			if (event.type == TouchEvent.TOUCH_DOWN) {
 
 				if (inBounds(event, 0, 285, 65, 65)) {
-					playerCharacter.jump();
-					currentSprite = anim.getImage();
-					playerCharacter.setDucked(false);
+					playerCharacter.moveUp();
 				}
 				else if (inBounds(event, 0, 350, 65, 65)) {
 					// shoot button pressed
 				}
-				else if (inBounds(event, 0, 415, 65, 65)
-						&& playerCharacter.isJumped() == false) {
-					currentSprite = Assets.characterDown;
-					playerCharacter.setDucked(true);
-					playerCharacter.setSpeedX(0);
+				else if (inBounds(event, 0, 415, 65, 65)) {
+					playerCharacter.moveDown();
 				}
 
 				if (event.x > 400) {
-					// Move right.
+					// Move right when touch down on right of screen
 					playerCharacter.moveRight();
 				}
 
@@ -197,17 +222,12 @@ public class GameScreen extends Screen {
 
 			if (event.type == TouchEvent.TOUCH_UP) {
 
-				if (inBounds(event, 0, 415, 65, 65)) {
-					currentSprite = anim.getImage();
-					playerCharacter.setDucked(false);
-				}
-
 				if (inBounds(event, 0, 0, 35, 35)) {
 					pause();
 				}
 
 				if (event.x > 400) {
-					// Move right.
+					// Stop moving right when touch up on right of screen
 					playerCharacter.stop();
 				}
 			}
@@ -215,7 +235,6 @@ public class GameScreen extends Screen {
 		}
 
 		// 2. Check miscellaneous events like death:
-
 		if (livesLeft == 0) {
 			state = GameState.GameOver;
 		}
@@ -223,22 +242,22 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 		// For example, playerCharacter.update();
-		playerCharacter.update();
-		if (playerCharacter.isJumped()) {
-			currentSprite = Assets.characterJump;
-		} else if (playerCharacter.isJumped() == false && playerCharacter.isDucked() == false) {
-			currentSprite = anim.getImage();
-		}
-
+		updatePlayerCharacter();
 		updateTiles();
 		updateEnemies();
 		bg1.update();
 		bg2.update();
-		animate();
-
+		
+		// if player has fallen down a hole game is over
 		if (playerCharacter.getCenterY() > 500) {
 			state = GameState.GameOver;
 		}
+	}
+
+
+	private void updatePlayerCharacter() {
+		playerCharacter.update();
+		playerCharacter.animate(10);
 	}
 
 
@@ -246,13 +265,8 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = (Enemy) enemies.get(i);
 			enemy.update();
+			enemy.animate(50);
 		}
-	}
-
-	
-	private void animate() {
-		anim.update(10);
-		hanim.update(50);
 	}
 
 	
@@ -271,6 +285,7 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			t.update();
+			t.animate(50);
 		}
 	}
 
@@ -320,7 +335,6 @@ public class GameScreen extends Screen {
 		bg2 = null;
 		playerCharacter = null;
 		enemies = null;
-		currentSprite = null;
 		character = null;
 		character2 = null;
 		character3 = null;
@@ -350,7 +364,7 @@ public class GameScreen extends Screen {
 		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
 		paintTiles(g);
 
-		g.drawImage(currentSprite, playerCharacter.getCenterX() - 61,
+		g.drawImage(playerCharacter.getImage(), playerCharacter.getCenterX() - 61,
 				playerCharacter.getCenterY() - 63);
 		drawEnemies(g);
 
@@ -369,7 +383,7 @@ public class GameScreen extends Screen {
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			g.drawImage(hanim.getImage(), enemy.getCenterX() - 48, enemy.getCenterY() - 48);
+			g.drawImage(enemy.getImage(), enemy.getCenterX() - 48, enemy.getCenterY() - 48);
 		}
 	}
 
@@ -378,7 +392,7 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			if (t.type != 0) {
-				g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY());
+				g.drawImage(t.getImage(), t.getTileX(), t.getTileY());
 			}
 		}
 	}

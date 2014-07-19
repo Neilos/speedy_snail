@@ -1,5 +1,6 @@
 package com.neilatkinson.speedysnailgame;
 
+import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
@@ -8,9 +9,6 @@ import android.graphics.Rect;
 public class PlayerCharacter extends GameObject {
 
     final int JUMPSPEED = -15;
-
-    private boolean jumped;
-    private boolean ducked;
 
     public Rect rect = new Rect(0, 0, 0, 0);
     public Rect rect2 = new Rect(0, 0, 0, 0);
@@ -27,11 +25,16 @@ public class PlayerCharacter extends GameObject {
     		GameScreen gameScreen,
     		int moveSpeed, 
     		int startingCenterX, 
-    		int startingCenterY) {
-    	super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
+    		int startingCenterY,
+    		Animation moveUpAnimation,
+    		Animation moveLeftAnimation,
+    		Animation moveDownAnimation,
+    		Animation moveRightAnimation) {
 
-        jumped = false;
-        ducked = false;
+    	super(gameScreen, 
+			moveSpeed,
+			startingCenterX, startingCenterY, 
+			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation);
 
         rect = new Rect(0, 0, 0, 0);
         rect2 = new Rect(0, 0, 0, 0);
@@ -69,20 +72,21 @@ public class PlayerCharacter extends GameObject {
         // Updates Y Position
         centerY += speedY;
 
-        // Handles Jumping
-
-        speedY += 1;
-
-        if (speedY > 3){
-            jumped = true;
-        }
-
         // Prevents going beyond X coordinate of 0
         if (centerX + speedX <= 60) {
             centerX = 61;
         }
 
         setRegion();
+    }
+    
+    @Override
+    public void moveRight() {
+    	super.moveRight();
+    	if (centerX > 200) {
+	        bg1.setSpeedX(-moveSpeed / 5);
+	        bg2.setSpeedX(-moveSpeed / 5);
+    	}
     }
     
     public void setRegion() {
@@ -94,32 +98,6 @@ public class PlayerCharacter extends GameObject {
         footleft.set(centerX - 50, centerY + 20, centerX, centerY + 35);
         footright.set(centerX, centerY + 20, centerX+50, centerY+35);
 	}
-
-
-    public void jump() {
-        if (jumped == false) {
-            speedY = JUMPSPEED;
-            jumped = true;
-        }
-
-    }
-
-    public boolean isJumped() {
-        return jumped;
-    }
-
-
-    public void setJumped(boolean jumped) {
-        this.jumped = jumped;
-    }
-
-    public boolean isDucked() {
-        return ducked;
-    }
-
-    public void setDucked(boolean ducked) {
-        this.ducked = ducked;
-    }
 
 
 	@Override

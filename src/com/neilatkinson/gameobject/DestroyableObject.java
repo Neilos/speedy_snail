@@ -13,8 +13,16 @@ public abstract class DestroyableObject extends GameObject {
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
+			Animation moveUpAnimation,
+			Animation moveLeftAnimation,
+			Animation moveDownAnimation,
+			Animation moveRightAnimation,
 			int startingHealth) {
-		super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
+
+		super(gameScreen,
+			moveSpeed,
+			startingCenterX, startingCenterY,
+			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation);
 		this.health = startingHealth;
 		this.isDestroyed = false;
 	}

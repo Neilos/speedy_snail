@@ -3,6 +3,7 @@ package com.neilatkinson.speedysnailgame;
 import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
+import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
@@ -22,8 +23,13 @@ public class Tile extends GameObject{
 	    	int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
+			Animation stationeryAnimation,
 			int typeInt) {
-		super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
+
+    	super(gameScreen,
+			moveSpeed,
+			startingCenterX, startingCenterY,
+			stationeryAnimation, stationeryAnimation, stationeryAnimation, stationeryAnimation);
     	robot = gameScreen.getPlayerCharacter();
         tileX = startingCenterX;
         tileY = startingCenterY;
@@ -75,7 +81,8 @@ public class Tile extends GameObject{
         this.tileY = tileY;
     }
 
-    public Image getTileImage() {
+    @Override
+    public Image getImage() {
         return tileImage;
     }
 
@@ -85,11 +92,10 @@ public class Tile extends GameObject{
 
     public void checkVerticalCollision(Rect rtop, Rect rbot) {
         if (Rect.intersects(rtop, r)) {
-            
+        	robot.setSpeedY(0);
         }
 
         if (Rect.intersects(rbot, r) && type == 8) {
-            robot.setJumped(false);
             robot.setSpeedY(0);
             robot.setCenterY(tileY - 63);
         }
