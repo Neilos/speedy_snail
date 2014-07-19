@@ -24,6 +24,7 @@ public class GameScreen extends Screen {
 
     // Variable Setup
 	private static Background bg1, bg2;
+	private static DirectionControl directionControl;
 
 	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -32,6 +33,8 @@ public class GameScreen extends Screen {
     int livesLeft = 1;
     Paint paint, paint2;
 
+	private PauseButton pauseButton;
+
     
     public GameScreen(Game game) {
         super(game);
@@ -39,6 +42,9 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
+
+		pauseButton = new PauseButton(this, Assets.directionControl, 0, 0, 0, 195, 35, 35);
+		directionControl = new DirectionControl(this, Assets.directionControl, 10, 350, 0, 0, 120, 120);
 
 		Animation anim = new Animation();
 		anim.addFrame(Assets.character, 1250);
@@ -171,7 +177,6 @@ public class GameScreen extends Screen {
         // When the user touches the screen, the game begins. 
         // state now becomes GameState.Running.
         // Now the updateRunning() method will be called!
-        
         if (touchEvents.size() > 0)
             state = GameState.Running;
 	}
@@ -179,43 +184,30 @@ public class GameScreen extends Screen {
 	
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
-		// This is identical to the update() method from our Unit 2/3 game.
-
 		// 1. All touch input is handled here:
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_DOWN) {
-
-				if (inBounds(event, 0, 285, 65, 65)) {
+				
+				if (directionControl.upButtonPressed(event)) {
 					playerCharacter.moveUp();
-				}
-				else if (inBounds(event, 0, 350, 65, 65)) {
-					// shoot button pressed
-				}
-				else if (inBounds(event, 0, 415, 65, 65)) {
+				} else if (directionControl.leftButtonPressed(event)) {
+					playerCharacter.moveLeft();
+				} else if (directionControl.downButtonPressed(event)) {
 					playerCharacter.moveDown();
-				}
-
-				if (event.x > 400) {
-					// Move right when touch down on right of screen
-					playerCharacter.moveRight();
-				}
-
+				} else if (directionControl.rightButtonPressed(event)) {
+					playerCharacter.moveRight();	
+				} else {  }
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
-
-				if (inBounds(event, 0, 0, 35, 35)) {
+				if (pauseButton.isPressed(event)) {
 					pause();
-				}
-
-				if (event.x > 400) {
-					// Stop moving right when touch up on right of screen
+				} else {
 					playerCharacter.stop();
 				}
 			}
-
 		}
 
 		// 2. Check miscellaneous events like death:
@@ -381,9 +373,7 @@ public class GameScreen extends Screen {
 	
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
-		g.drawImage(Assets.button, 0, 285, 0, 65, 65, 65);
-		g.drawImage(Assets.button, 0, 350, 0, 65, 65, 65);
-		g.drawImage(Assets.button, 0, 415, 0, 130, 65, 65);
+		directionControl.draw(g);
 		g.drawImage(Assets.button, 0, 0, 0, 195, 35, 35);
 	}
 

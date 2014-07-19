@@ -36,6 +36,7 @@ public class LoadingScreen extends Screen {
         Assets.tilegrassRight = g.newImage("tilegrassright.png", ImageFormat.RGB565);
         
         Assets.button = g.newImage("button.jpg", ImageFormat.RGB565);
+        Assets.directionControl = g.newImage("directioncontrol.png", ImageFormat.ARGB4444);
 
         //This is how you would load a sound if you had one.
         //Assets.click = game.getAudio().createSound("explode.ogg");
