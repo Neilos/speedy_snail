@@ -19,16 +19,12 @@ public class GameScreen extends Screen {
 	enum GameState {
 		Ready, Running, Paused, GameOver
 	}
-	
+
 	 GameState state = GameState.Ready;
 
     // Variable Setup
 	private static Background bg1, bg2;
-	
-	private Image character, character2, character3, characterDown, characterJump, heliboy,
-	heliboy2, heliboy3, heliboy4, heliboy5;
-	private Animation anim, hanim;
-	
+
 	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public PlayerCharacter playerCharacter;
@@ -43,45 +39,33 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		
-		character = Assets.character;
-		character2 = Assets.character2;
-		character3 = Assets.character3;
-		characterDown = Assets.characterDown;
-		characterJump = Assets.characterJump;
 
-		anim = new Animation();
-		anim.addFrame(character, 1250);
-		anim.addFrame(character2, 50);
-		anim.addFrame(character3, 50);
-		anim.addFrame(character2, 50);
+		Animation anim = new Animation();
+		anim.addFrame(Assets.character, 1250);
+		anim.addFrame(Assets.character2, 50);
+		anim.addFrame(Assets.character3, 50);
+		anim.addFrame(Assets.character2, 50);
+
 		Animation ducked = new Animation();
-		ducked.addFrame(characterDown, 1000);
+		ducked.addFrame(Assets.characterDown, 1000);
 
 		Animation jumped = new Animation();
-		jumped.addFrame(characterJump, 1000);
+		jumped.addFrame(Assets.characterJump, 1000);
 
 		playerCharacter = new PlayerCharacter(this, 5, 100, 377, jumped, anim, ducked, anim);
 
-		heliboy = Assets.heliboy;
-		heliboy2 = Assets.heliboy2;
-		heliboy3 = Assets.heliboy3;
-		heliboy4 = Assets.heliboy4;
-		heliboy5 = Assets.heliboy5;
-
-		hanim = new Animation();
-		hanim.addFrame(heliboy, 100);
-		hanim.addFrame(heliboy2, 100);
-		hanim.addFrame(heliboy3, 100);
-		hanim.addFrame(heliboy4, 100);
-		hanim.addFrame(heliboy5, 100);
-		hanim.addFrame(heliboy4, 100);
-		hanim.addFrame(heliboy3, 100);
-		hanim.addFrame(heliboy2, 100);
+		Animation hanim = new Animation();
+		hanim.addFrame(Assets.heliboy, 100);
+		hanim.addFrame(Assets.heliboy2, 100);
+		hanim.addFrame(Assets.heliboy3, 100);
+		hanim.addFrame(Assets.heliboy4, 100);
+		hanim.addFrame(Assets.heliboy5, 100);
+		hanim.addFrame(Assets.heliboy4, 100);
+		hanim.addFrame(Assets.heliboy3, 100);
+		hanim.addFrame(Assets.heliboy2, 100);
 
 		enemies.add(new Heliboy(this, 0, 340, 360, hanim, hanim, hanim, hanim, 5));
 		enemies.add(new Heliboy(this, 0, 700, 360, hanim, hanim, hanim, hanim, 5));
-
 
 		loadMap();
 
@@ -335,16 +319,6 @@ public class GameScreen extends Screen {
 		bg2 = null;
 		playerCharacter = null;
 		enemies = null;
-		character = null;
-		character2 = null;
-		character3 = null;
-		heliboy = null;
-		heliboy2 = null;
-		heliboy3 = null;
-		heliboy4 = null;
-		heliboy5 = null;
-		anim = null;
-		hanim = null;
 
         // Call garbage collector to clean up memory.
         System.gc();
