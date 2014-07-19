@@ -2,6 +2,7 @@ package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
+import com.neilatkinson.gameobject.GameControl;
 
 public class DirectionControl extends GameControl {
 
@@ -9,8 +10,8 @@ public class DirectionControl extends GameControl {
 	private int buttonHeight;
 
 
-	public DirectionControl(GameScreen gameScreen, Image image, int x, int y, int srcX, int srcY, int width, int height) {
-		super(gameScreen, image, x, y, srcX, srcY, width, height);
+	public DirectionControl(Image image, int x, int y, int srcX, int srcY, int width, int height) {
+		super(image, x, y, srcX, srcY, width, height);
 		buttonWidth = this.width / 3;
 		buttonHeight = this.height / 3;
 	}

@@ -1,8 +1,9 @@
-package com.neilatkinson.speedysnailgame;
+package com.neilatkinson.gameobject;
 
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
+import com.neilatkinson.speedysnailgame.GameScreen;
 
 public class GameControl {
 
@@ -14,7 +15,7 @@ public class GameControl {
 	private int sourceX;
 	private int sourceY;
 
-	public GameControl(GameScreen gameScreen, Image image, int x, int y, int srcX, int srcY, int width, int height) {
+	public GameControl(Image image, int x, int y, int srcX, int srcY, int width, int height) {
 		this.image = image;
 		this.positionX = x;
 		this.positionY = y;

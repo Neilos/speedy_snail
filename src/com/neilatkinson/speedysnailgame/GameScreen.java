@@ -43,8 +43,8 @@ public class GameScreen extends Screen {
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
 
-		pauseButton = new PauseButton(this, Assets.directionControl, 0, 0, 0, 195, 35, 35);
-		directionControl = new DirectionControl(this, Assets.directionControl, 10, 350, 0, 0, 120, 120);
+		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
+		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 
 		Animation anim = new Animation();
 		anim.addFrame(Assets.character, 1250);
