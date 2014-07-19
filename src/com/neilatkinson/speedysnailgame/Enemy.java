@@ -2,11 +2,11 @@ package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.Damageable;
-import com.neilatkinson.gameobject.DestroyableObject;
+import com.neilatkinson.gameobject.GameObject;
 
 import android.graphics.Rect;
 
-public class Enemy extends DestroyableObject {
+public class Enemy extends GameObject {
 
 	private Background bg = GameScreen.getBg1();
 	protected PlayerCharacter playerCharacter;

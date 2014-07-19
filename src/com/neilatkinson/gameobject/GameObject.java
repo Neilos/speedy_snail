@@ -20,6 +20,29 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Animation moveLeftAnimation;
 	protected Animation moveDownAnimation;
 	protected Animation moveRightAnimation;
+	protected int health;
+	protected boolean isDestroyed;
+
+
+	public GameObject(
+			Screen gameScreen,
+			int moveSpeed, 
+			int startingCenterX, 
+			int startingCenterY,
+			Animation moveUpAnimation,
+			Animation moveLeftAnimation,
+			Animation moveDownAnimation,
+			Animation moveRightAnimation,
+			int startingHealth) {
+
+		this(gameScreen,
+			moveSpeed,
+			startingCenterX, startingCenterY,
+			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation);
+
+		this.health = startingHealth;
+	}
+	
 
 	public GameObject(
 			Screen gameScreen,
@@ -30,6 +53,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			Animation moveLeftAnimation,
 			Animation moveDownAnimation,
 			Animation moveRightAnimation) {
+
 		this.gameScreen = gameScreen;
 		this.moveSpeed = moveSpeed;
 		this.centerX = startingCenterX;
@@ -42,6 +66,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.moveDownAnimation = moveDownAnimation;
 		this.moveRightAnimation = moveRightAnimation;
 		this.currentAnimation = moveRightAnimation;
+
+		this.isDestroyed = false;
 	}
 
 	public void setRegion() {
@@ -159,5 +185,23 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	public void animate(long elapsedTime) {
 		currentAnimation.update(elapsedTime);
 	}
+	
+	@Override
+	public void takeDamage(int damage) {
+		this.health -= damage;
+		if (health <= 0)
+			die();
+	}
+
+	@Override
+	public void heal(int damage) {
+		this.health += damage;
+	}
+
+	@Override
+	public void die() {
+		this.isDestroyed = true;
+	}
+
 
 }
