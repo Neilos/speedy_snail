@@ -336,7 +336,7 @@ public class GameScreen extends Screen {
 
 		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
 		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
-		paintTiles(g);
+		drawTiles(g);
 
 		g.drawImage(playerCharacter.getImage(), playerCharacter.getCenterX() - 61,
 				playerCharacter.getCenterY() - 63);
@@ -362,7 +362,7 @@ public class GameScreen extends Screen {
 	}
 
 	
-	private void paintTiles(Graphics g) {
+	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			if (t.type != 0) {
