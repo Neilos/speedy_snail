@@ -1,9 +1,12 @@
 package com.neilatkinson.gameobject;
 
+import com.neilatkinson.speedysnailgame.GameScreen;
+
 import android.graphics.Rect;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
+	protected GameScreen gameScreen;
 	protected int centerX;
 	protected int centerY;
 	protected int moveSpeed;
@@ -12,9 +15,11 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Rect region;
 
 	public GameObject(
+			GameScreen gameScreen,
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY) {
+		this.gameScreen = gameScreen;
 		this.moveSpeed = moveSpeed;
 		this.centerX = startingCenterX;
 	    this.centerY = startingCenterY;

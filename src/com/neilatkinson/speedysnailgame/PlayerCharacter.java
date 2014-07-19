@@ -24,10 +24,11 @@ public class PlayerCharacter extends GameObject {
     private Background bg2 = GameScreen.getBg2();
 
     public PlayerCharacter(
+    		GameScreen gameScreen,
     		int moveSpeed, 
     		int startingCenterX, 
     		int startingCenterY) {
-    	super(moveSpeed, startingCenterX, startingCenterY);
+    	super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
 
         jumped = false;
         ducked = false;

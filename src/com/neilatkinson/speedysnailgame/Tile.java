@@ -3,8 +3,10 @@ package com.neilatkinson.speedysnailgame;
 import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
+import com.neilatkinson.gameobject.Damageable;
+import com.neilatkinson.gameobject.GameObject;
 
-public class Tile {
+public class Tile extends GameObject{
 
 	private int tileX, tileY, speedX;
     public int type;
@@ -15,10 +17,16 @@ public class Tile {
     
     private Rect r;
     
-    public Tile(GameScreen gameScreen, int x, int y, int typeInt) {
+    public Tile(
+    		GameScreen gameScreen,
+	    	int moveSpeed, 
+			int startingCenterX, 
+			int startingCenterY,
+			int typeInt) {
+		super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
     	robot = gameScreen.getPlayerCharacter();
-        tileX = x * 40;
-        tileY = y * 40;
+        tileX = startingCenterX;
+        tileY = startingCenterY;
 
         type = typeInt;
 
@@ -112,5 +120,31 @@ public class Tile {
             }
         }
     }
+
+	@Override
+	public void resolveCollisions() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void attack(Damageable damageable) {
+
+	}
+
+	@Override
+	public void takeDamage(int damage) {
+
+	}
+
+	@Override
+	public void heal(int damage) {
+
+	}
+
+	@Override
+	public void die() {
+
+	}
 
 }

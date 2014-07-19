@@ -1,5 +1,7 @@
 package com.neilatkinson.gameobject;
 
+import com.neilatkinson.speedysnailgame.GameScreen;
+
 // An object of this type can be destroyed
 public abstract class DestroyableObject extends GameObject {
 
@@ -7,11 +9,12 @@ public abstract class DestroyableObject extends GameObject {
 	protected boolean isDestroyed;
 
 	public DestroyableObject(
+			GameScreen gameScreen,
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
 			int startingHealth) {
-		super(moveSpeed, startingCenterX, startingCenterY);
+		super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
 		this.health = startingHealth;
 		this.isDestroyed = false;
 	}

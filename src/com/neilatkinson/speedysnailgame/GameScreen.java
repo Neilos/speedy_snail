@@ -42,7 +42,7 @@ public class GameScreen extends Screen {
         // Initialize game objects here
         bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		playerCharacter = new PlayerCharacter(5, 100, 377);
+		playerCharacter = new PlayerCharacter(this, 5, 100, 377);
 		
 		enemies.add(new Heliboy(this, 0, 340, 360, 5));
 		enemies.add(new Heliboy(this, 0, 700, 360, 5));
@@ -113,14 +113,18 @@ public class GameScreen extends Screen {
 			}
 		}
 		height = lines.size();
-
+		
+		int startingCenterX;
+		int startingCenterY;
 		for (int j = 0; j < height; j++) {
 			String line = (String) lines.get(j);
 			for (int i = 0; i < width; i++) {
 
 				if (i < line.length()) {
+					startingCenterX = i * 40;
+					startingCenterY = j * 40;
 					char ch = line.charAt(i);
-					Tile t = new Tile(this, i, j, Character.getNumericValue(ch));
+					Tile t = new Tile(this, 0, startingCenterX, startingCenterY, Character.getNumericValue(ch));
 					tilearray.add(t);
 				}
 

@@ -16,7 +16,7 @@ public class Enemy extends DestroyableObject {
 			int startingCenterX, 
 			int startingCenterY,
 			int startingHealth) {
-		super(moveSpeed, startingCenterX, startingCenterY, startingHealth);
+		super(gameScreen, moveSpeed, startingCenterX, startingCenterY, startingHealth);
 		playerCharacter = gameScreen.getPlayerCharacter();
 		setRegion();
 	}
