@@ -93,7 +93,7 @@ public class GameScreen extends Screen {
  
 
 	private void loadMap() {
-		ArrayList lines = new ArrayList();
+		ArrayList<String> lines = new ArrayList<String>();
 		int width = 0;
 		int height = 0;
 
@@ -114,7 +114,7 @@ public class GameScreen extends Screen {
 		}
 		height = lines.size();
 
-		for (int j = 0; j < 12; j++) {
+		for (int j = 0; j < height; j++) {
 			String line = (String) lines.get(j);
 			for (int i = 0; i < width; i++) {
 
@@ -126,6 +126,7 @@ public class GameScreen extends Screen {
 
 			}
 		}
+		scanner.close();
 	}
 
 	
