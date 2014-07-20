@@ -280,7 +280,12 @@ public class GameScreen extends Screen {
 		paint2 = null;
 		bg1 = null;
 		bg2 = null;
+
+		directionControl = null;
+		pauseButton = null;
+
 		playerCharacter = null;
+		tilearray = null;
 		enemies = null;
 
         // Call garbage collector to clean up memory.
