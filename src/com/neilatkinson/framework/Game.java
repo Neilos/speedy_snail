@@ -15,4 +15,8 @@ public interface Game {
     public Screen getCurrentScreen();
 
     public Screen getInitScreen();
+
+	public int getFrameBufferWidth();
+
+	public int getFrameBufferHeight();
 }
