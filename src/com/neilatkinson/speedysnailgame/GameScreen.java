@@ -70,8 +70,8 @@ public class GameScreen extends Screen {
 		hanim.addFrame(Assets.heliboy3, 100);
 		hanim.addFrame(Assets.heliboy2, 100);
 
-		enemies.add(new Heliboy(this, 0, 340, 360, hanim, hanim, hanim, hanim, 5));
-		enemies.add(new Heliboy(this, 0, 700, 360, hanim, hanim, hanim, hanim, 5));
+		enemies.add(new Heliboy(this, 1, 340, 360, hanim, hanim, hanim, hanim, 5));
+		enemies.add(new Heliboy(this, 1, 700, 360, hanim, hanim, hanim, hanim, 5));
 
 		loadMap();
 
@@ -191,13 +191,13 @@ public class GameScreen extends Screen {
 			if (event.type == TouchEvent.TOUCH_DOWN) {
 				
 				if (directionControl.upButtonPressed(event)) {
-					playerCharacter.moveUp();
+					playerCharacter.setMovingUp();
 				} else if (directionControl.leftButtonPressed(event)) {
-					playerCharacter.moveLeft();
+					playerCharacter.setMovingLeft();
 				} else if (directionControl.downButtonPressed(event)) {
-					playerCharacter.moveDown();
+					playerCharacter.setMovingDown();
 				} else if (directionControl.rightButtonPressed(event)) {
-					playerCharacter.moveRight();	
+					playerCharacter.setMovingRight();
 				} else {  }
 			}
 

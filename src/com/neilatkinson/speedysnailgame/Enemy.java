@@ -33,8 +33,6 @@ public class Enemy extends GameObject {
 
 	public void update() {
         follow();
-        centerX += speedX;
-        speedX = bg.getSpeedX() * 5 + moveSpeed;
         setRegion();
         resolveCollisions();
     }
@@ -55,19 +53,29 @@ public class Enemy extends GameObject {
 	}
 
 	private void follow() {
-		if (centerX < -95 || centerX > 810){
-            moveSpeed = 0;
-        }
-        else if (Math.abs(playerCharacter.getCenterX() - centerX) < 5) {
-            moveSpeed = 0;
-        }
-        else {
-            if (playerCharacter.getCenterX() >= centerX) {
-                moveSpeed = 1;
-            } else {
-                moveSpeed = -1;
-            }
-        }
+		int xDistanceToPlayer = playerCharacter.getCenterX() - centerX;
+		int yDistanceToPlayer = playerCharacter.getCenterY() - centerY;
+		
+		if (Math.abs(xDistanceToPlayer) >= Math.abs(yDistanceToPlayer)) {
+			// Move in the x direction
+			if (xDistanceToPlayer > 0) {
+				setMovingRight();
+			} else if (xDistanceToPlayer < 0) {
+				setMovingLeft();
+			} else {
+				stop();
+			}
+		} else {
+			// Move in the y direction
+			if (yDistanceToPlayer > 0) {
+				setMovingDown();
+			} else if (yDistanceToPlayer < 0){
+				setMovingUp();
+			} else {
+				stop();
+			}
+		}
+		move();
 	}
 
 	@Override

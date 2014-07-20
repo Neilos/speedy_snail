@@ -51,44 +51,83 @@ public class PlayerCharacter extends GameObject {
     }
 
     public void update() {
-        // Moves Character or Scrolls Background accordingly.
-
-        if (speedX < 0) {
-            centerX += speedX;
-        }
-        if (speedX == 0 || speedX < 0) {
-            bg1.setSpeedX(0);
-            bg2.setSpeedX(0);
-
-        }
-        if (centerX <= 200 && speedX > 0) {
-            centerX += speedX;
-        }
-        if (speedX > 0 && centerX > 200) {
-            bg1.setSpeedX(-moveSpeed / 5);
-            bg2.setSpeedX(-moveSpeed / 5);
-        }
-
-        // Updates Y Position
-        centerY += speedY;
-
-        // Prevents going beyond X coordinate of 0
-        if (centerX + speedX <= 60) {
-            centerX = 61;
-        }
+    	
+    	move();
 
         setRegion();
     }
     
     @Override
-    public void moveRight() {
-    	super.moveRight();
-    	if (centerX > 200) {
-	        bg1.setSpeedX(-moveSpeed / 5);
-	        bg2.setSpeedX(-moveSpeed / 5);
+	public void move() {
+		if (isMovingUp()) {
+    		bg1.setSpeedX(0);
+            bg2.setSpeedX(0);
+            speedX = 0;
+	    	if (centerY < 100) {
+		        bg1.setSpeedY(moveSpeed);
+		        bg2.setSpeedY(moveSpeed);
+		        speedY = 0;
+	    	} else {
+	    		bg1.setSpeedY(0);
+	            bg2.setSpeedY(0);
+	            speedY = -moveSpeed;
+	    	}
+    	} else if (isMovingLeft()) {
+    		bg1.setSpeedY(0);
+            bg2.setSpeedY(0);
+            speedY = 0;
+    		if (centerX < 200) {
+    	        bg1.setSpeedX(moveSpeed);
+    	        bg2.setSpeedX(moveSpeed);
+    	        speedX = 0;
+        	} else {
+        		bg1.setSpeedX(0);
+                bg2.setSpeedX(0);
+                speedX = -moveSpeed;
+        	}
+    	} else if (isMovingDown()) {
+    		bg1.setSpeedX(0);
+            bg2.setSpeedX(0);
+            speedX = 0;
+    		if (centerY > gameScreen.getHeight() - 100) {
+    	        bg1.setSpeedY(-moveSpeed);
+    	        bg2.setSpeedY(-moveSpeed);
+    	        speedY = 0;
+        	} else {
+        		bg1.setSpeedY(0);
+                bg2.setSpeedY(0);
+                speedY = moveSpeed;
+        	}
+    	} else if (isMovingRight()) {
+    		bg1.setSpeedY(0);
+            bg2.setSpeedY(0);
+            speedY = 0;
+    		if (centerX > gameScreen.getWidth() - 200) {
+    	        bg1.setSpeedX(-moveSpeed);
+    	        bg2.setSpeedX(-moveSpeed);
+    	        speedX = 0;
+        	} else {
+        		bg1.setSpeedX(0);
+                bg2.setSpeedX(0);
+                speedX = moveSpeed;
+        	}
+    	} else {
+    		bg1.setSpeedX(0);
+    		bg1.setSpeedY(0);
+    		bg2.setSpeedX(0);
+            bg2.setSpeedY(0);
+            speedX = 0;
+            speedY = 0;
     	}
-    }
-    
+
+        // Update X Position
+        centerX += speedX;
+
+        // Update Y Position
+        centerY += speedY;
+	}
+ 
+
     public void setRegion() {
     	rect.set(centerX - 34, centerY - 63, centerX + 34, centerY);
         rect2.set(rect.left, rect.top + 63, rect.left+68, rect.top + 128);

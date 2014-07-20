@@ -2,12 +2,14 @@ package com.neilatkinson.speedysnailgame;
 
 public class Background {
 	
-	private int bgX, bgY, speedX;
+	private int bgX, bgY;
+	private int speedX, speedY;
 
 	public Background(int x, int y){
         bgX = x;
         bgY = y;
         speedX = 0;
+        speedY = 0;
     }
 
 
@@ -17,7 +19,6 @@ public class Background {
             bgX += 4320;
         }
     }
-
     
     public int getBgX() {
         return bgX;
@@ -31,6 +32,10 @@ public class Background {
     
     public int getSpeedX() {
         return speedX;
+    }
+
+    public int getSpeedY() {
+        return speedY;
     }
 
     
@@ -47,4 +52,9 @@ public class Background {
     public void setSpeedX(int speedX) {
         this.speedX = speedX;
     }
+
+
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
+	}
 }

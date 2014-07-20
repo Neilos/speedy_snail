@@ -2,16 +2,18 @@ package com.neilatkinson.gameobject;
 
 public interface Moveable {
 
-	public void moveUp();
-	public void moveLeft();
-	public void moveDown();
-	public void moveRight();
+	public void setMovingUp();
+	public void setMovingLeft();
+	public void setMovingDown();
+	public void setMovingRight();
 	public void stop();
 
 	public boolean isMovingUp();
 	public boolean isMovingLeft();
 	public boolean isMovingDown();
 	public boolean isMovingRight();
+
+	public void move();
 
 	public int getSpeedX();
 	public void setSpeedX(int speedX);

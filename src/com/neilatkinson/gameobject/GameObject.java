@@ -3,6 +3,8 @@ package com.neilatkinson.gameobject;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.speedysnailgame.Background;
+import com.neilatkinson.speedysnailgame.GameScreen;
 
 import android.graphics.Rect;
 
@@ -22,6 +24,11 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Animation moveRightAnimation;
 	protected int health;
 	protected boolean isDestroyed;
+	private boolean isMovingUp;
+	private boolean isMovingLeft;
+	private boolean isMovingDown;
+	private boolean isMovingRight;
+	protected Background bg;
 
 
 	public GameObject(
@@ -66,70 +73,106 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.moveDownAnimation = moveDownAnimation;
 		this.moveRightAnimation = moveRightAnimation;
 		this.currentAnimation = moveRightAnimation;
-
+		
+		this.bg = GameScreen.getBg1();
 		this.isDestroyed = false;
 	}
 
 	public void setRegion() {
 		region.set(centerX - 34, centerY - 63, centerX + 34, centerY);
 	}
+	
+	@Override
+	public void move() {
+		if (isMovingUp()) {
+	        speedX = bg.getSpeedX();
+		    speedY = bg.getSpeedY() - moveSpeed;
+    	} else if (isMovingLeft()) {
+    		speedX = bg.getSpeedX() - moveSpeed;
+		    speedY = bg.getSpeedY();
+    	} else if (isMovingDown()) {
+    		speedX = bg.getSpeedX();
+		    speedY = bg.getSpeedY() + moveSpeed;
+    	} else if (isMovingRight()) {
+    		speedX = bg.getSpeedX() + moveSpeed;
+		    speedY = bg.getSpeedY();
+    	} else {
+    		speedX = 0;
+    		speedY = 0;
+    	}
+		
+		// Update X Position
+        centerX += speedX;
 
-	public void update() {
+        // Update Y Position
+        centerY += speedY;
 
+        setRegion();
 	}
 
+
 	@Override
-	public void moveUp() {
-		speedX = 0;
-		speedY = -moveSpeed;
+	public void setMovingUp() {
+		isMovingUp = true;
+		isMovingLeft = false;
+		isMovingDown = false;
+		isMovingRight = false;
 		currentAnimation = moveUpAnimation;
 	}
 
 	@Override
-	public void moveLeft() {
-		speedX = -moveSpeed;
-		speedY = 0;
+	public void setMovingLeft() {
+		isMovingUp = false;
+		isMovingLeft = true;
+		isMovingDown = false;
+		isMovingRight = false;
 		currentAnimation = moveLeftAnimation;
 	}
 
 	@Override
-	public void moveDown() {
-		speedX = 0;
-		speedY = moveSpeed;
+	public void setMovingDown() {
+		isMovingUp = false;
+		isMovingLeft = false;
+		isMovingDown = true;
+		isMovingRight = false;
 		currentAnimation = moveDownAnimation;
 	}
 
 	@Override
-	public void moveRight() {
-		speedX = moveSpeed;
-		speedY = 0;
+	public void setMovingRight() {
+		isMovingUp = false;
+		isMovingLeft = false;
+		isMovingDown = false;
+		isMovingRight = true;
 		currentAnimation = moveRightAnimation;
 	}
 	
 	@Override
 	public void stop() {
-		speedX = 0;
-		speedY = 0;
+		isMovingUp = false;
+		isMovingLeft = false;
+		isMovingDown = false;
+		isMovingRight = false;
 	}
 
 	@Override
 	public boolean isMovingUp() {
-		return getSpeedY() < 0;
+		return isMovingUp;
 	}
 
 	@Override
 	public boolean isMovingLeft() {
-		return getSpeedX() < 0;
+		return isMovingLeft;
 	}
 
 	@Override
 	public boolean isMovingDown() {
-		return getSpeedY() > 0;
+		return isMovingDown;
 	}
 
 	@Override
 	public boolean isMovingRight() {
-		return getSpeedY() > 0;
+		return isMovingRight;
 	}
 
 	@Override
