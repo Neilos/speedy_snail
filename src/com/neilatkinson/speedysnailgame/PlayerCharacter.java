@@ -63,7 +63,7 @@ public class PlayerCharacter extends GameObject {
     		bg1.setSpeedX(0);
             bg2.setSpeedX(0);
             speedX = 0;
-	    	if (centerY < 100) {
+	    	if (nearTopOfScreen()) {
 		        bg1.setSpeedY(moveSpeed);
 		        bg2.setSpeedY(moveSpeed);
 		        speedY = 0;
@@ -76,7 +76,7 @@ public class PlayerCharacter extends GameObject {
     		bg1.setSpeedY(0);
             bg2.setSpeedY(0);
             speedY = 0;
-    		if (centerX < 200) {
+    		if (nearLeftOfScreen()) {
     	        bg1.setSpeedX(moveSpeed);
     	        bg2.setSpeedX(moveSpeed);
     	        speedX = 0;
@@ -89,7 +89,7 @@ public class PlayerCharacter extends GameObject {
     		bg1.setSpeedX(0);
             bg2.setSpeedX(0);
             speedX = 0;
-    		if (centerY > gameScreen.getHeight() - 100) {
+    		if (nearBottomOfScreen()) {
     	        bg1.setSpeedY(-moveSpeed);
     	        bg2.setSpeedY(-moveSpeed);
     	        speedY = 0;
@@ -102,7 +102,7 @@ public class PlayerCharacter extends GameObject {
     		bg1.setSpeedY(0);
             bg2.setSpeedY(0);
             speedY = 0;
-    		if (centerX > gameScreen.getWidth() - 200) {
+    		if (nearRightOfScreen()) {
     	        bg1.setSpeedX(-moveSpeed);
     	        bg2.setSpeedX(-moveSpeed);
     	        speedX = 0;

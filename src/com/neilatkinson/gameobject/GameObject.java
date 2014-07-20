@@ -220,6 +220,26 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.centerY = centerY;
 	}
 
+	@Override
+	public boolean nearTopOfScreen() {
+		return centerY <= 100;
+	}
+
+	@Override
+	public boolean nearLeftOfScreen() {
+		return centerX <= 200;
+	}
+
+	@Override
+	public boolean nearBottomOfScreen() {
+		return centerY >= gameScreen.getHeight() - 100;
+	}
+
+	@Override
+	public boolean nearRightOfScreen() {
+		return centerX >= gameScreen.getWidth() - 200;
+	}
+
 	public Image getImage() {
 		return currentAnimation.getImage();
 	}

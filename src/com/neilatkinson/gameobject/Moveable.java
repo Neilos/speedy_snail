@@ -25,4 +25,9 @@ public interface Moveable {
 	public int getCenterY();
 	public void setCenterY(int centerY);
 
+	public boolean nearTopOfScreen();
+	public boolean nearLeftOfScreen();
+	public boolean nearBottomOfScreen();
+	public boolean nearRightOfScreen();
+
 }
