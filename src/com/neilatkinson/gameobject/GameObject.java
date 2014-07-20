@@ -237,7 +237,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	@Override
-	public void animate(long elapsedTime) {
+	public void animate(int elapsedTime) {
 		currentAnimation.update(elapsedTime);
 	}
 	

@@ -8,8 +8,8 @@ public class Animation {
 	
 	private ArrayList<AnimFrame> frames;
     private int currentFrame;
-    private long animTime;
-    private long totalDuration;
+    private int animTime;
+    private int totalDuration;
 
 	public Animation() {
 		frames = new ArrayList<AnimFrame>();
@@ -22,13 +22,13 @@ public class Animation {
 	}
 	
 
-	public synchronized void addFrame(Image image, long duration) {
+	public synchronized void addFrame(Image image, int duration) {
         totalDuration += duration;
         frames.add(new AnimFrame(image, totalDuration));
     }
 	
 	
-	public synchronized void update(long elapsedTime) {
+	public synchronized void update(int elapsedTime) {
         if (frames.size() > 1) {
             animTime += elapsedTime;
             if (animTime >= totalDuration) {

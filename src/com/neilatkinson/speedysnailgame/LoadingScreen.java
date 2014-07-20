@@ -12,7 +12,7 @@ public class LoadingScreen extends Screen {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(int elapsedTime) {
 		Graphics g = game.getGraphics();
 
         Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
@@ -45,7 +45,7 @@ public class LoadingScreen extends Screen {
 	}
 
 	@Override
-	public void paint(float deltaTime) {
+	public void paint(int elapsedTime) {
 		Graphics g = game.getGraphics();
 		g.drawImage(Assets.splash, 0, 0);
 

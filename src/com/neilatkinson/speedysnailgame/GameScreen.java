@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
@@ -132,7 +131,7 @@ public class GameScreen extends Screen {
 
 	
 	@Override
-	public void update(float deltaTime) {
+	public void update(int elapsedTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
         // We have four separate update methods in this example.
@@ -141,7 +140,7 @@ public class GameScreen extends Screen {
         if (state == GameState.Ready)
             updateReady(touchEvents);
         if (state == GameState.Running)
-            updateRunning(touchEvents, deltaTime);
+            updateRunning(touchEvents, elapsedTime);
         if (state == GameState.Paused)
             updatePaused(touchEvents);
         if (state == GameState.GameOver)
@@ -159,7 +158,7 @@ public class GameScreen extends Screen {
 	}
 
 	
-	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
+	private void updateRunning(List<TouchEvent> touchEvents, int elapsedTime) {
 
 		// 1. All touch input is handled here:
 		int len = touchEvents.size();
@@ -196,25 +195,25 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 		// For example, playerCharacter.update();
-		updatePlayerCharacter();
-		updateTiles();
-		updateEnemies();
+		updatePlayerCharacter(elapsedTime);
+		updateTiles(elapsedTime);
+		updateEnemies(elapsedTime);
 		bg1.update();
 		bg2.update();
 	}
 
 
-	private void updatePlayerCharacter() {
+	private void updatePlayerCharacter(int elapsedTime) {
 		playerCharacter.update();
-		playerCharacter.animate(10);
+		playerCharacter.animate(elapsedTime);
 	}
 
 
-	private void updateEnemies() {
+	private void updateEnemies(int elapsedTime) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = (Enemy) enemies.get(i);
 			enemy.update();
-			enemy.animate(50);
+			enemy.animate(elapsedTime);
 		}
 	}
 
@@ -229,11 +228,11 @@ public class GameScreen extends Screen {
 	}
 	
 	
-	private void updateTiles() {
+	private void updateTiles(int elapsedTime) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			t.update();
-			t.animate(50);
+			t.animate(elapsedTime);
 		}
 	}
 
@@ -290,7 +289,7 @@ public class GameScreen extends Screen {
 
 	
 	@Override
-	public void paint(float deltaTime) {
+	public void paint(int elapsedTime) {
 		Graphics g = game.getGraphics();
 		
 		// 1. draw the game elements.
