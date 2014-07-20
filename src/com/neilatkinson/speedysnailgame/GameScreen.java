@@ -211,7 +211,8 @@ public class GameScreen extends Screen {
 		}
 
 		// 2. Check miscellaneous events like death:
-		if (livesLeft == 0) {
+		// Check for game over
+		if (playerCharacter.isDead()) {
 			state = GameState.GameOver;
 		}
 
@@ -223,11 +224,6 @@ public class GameScreen extends Screen {
 		updateEnemies();
 		bg1.update();
 		bg2.update();
-		
-		// if player has fallen down a hole game is over
-		if (playerCharacter.getCenterY() > 500) {
-			state = GameState.GameOver;
-		}
 	}
 
 
@@ -245,7 +241,6 @@ public class GameScreen extends Screen {
 		}
 	}
 
-	
 	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
 		if (event.x > x
 			&& event.x < x + width - 1

@@ -22,8 +22,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Animation moveLeftAnimation;
 	protected Animation moveDownAnimation;
 	protected Animation moveRightAnimation;
-	protected int health;
-	protected boolean isDestroyed;
+	private int health;
+	private boolean isDead;
 	private boolean isMovingUp;
 	private boolean isMovingLeft;
 	private boolean isMovingDown;
@@ -75,7 +75,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.currentAnimation = moveRightAnimation;
 		
 		this.bg = GameScreen.getBg1();
-		this.isDestroyed = false;
+		this.isDead = false;
 	}
 
 	public void setRegion() {
@@ -251,19 +251,27 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	
 	@Override
 	public void takeDamage(int damage) {
-		this.health -= damage;
-		if (health <= 0)
-			die();
+		if (!isDead()) {
+			this.health -= damage;
+			if (health <= 0)
+				die();
+		}
 	}
 
 	@Override
 	public void heal(int damage) {
-		this.health += damage;
+		if (!isDead()){
+			this.health += damage;
+		}
 	}
 
 	@Override
 	public void die() {
-		this.isDestroyed = true;
+		this.isDead = true;
+	}
+	
+	public boolean isDead() {
+		return isDead;
 	}
 
 
