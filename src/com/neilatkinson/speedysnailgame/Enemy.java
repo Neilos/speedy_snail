@@ -8,7 +8,6 @@ import android.graphics.Rect;
 
 public class Enemy extends GameObject {
 
-	private Background bg = GameScreen.getBg1();
 	protected PlayerCharacter playerCharacter;
 
 	public Enemy(

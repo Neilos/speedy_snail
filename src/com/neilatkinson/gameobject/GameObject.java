@@ -97,8 +97,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
     		speedX = bg.getSpeedX() + moveSpeed;
 		    speedY = bg.getSpeedY();
     	} else {
-    		speedX = 0;
-    		speedY = 0;
+    		speedX = bg.getSpeedX();
+    		speedY = bg.getSpeedY();
     	}
 		
 		// Update X Position

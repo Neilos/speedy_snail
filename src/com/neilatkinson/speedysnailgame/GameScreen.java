@@ -58,7 +58,7 @@ public class GameScreen extends Screen {
 		Animation jumped = new Animation();
 		jumped.addFrame(Assets.characterJump, 1000);
 
-		playerCharacter = new PlayerCharacter(this, 5, 100, 377, jumped, anim, ducked, anim);
+		playerCharacter = new PlayerCharacter(this, 10, 100, 377, jumped, anim, ducked, anim);
 
 		Animation hanim = new Animation();
 		hanim.addFrame(Assets.heliboy, 100);
@@ -358,7 +358,7 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			if (t.type != 0) {
-				g.drawImage(t.getImage(), t.getTileX(), t.getTileY());
+				g.drawImage(t.getImage(), t.getCenterX(), t.getCenterY());
 			}
 		}
 	}

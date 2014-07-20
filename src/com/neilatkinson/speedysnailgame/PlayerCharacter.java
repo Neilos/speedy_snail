@@ -18,8 +18,8 @@ public class PlayerCharacter extends GameObject {
     public Rect footleft = new Rect(0,0,0,0);
     public Rect footright = new Rect(0,0,0,0);
     
-    private Background bg1 = GameScreen.getBg1();
-    private Background bg2 = GameScreen.getBg2();
+    private Background bg1;
+    private Background bg2;
 
     public PlayerCharacter(
     		GameScreen gameScreen,
