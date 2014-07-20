@@ -1,12 +1,11 @@
 package com.neilatkinson.speedysnailgame;
 
-import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
 import android.graphics.Rect;
 
-public class Enemy extends GameObject {
+public abstract class Enemy extends GameObject {
 
 	protected PlayerCharacter playerCharacter;
 
@@ -15,16 +14,11 @@ public class Enemy extends GameObject {
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
-			Animation moveUpAnimation,
-			Animation moveLeftAnimation,
-			Animation moveDownAnimation,
-			Animation moveRightAnimation,
 			int startingHealth) {
 
 		super(gameScreen,
 			moveSpeed,
 			startingCenterX, startingCenterY,
-			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation,
 			startingHealth);
 		playerCharacter = gameScreen.getPlayerCharacter();
 		setRegion();

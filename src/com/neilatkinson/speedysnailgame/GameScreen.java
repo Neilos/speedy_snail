@@ -46,32 +46,9 @@ public class GameScreen extends Screen {
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 
-		Animation anim = new Animation();
-		anim.addFrame(Assets.character, 1250);
-		anim.addFrame(Assets.character2, 50);
-		anim.addFrame(Assets.character3, 50);
-		anim.addFrame(Assets.character2, 50);
-
-		Animation ducked = new Animation();
-		ducked.addFrame(Assets.characterDown, 1000);
-
-		Animation jumped = new Animation();
-		jumped.addFrame(Assets.characterJump, 1000);
-
-		playerCharacter = new PlayerCharacter(this, 10, 100, 377, jumped, anim, ducked, anim);
-
-		Animation hanim = new Animation();
-		hanim.addFrame(Assets.heliboy, 100);
-		hanim.addFrame(Assets.heliboy2, 100);
-		hanim.addFrame(Assets.heliboy3, 100);
-		hanim.addFrame(Assets.heliboy4, 100);
-		hanim.addFrame(Assets.heliboy5, 100);
-		hanim.addFrame(Assets.heliboy4, 100);
-		hanim.addFrame(Assets.heliboy3, 100);
-		hanim.addFrame(Assets.heliboy2, 100);
-
-		enemies.add(new Heliboy(this, 1, 340, 360, hanim, hanim, hanim, hanim, 5));
-		enemies.add(new Heliboy(this, 1, 700, 360, hanim, hanim, hanim, hanim, 5));
+		playerCharacter = new PlayerCharacter(this, 10, 100, 377);
+		enemies.add(new Heliboy(this, 1, 340, 360, 5));
+		enemies.add(new Heliboy(this, 1, 700, 360, 5));
 
 		loadMap();
 

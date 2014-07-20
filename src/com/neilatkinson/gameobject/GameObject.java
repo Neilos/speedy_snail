@@ -17,11 +17,17 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected int speedX;
 	protected int speedY;
 	protected Rect region;
+
 	protected Animation currentAnimation;
 	protected Animation moveUpAnimation;
 	protected Animation moveLeftAnimation;
 	protected Animation moveDownAnimation;
 	protected Animation moveRightAnimation;
+	protected Animation stationaryFacingUpAnimation;
+	protected Animation stationaryFacingLeftAnimation;
+	protected Animation stationaryFacingDownAnimation;
+	protected Animation stationaryFacingRightAnimation;
+
 	private int health;
 	private boolean isDead;
 	private boolean isMovingUp;
@@ -30,36 +36,22 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private boolean isMovingRight;
 	protected Background bg;
 
-
 	public GameObject(
 			Screen gameScreen,
 			int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
-			Animation moveUpAnimation,
-			Animation moveLeftAnimation,
-			Animation moveDownAnimation,
-			Animation moveRightAnimation,
 			int startingHealth) {
 
-		this(gameScreen,
-			moveSpeed,
-			startingCenterX, startingCenterY,
-			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation);
-
+		this(gameScreen, moveSpeed, startingCenterX, startingCenterY);
 		this.health = startingHealth;
 	}
-	
 
 	public GameObject(
 			Screen gameScreen,
 			int moveSpeed, 
 			int startingCenterX, 
-			int startingCenterY,
-			Animation moveUpAnimation,
-			Animation moveLeftAnimation,
-			Animation moveDownAnimation,
-			Animation moveRightAnimation) {
+			int startingCenterY) {
 
 		this.gameScreen = gameScreen;
 		this.moveSpeed = moveSpeed;
@@ -68,15 +60,15 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	    this.speedX = 0;
 	    this.speedY = 0;
 	    this.region = new Rect(0, 0, 0, 0);
-	    this.moveUpAnimation = moveUpAnimation;
-		this.moveLeftAnimation = moveLeftAnimation;
-		this.moveDownAnimation = moveDownAnimation;
-		this.moveRightAnimation = moveRightAnimation;
-		this.currentAnimation = moveRightAnimation;
 		
 		this.bg = GameScreen.getBg1();
 		this.isDead = false;
+
+		setUpAnimations();
+
 	}
+
+	public abstract void setUpAnimations();
 
 	public void setRegion() {
 		region.set(centerX - 34, centerY - 63, centerX + 34, centerY);

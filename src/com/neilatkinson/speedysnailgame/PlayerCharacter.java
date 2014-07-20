@@ -25,16 +25,11 @@ public class PlayerCharacter extends GameObject {
     		GameScreen gameScreen,
     		int moveSpeed, 
     		int startingCenterX, 
-    		int startingCenterY,
-    		Animation moveUpAnimation,
-    		Animation moveLeftAnimation,
-    		Animation moveDownAnimation,
-    		Animation moveRightAnimation) {
+    		int startingCenterY) {
 
     	super(gameScreen, 
 			moveSpeed,
-			startingCenterX, startingCenterY, 
-			moveUpAnimation, moveLeftAnimation, moveDownAnimation, moveRightAnimation);
+			startingCenterX, startingCenterY);
 
         rect = new Rect(0, 0, 0, 0);
         rect2 = new Rect(0, 0, 0, 0);
@@ -49,6 +44,58 @@ public class PlayerCharacter extends GameObject {
         bg1 = GameScreen.getBg1();
         bg2 = GameScreen.getBg2();
     }
+
+	@Override
+	public void setUpAnimations() {
+		currentAnimation = new Animation();
+
+		moveUpAnimation = new Animation();
+		moveLeftAnimation = new Animation();
+		moveDownAnimation = new Animation();
+		moveRightAnimation = new Animation();
+
+		stationaryFacingUpAnimation = new Animation();
+		stationaryFacingLeftAnimation = new Animation();
+		stationaryFacingDownAnimation = new Animation();
+		stationaryFacingRightAnimation = new Animation();
+
+		moveUpAnimation.addFrame(Assets.characterJump, 1000);
+
+		moveLeftAnimation.addFrame(Assets.character, 1250);
+		moveLeftAnimation.addFrame(Assets.character2, 50);
+		moveLeftAnimation.addFrame(Assets.character3, 50);
+		moveLeftAnimation.addFrame(Assets.character2, 50);
+
+		moveDownAnimation.addFrame(Assets.characterDown, 1000);
+
+		moveRightAnimation.addFrame(Assets.character, 1250);
+		moveRightAnimation.addFrame(Assets.character2, 50);
+		moveRightAnimation.addFrame(Assets.character3, 50);
+		moveRightAnimation.addFrame(Assets.character2, 50);
+
+		stationaryFacingUpAnimation.addFrame(Assets.character, 1250);
+		stationaryFacingUpAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingUpAnimation.addFrame(Assets.character3, 50);
+		stationaryFacingUpAnimation.addFrame(Assets.character2, 50);
+
+		stationaryFacingLeftAnimation.addFrame(Assets.character, 1250);
+		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingLeftAnimation.addFrame(Assets.character3, 50);
+		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50);
+
+		stationaryFacingDownAnimation.addFrame(Assets.character, 1250);
+		stationaryFacingDownAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingDownAnimation.addFrame(Assets.character3, 50);
+		stationaryFacingDownAnimation.addFrame(Assets.character2, 50);
+
+		stationaryFacingRightAnimation.addFrame(Assets.character, 1250);
+		stationaryFacingRightAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingRightAnimation.addFrame(Assets.character3, 50);
+		stationaryFacingRightAnimation.addFrame(Assets.character2, 50);
+
+		currentAnimation = stationaryFacingRightAnimation;
+	}
+
 
     public void update() {
     	

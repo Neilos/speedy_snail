@@ -24,8 +24,7 @@ public class Tile extends GameObject{
 
     	super(gameScreen,
 			moveSpeed,
-			startingCenterX, startingCenterY,
-			stationeryAnimation, stationeryAnimation, stationeryAnimation, stationeryAnimation);
+			startingCenterX, startingCenterY);
     	robot = gameScreen.getPlayerCharacter();
 
         type = typeInt;
@@ -48,6 +47,33 @@ public class Tile extends GameObject{
 
     }
     
+    @Override
+	public void setUpAnimations() {
+		currentAnimation = new Animation();
+
+		moveUpAnimation = new Animation();
+		moveLeftAnimation = new Animation();
+		moveDownAnimation = new Animation();
+		moveRightAnimation = new Animation();
+
+		stationaryFacingUpAnimation = new Animation();
+		stationaryFacingLeftAnimation = new Animation();
+		stationaryFacingDownAnimation = new Animation();
+		stationaryFacingRightAnimation = new Animation();
+		
+		moveUpAnimation.addFrame(tileImage, 1000);
+		moveLeftAnimation = moveUpAnimation;
+		moveDownAnimation = moveUpAnimation;
+		moveRightAnimation = moveUpAnimation;
+
+		stationaryFacingUpAnimation = moveUpAnimation;
+		stationaryFacingLeftAnimation = moveUpAnimation;
+		stationaryFacingDownAnimation = moveUpAnimation;
+		stationaryFacingRightAnimation = moveUpAnimation;
+		
+		currentAnimation = stationaryFacingRightAnimation;
+	}
+
     public void update() {
         move();
         r.set(centerX, centerY, centerX+40, centerY+40);
