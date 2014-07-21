@@ -1,13 +1,12 @@
 package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.gameobject.Damageable;
-import com.neilatkinson.gameobject.DestroyableObject;
+import com.neilatkinson.gameobject.GameObject;
 
 import android.graphics.Rect;
 
-public class Enemy extends DestroyableObject {
+public abstract class Enemy extends GameObject {
 
-	private Background bg = GameScreen.getBg1();
 	protected PlayerCharacter playerCharacter;
 
 	public Enemy(
@@ -16,15 +15,17 @@ public class Enemy extends DestroyableObject {
 			int startingCenterX, 
 			int startingCenterY,
 			int startingHealth) {
-		super(gameScreen, moveSpeed, startingCenterX, startingCenterY, startingHealth);
+
+		super(gameScreen,
+			moveSpeed,
+			startingCenterX, startingCenterY,
+			startingHealth);
 		playerCharacter = gameScreen.getPlayerCharacter();
 		setRegion();
 	}
 
 	public void update() {
         follow();
-        centerX += speedX;
-        speedX = bg.getSpeedX() * 5 + moveSpeed;
         setRegion();
         resolveCollisions();
     }
@@ -45,19 +46,29 @@ public class Enemy extends DestroyableObject {
 	}
 
 	private void follow() {
-		if (centerX < -95 || centerX > 810){
-            moveSpeed = 0;
-        }
-        else if (Math.abs(playerCharacter.getCenterX() - centerX) < 5) {
-            moveSpeed = 0;
-        }
-        else {
-            if (playerCharacter.getCenterX() >= centerX) {
-                moveSpeed = 1;
-            } else {
-                moveSpeed = -1;
-            }
-        }
+		int xDistanceToPlayer = playerCharacter.getCenterX() - centerX;
+		int yDistanceToPlayer = playerCharacter.getCenterY() - centerY;
+		
+		if (Math.abs(xDistanceToPlayer) >= Math.abs(yDistanceToPlayer)) {
+			// Move in the x direction
+			if (xDistanceToPlayer > 0) {
+				setMovingRight();
+			} else if (xDistanceToPlayer < 0) {
+				setMovingLeft();
+			} else {
+				setStopped();
+			}
+		} else {
+			// Move in the y direction
+			if (yDistanceToPlayer > 0) {
+				setMovingDown();
+			} else if (yDistanceToPlayer < 0){
+				setMovingUp();
+			} else {
+				setStopped();
+			}
+		}
+		move();
 	}
 
 	@Override

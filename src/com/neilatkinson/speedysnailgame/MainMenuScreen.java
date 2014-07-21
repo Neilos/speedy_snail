@@ -14,8 +14,7 @@ public class MainMenuScreen extends Screen {
 	}
 
 	@Override
-	public void update(float deltaTime) {
-        Graphics g = game.getGraphics();
+	public void update(int elapsedTime) {
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 
@@ -42,7 +41,7 @@ public class MainMenuScreen extends Screen {
 	}
 
 	@Override
-	public void paint(float deltaTime) {
+	public void paint(int elapsedTime) {
 		Graphics g = game.getGraphics();
 		g.drawImage(Assets.menu, 0, 0);
 	}

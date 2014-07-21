@@ -2,16 +2,18 @@ package com.neilatkinson.gameobject;
 
 public interface Moveable {
 
-	public void moveUp();
-	public void moveLeft();
-	public void moveDown();
-	public void moveRight();
-	public void stop();
+	public void setMovingUp();
+	public void setMovingLeft();
+	public void setMovingDown();
+	public void setMovingRight();
+	public void setStopped();
 
 	public boolean isMovingUp();
 	public boolean isMovingLeft();
 	public boolean isMovingDown();
 	public boolean isMovingRight();
+
+	public void move();
 
 	public int getSpeedX();
 	public void setSpeedX(int speedX);
@@ -22,5 +24,10 @@ public interface Moveable {
 	public void setCenterX(int centerX);
 	public int getCenterY();
 	public void setCenterY(int centerY);
+
+	public boolean nearTopOfScreen();
+	public boolean nearLeftOfScreen();
+	public boolean nearBottomOfScreen();
+	public boolean nearRightOfScreen();
 
 }

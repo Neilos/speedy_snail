@@ -3,18 +3,15 @@ package com.neilatkinson.speedysnailgame;
 import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
+import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
 public class Tile extends GameObject{
 
-	private int tileX, tileY, speedX;
     public int type;
     public Image tileImage;
-
     private PlayerCharacter robot;
-    private Background bg = GameScreen.getBg1();
-    
     private Rect r;
     
     public Tile(
@@ -23,10 +20,11 @@ public class Tile extends GameObject{
 			int startingCenterX, 
 			int startingCenterY,
 			int typeInt) {
-		super(gameScreen, moveSpeed, startingCenterX, startingCenterY);
+
+    	super(gameScreen,
+			moveSpeed,
+			startingCenterX, startingCenterY);
     	robot = gameScreen.getPlayerCharacter();
-        tileX = startingCenterX;
-        tileY = startingCenterY;
 
         type = typeInt;
 
@@ -48,10 +46,36 @@ public class Tile extends GameObject{
 
     }
     
+    @Override
+	public void setUpAnimations() {
+		currentAnimation = new Animation();
+
+		moveUpAnimation = new Animation();
+		moveLeftAnimation = new Animation();
+		moveDownAnimation = new Animation();
+		moveRightAnimation = new Animation();
+
+		stationaryFacingUpAnimation = new Animation();
+		stationaryFacingLeftAnimation = new Animation();
+		stationaryFacingDownAnimation = new Animation();
+		stationaryFacingRightAnimation = new Animation();
+		
+		moveUpAnimation.addFrame(tileImage, 1000);
+		moveLeftAnimation = moveUpAnimation;
+		moveDownAnimation = moveUpAnimation;
+		moveRightAnimation = moveUpAnimation;
+
+		stationaryFacingUpAnimation = moveUpAnimation;
+		stationaryFacingLeftAnimation = moveUpAnimation;
+		stationaryFacingDownAnimation = moveUpAnimation;
+		stationaryFacingRightAnimation = moveUpAnimation;
+		
+		currentAnimation = stationaryFacingRightAnimation;
+	}
+
     public void update() {
-        speedX = bg.getSpeedX() * 5;
-        tileX += speedX;
-        r.set(tileX, tileY, tileX+40, tileY+40);
+        move();
+        r.set(centerX, centerY, centerX+40, centerY+40);
 
         if (Rect.intersects(r, robot.yellowRed) && type != 0) {
             checkVerticalCollision(robot.rect, robot.rect2);
@@ -59,23 +83,8 @@ public class Tile extends GameObject{
         }
     }
 
-    public int getTileX() {
-        return tileX;
-    }
-
-    public void setTileX(int tileX) {
-        this.tileX = tileX;
-    }
-
-    public int getTileY() {
-        return tileY;
-    }
-
-    public void setTileY(int tileY) {
-        this.tileY = tileY;
-    }
-
-    public Image getTileImage() {
+    @Override
+    public Image getImage() {
         return tileImage;
     }
 
@@ -85,37 +94,36 @@ public class Tile extends GameObject{
 
     public void checkVerticalCollision(Rect rtop, Rect rbot) {
         if (Rect.intersects(rtop, r)) {
-            
+        	robot.setSpeedY(0);
         }
 
         if (Rect.intersects(rbot, r) && type == 8) {
-            robot.setJumped(false);
             robot.setSpeedY(0);
-            robot.setCenterY(tileY - 63);
+            robot.setCenterY(centerY - 63);
         }
     }
 
     public void checkSideCollision(Rect rleft, Rect rright, Rect leftfoot, Rect rightfoot) {
         if (type != 5 && type != 2 && type != 0){
             if (Rect.intersects(rleft, r)) {
-                robot.setCenterX(tileX + 102);
+                robot.setCenterX(centerX + 102);
     
                 robot.setSpeedX(0);
     
             }else if (Rect.intersects(leftfoot, r)) {
                 
-                robot.setCenterX(tileX + 85);
+                robot.setCenterX(centerX + 85);
                 robot.setSpeedX(0);
             }
             
             if (Rect.intersects(rright, r)) {
-                robot.setCenterX(tileX - 62);
+                robot.setCenterX(centerX - 62);
     
                 robot.setSpeedX(0);
             }
             
             else if (Rect.intersects(rightfoot, r)) {
-                robot.setCenterX(tileX - 45);
+                robot.setCenterX(centerX - 45);
                 robot.setSpeedX(0);
             }
         }

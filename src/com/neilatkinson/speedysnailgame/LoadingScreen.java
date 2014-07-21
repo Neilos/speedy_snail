@@ -12,7 +12,7 @@ public class LoadingScreen extends Screen {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(int elapsedTime) {
 		Graphics g = game.getGraphics();
 
         Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
@@ -36,6 +36,7 @@ public class LoadingScreen extends Screen {
         Assets.tilegrassRight = g.newImage("tilegrassright.png", ImageFormat.RGB565);
         
         Assets.button = g.newImage("button.jpg", ImageFormat.RGB565);
+        Assets.directionControl = g.newImage("directioncontrol.png", ImageFormat.ARGB4444);
 
         //This is how you would load a sound if you had one.
         //Assets.click = game.getAudio().createSound("explode.ogg");
@@ -44,7 +45,7 @@ public class LoadingScreen extends Screen {
 	}
 
 	@Override
-	public void paint(float deltaTime) {
+	public void paint(int elapsedTime) {
 		Graphics g = game.getGraphics();
 		g.drawImage(Assets.splash, 0, 0);
 
