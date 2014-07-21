@@ -24,7 +24,7 @@ public abstract class Screen {
 	}
 
 	public int getHeight() {
-		return game.getFrameBufferWidth();
+		return game.getFrameBufferHeight();
 	}
 
 	public void setBackgroundSpeedX(int xSpeed) {}
