@@ -56,7 +56,7 @@ public abstract class Enemy extends GameObject {
 			} else if (xDistanceToPlayer < 0) {
 				setMovingLeft();
 			} else {
-				stop();
+				setStopped();
 			}
 		} else {
 			// Move in the y direction
@@ -65,7 +65,7 @@ public abstract class Enemy extends GameObject {
 			} else if (yDistanceToPlayer < 0){
 				setMovingUp();
 			} else {
-				stop();
+				setStopped();
 			}
 		}
 		move();

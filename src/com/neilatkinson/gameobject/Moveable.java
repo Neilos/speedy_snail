@@ -6,7 +6,7 @@ public interface Moveable {
 	public void setMovingLeft();
 	public void setMovingDown();
 	public void setMovingRight();
-	public void stop();
+	public void setStopped();
 
 	public boolean isMovingUp();
 	public boolean isMovingLeft();

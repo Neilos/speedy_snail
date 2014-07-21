@@ -22,7 +22,7 @@ public class GameScreen extends Screen {
 	 GameState state = GameState.Ready;
 
     // Variable Setup
-	private static Background bg1, bg2;
+	private static Background bg1, bg2, bg3, bg4;
 	private static DirectionControl directionControl;
 
 	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
@@ -33,14 +33,15 @@ public class GameScreen extends Screen {
     Paint paint, paint2;
 
 	private PauseButton pauseButton;
-
     
     public GameScreen(Game game) {
         super(game);
 
         // Initialize game objects here
-        bg1 = new Background(0, 0);
-		bg2 = new Background(2160, 0);
+        bg1 = new Background(0, 0, 2160, 480);
+		bg2 = new Background(2160, 0, 2160, 480);
+		bg3 = new Background(0, 480, 2160, 480);
+		bg4 = new Background(2160, 480, 2160, 480);
 
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
@@ -178,10 +179,9 @@ public class GameScreen extends Screen {
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
+				playerCharacter.setStopped();
 				if (pauseButton.isPressed(event)) {
 					pause();
-				} else {
-					playerCharacter.stop();
 				}
 			}
 		}
@@ -196,10 +196,17 @@ public class GameScreen extends Screen {
 		// This is where all the game updates happen.
 		// For example, playerCharacter.update();
 		updatePlayerCharacter(elapsedTime);
+		updateBackground();
 		updateTiles(elapsedTime);
 		updateEnemies(elapsedTime);
+	}
+
+
+	private void updateBackground() {
 		bg1.update();
 		bg2.update();
+		bg3.update();
+		bg4.update();
 	}
 
 
@@ -302,8 +309,7 @@ public class GameScreen extends Screen {
         // g.drawImage(Assets.background, 0, 0);
         // g.drawImage(Assets.character, characterX, characterY);
 
-		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
-		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
+		drawBackground(g);
 		drawTiles(g);
 
 		g.drawImage(playerCharacter.getImage(), playerCharacter.getCenterX() - 61,
@@ -319,6 +325,14 @@ public class GameScreen extends Screen {
             drawPausedUI();
         if (state == GameState.GameOver)
             drawGameOverUI();
+	}
+
+
+	private void drawBackground(Graphics g) {
+		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
+		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
+		g.drawImage(Assets.background, bg3.getBgX(), bg3.getBgY());
+		g.drawImage(Assets.background, bg4.getBgX(), bg4.getBgY());
 	}
 
 
@@ -402,18 +416,34 @@ public class GameScreen extends Screen {
 
 	}
 
-	
-	public static Background getBg1() {
-		return bg1;
-	}
 
-	
-	public static Background getBg2() {
-		return bg2;
-	}
-
-	
 	public PlayerCharacter getPlayerCharacter() {
 		return playerCharacter;
+	}
+
+	@Override
+	public void setBackgroundSpeedX(int xSpeed) {
+		bg1.setSpeedX(xSpeed);
+		bg2.setSpeedX(xSpeed);
+		bg3.setSpeedX(xSpeed);
+		bg4.setSpeedX(xSpeed);
+	}
+
+	@Override
+	public void setBackgroundSpeedY(int ySpeed) {
+		bg1.setSpeedY(ySpeed);
+		bg2.setSpeedY(ySpeed);
+		bg3.setSpeedY(ySpeed);
+		bg4.setSpeedY(ySpeed);
+	}
+	
+	@Override
+	public int getBackgroundSpeedX() {
+		return bg1.getSpeedX();
+	}
+
+	@Override
+	public int getBackgroundSpeedY() {
+		return bg1.getSpeedY();
 	}
 }

@@ -3,7 +3,6 @@ package com.neilatkinson.gameobject;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
-import com.neilatkinson.speedysnailgame.GameScreen;
 
 public class GameControl {
 

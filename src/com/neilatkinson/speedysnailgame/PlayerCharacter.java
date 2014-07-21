@@ -17,9 +17,6 @@ public class PlayerCharacter extends GameObject {
     public Rect yellowRed = new Rect(0, 0, 0, 0);
     public Rect footleft = new Rect(0,0,0,0);
     public Rect footright = new Rect(0,0,0,0);
-    
-    private Background bg1;
-    private Background bg2;
 
     public PlayerCharacter(
     		GameScreen gameScreen,
@@ -40,9 +37,6 @@ public class PlayerCharacter extends GameObject {
         footright = new Rect(0,0,0,0);
 
         setRegion();
-
-        bg1 = GameScreen.getBg1();
-        bg2 = GameScreen.getBg2();
     }
 
 	@Override
@@ -98,82 +92,71 @@ public class PlayerCharacter extends GameObject {
 
 
     public void update() {
-    	
     	move();
-
         setRegion();
     }
-    
+
+
     @Override
-	public void move() {
-		if (isMovingUp()) {
-    		bg1.setSpeedX(0);
-            bg2.setSpeedX(0);
-            speedX = 0;
-	    	if (nearTopOfScreen()) {
-		        bg1.setSpeedY(moveSpeed);
-		        bg2.setSpeedY(moveSpeed);
-		        speedY = 0;
-	    	} else {
-	    		bg1.setSpeedY(0);
-	            bg2.setSpeedY(0);
-	            speedY = -moveSpeed;
-	    	}
-    	} else if (isMovingLeft()) {
-    		bg1.setSpeedY(0);
-            bg2.setSpeedY(0);
-            speedY = 0;
-    		if (nearLeftOfScreen()) {
-    	        bg1.setSpeedX(moveSpeed);
-    	        bg2.setSpeedX(moveSpeed);
-    	        speedX = 0;
-        	} else {
-        		bg1.setSpeedX(0);
-                bg2.setSpeedX(0);
-                speedX = -moveSpeed;
-        	}
-    	} else if (isMovingDown()) {
-    		bg1.setSpeedX(0);
-            bg2.setSpeedX(0);
-            speedX = 0;
-    		if (nearBottomOfScreen()) {
-    	        bg1.setSpeedY(-moveSpeed);
-    	        bg2.setSpeedY(-moveSpeed);
-    	        speedY = 0;
-        	} else {
-        		bg1.setSpeedY(0);
-                bg2.setSpeedY(0);
-                speedY = moveSpeed;
-        	}
-    	} else if (isMovingRight()) {
-    		bg1.setSpeedY(0);
-            bg2.setSpeedY(0);
-            speedY = 0;
-    		if (nearRightOfScreen()) {
-    	        bg1.setSpeedX(-moveSpeed);
-    	        bg2.setSpeedX(-moveSpeed);
-    	        speedX = 0;
-        	} else {
-        		bg1.setSpeedX(0);
-                bg2.setSpeedX(0);
-                speedX = moveSpeed;
-        	}
-    	} else {
-    		bg1.setSpeedX(0);
-    		bg1.setSpeedY(0);
-    		bg2.setSpeedX(0);
-            bg2.setSpeedY(0);
-            speedX = 0;
-            speedY = 0;
-    	}
-
-        // Update X Position
-        centerX += speedX;
-
-        // Update Y Position
-        centerY += speedY;
+    public void moveUp() {
+    	gameScreen.setBackgroundSpeedX(0);
+    	setSpeedX(0);
+		if (nearTopOfScreen()) {
+			gameScreen.setBackgroundSpeedY(moveSpeed);
+			setSpeedY(0);
+		} else {
+			gameScreen.setBackgroundSpeedY(0);
+			setSpeedY(-moveSpeed);
+		}
 	}
- 
+
+    @Override
+    public void moveLeft() {
+    	gameScreen.setBackgroundSpeedY(0);
+    	setSpeedY(0);
+		if (nearLeftOfScreen()) {
+			gameScreen.setBackgroundSpeedX(moveSpeed);
+			setSpeedX(0);
+		} else {
+			gameScreen.setBackgroundSpeedX(0);
+			setSpeedX(-moveSpeed);
+		}
+	}
+
+    @Override
+    public void moveDown() {
+    	gameScreen.setBackgroundSpeedX(0);
+    	setSpeedX(0);
+		if (nearBottomOfScreen()) {
+			gameScreen.setBackgroundSpeedY(-moveSpeed);
+			setSpeedY(0);
+		} else {
+			gameScreen.setBackgroundSpeedY(0);
+			setSpeedY(moveSpeed);
+		}
+	}
+
+    @Override
+    public void moveRight() {
+    	gameScreen.setBackgroundSpeedY(0);
+    	setSpeedY(0);
+		if (nearRightOfScreen()) {
+			gameScreen.setBackgroundSpeedX(-moveSpeed);
+			setSpeedX(0);
+		} else {
+			gameScreen.setBackgroundSpeedX(0);
+			setSpeedX(moveSpeed);
+		}
+	}
+
+    @Override
+    public void remainStationary() {
+		gameScreen.setBackgroundSpeedX(0);
+		gameScreen.setBackgroundSpeedY(0);
+		setSpeedX(0);
+		setSpeedY(0);
+	}
+
 
     public void setRegion() {
     	rect.set(centerX - 34, centerY - 63, centerX + 34, centerY);

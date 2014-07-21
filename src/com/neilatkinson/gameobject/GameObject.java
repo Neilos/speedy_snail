@@ -3,17 +3,15 @@ package com.neilatkinson.gameobject;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
-import com.neilatkinson.speedysnailgame.Background;
-import com.neilatkinson.speedysnailgame.GameScreen;
-
 import android.graphics.Rect;
+import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
 	protected Screen gameScreen;
 	protected int centerX;
 	protected int centerY;
-	protected int moveSpeed;
+	protected final int moveSpeed;
 	protected int speedX;
 	protected int speedY;
 	protected Rect region;
@@ -34,7 +32,6 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private boolean isMovingLeft;
 	private boolean isMovingDown;
 	private boolean isMovingRight;
-	protected Background bg;
 
 	public GameObject(
 			Screen gameScreen,
@@ -60,8 +57,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	    this.speedX = 0;
 	    this.speedY = 0;
 	    this.region = new Rect(0, 0, 0, 0);
-		
-		this.bg = GameScreen.getBg1();
+
 		this.isDead = false;
 
 		setUpAnimations();
@@ -77,29 +73,48 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	@Override
 	public void move() {
 		if (isMovingUp()) {
-	        speedX = bg.getSpeedX();
-		    speedY = bg.getSpeedY() - moveSpeed;
-    	} else if (isMovingLeft()) {
-    		speedX = bg.getSpeedX() - moveSpeed;
-		    speedY = bg.getSpeedY();
-    	} else if (isMovingDown()) {
-    		speedX = bg.getSpeedX();
-		    speedY = bg.getSpeedY() + moveSpeed;
+	        moveUp();
+		} else if (isMovingLeft()) {
+    		moveLeft();
+		} else if (isMovingDown()) {
+    		moveDown();
     	} else if (isMovingRight()) {
-    		speedX = bg.getSpeedX() + moveSpeed;
-		    speedY = bg.getSpeedY();
+    		moveRight();
     	} else {
-    		speedX = bg.getSpeedX();
-    		speedY = bg.getSpeedY();
+    		remainStationary();
     	}
-		
-		// Update X Position
-        centerX += speedX;
 
-        // Update Y Position
+		// Update Position
+        centerX += speedX;
         centerY += speedY;
 
         setRegion();
+	}
+
+
+	public void moveUp() {
+		setSpeedX(gameScreen.getBackgroundSpeedX());
+		setSpeedY(-moveSpeed + gameScreen.getBackgroundSpeedY());
+	}
+
+	public void moveLeft() {
+		setSpeedX(-moveSpeed + gameScreen.getBackgroundSpeedX());
+		setSpeedY(gameScreen.getBackgroundSpeedY());
+	}
+
+	public void moveDown() {
+		setSpeedX(gameScreen.getBackgroundSpeedX());
+		setSpeedY(moveSpeed + gameScreen.getBackgroundSpeedY());
+	}
+
+	public void moveRight() {
+		setSpeedX(moveSpeed + gameScreen.getBackgroundSpeedX());
+		setSpeedY(gameScreen.getBackgroundSpeedY());
+	}
+
+	public void remainStationary() {
+		setSpeedX(gameScreen.getBackgroundSpeedX());
+		setSpeedY(gameScreen.getBackgroundSpeedY());
 	}
 
 
@@ -140,7 +155,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 	
 	@Override
-	public void stop() {
+	public void setStopped() {
 		isMovingUp = false;
 		isMovingLeft = false;
 		isMovingDown = false;
