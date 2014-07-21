@@ -1,6 +1,6 @@
 package com.neilatkinson.gameobject;
 
-public interface Damageable {
+public interface Damageable extends Interactable {
 
 	public void takeDamage(int damage);
 	public void heal(int damage);

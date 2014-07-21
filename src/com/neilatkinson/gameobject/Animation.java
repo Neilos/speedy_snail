@@ -2,6 +2,8 @@ package com.neilatkinson.gameobject;
 
 import java.util.ArrayList;
 
+import android.graphics.Rect;
+
 import com.neilatkinson.framework.Image;
 
 public class Animation {
@@ -20,14 +22,43 @@ public class Animation {
             currentFrame = 0;
         }
 	}
-	
 
-	public synchronized void addFrame(Image image, int duration) {
+
+	public synchronized void addFrame(Image image, int duration, Rect vicinity,
+								    ArrayList<Rect> collisionZones,
+								    ArrayList<Rect> damageZones,
+								    ArrayList<Rect> attackZones) {
         totalDuration += duration;
-        frames.add(new AnimFrame(image, totalDuration));
+        AnimFrame frame = new AnimFrame(image, totalDuration);
+
+        if (vicinity == null) {
+        	frame.setVicinity(new Rect());
+        } else {
+        	frame.setVicinity(vicinity);
+        }
+        
+        if (collisionZones == null) {
+        	frame.setCollisionZones(new ArrayList<Rect>());
+        } else {
+        	frame.setCollisionZones(collisionZones);
+        }
+        
+        if (damageZones == null) {
+        	frame.setDamageZones(new ArrayList<Rect>());
+        } else {
+        	frame.setDamageZones(damageZones);
+        }
+        
+        if (attackZones == null) {
+        	frame.setAttackZones(new ArrayList<Rect>());
+        } else {
+        	frame.setAttackZones(attackZones);
+        }
+
+        frames.add(frame);
     }
-	
-	
+
+
 	public synchronized void update(int elapsedTime) {
         if (frames.size() > 1) {
             animTime += elapsedTime;
@@ -52,6 +83,38 @@ public class Animation {
             return getFrame(currentFrame).image;
         }
     }
+	
+	public synchronized Rect getVicinity() {
+		if (frames.size() == 0) {
+            return null;
+        } else {
+            return getFrame(currentFrame).vicinity;
+        }
+	}
+
+	public synchronized ArrayList<Rect> getCollisionZones() {
+		if (frames.size() == 0) {
+            return null;
+        } else {
+            return getFrame(currentFrame).collisionZones;
+        }
+	}
+
+	public synchronized ArrayList<Rect> getDamageZones() {
+		if (frames.size() == 0) {
+            return null;
+        } else {
+            return getFrame(currentFrame).damageZones;
+        }
+	}
+
+	public synchronized ArrayList<Rect> getAttackZones() {
+		if (frames.size() == 0) {
+            return null;
+        } else {
+            return getFrame(currentFrame).attackZones;
+        }
+	}
 
 	
     private AnimFrame getFrame(int i) {
@@ -61,12 +124,33 @@ public class Animation {
     
     private class AnimFrame {
         Image image;
-        long endTime;
-
-        public AnimFrame(Image image, long endTime) {
+		long endTime;
+        Rect vicinity;
+        ArrayList<Rect> collisionZones;
+        ArrayList<Rect> damageZones;
+        ArrayList<Rect> attackZones;
+        
+		public AnimFrame(Image image, long endTime) {
             this.image = image;
             this.endTime = endTime;
         }
+
+		public void setVicinity(Rect vicinity) {
+			this.vicinity = vicinity;
+		}
+
+		public void setCollisionZones(ArrayList<Rect> collisionZones) {
+			this.collisionZones = collisionZones;
+		}
+
+		public void setDamageZones(ArrayList<Rect> damageZones) {
+			this.damageZones = damageZones;
+		}
+
+		public void setAttackZones(ArrayList<Rect> attackZones) {
+			this.attackZones = attackZones;
+		}
+
     }
 
 }

@@ -60,7 +60,7 @@ public class Tile extends GameObject{
 		stationaryFacingDownAnimation = new Animation();
 		stationaryFacingRightAnimation = new Animation();
 		
-		moveUpAnimation.addFrame(tileImage, 1000);
+		moveUpAnimation.addFrame(tileImage, 1000, null ,null ,null , null);
 		moveLeftAnimation = moveUpAnimation;
 		moveDownAnimation = moveUpAnimation;
 		moveRightAnimation = moveUpAnimation;
@@ -128,12 +128,6 @@ public class Tile extends GameObject{
             }
         }
     }
-
-	@Override
-	public void resolveCollisions() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void attack(Damageable damageable) {

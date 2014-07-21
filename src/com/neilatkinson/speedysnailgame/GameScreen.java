@@ -6,10 +6,13 @@ import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.gameobject.GameObject;
 
 public class GameScreen extends Screen {
 
@@ -44,7 +47,7 @@ public class GameScreen extends Screen {
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 
-		playerCharacter = new PlayerCharacter(this, 10, 100, 377);
+		playerCharacter = new PlayerCharacter(this, 4, 100, 377);
 		enemies.add(new Heliboy(this, 1, 340, 360, 5));
 		enemies.add(new Heliboy(this, 1, 700, 360, 5));
 
@@ -176,6 +179,38 @@ public class GameScreen extends Screen {
 		updateBackground();
 		updateTiles(elapsedTime);
 		updateEnemies(elapsedTime);
+		
+		// 4. Check for and trigger interactions
+		for(int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			if (enemy.inVicinityOf(playerCharacter)) {
+				checkForCollisionsBetween(getPlayerCharacter(), enemy);
+				playerCharacter.attack(enemy);
+				enemy.attack(playerCharacter);
+			}
+		}
+	}
+	
+	private void checkForCollisionsBetween(GameObject object1, GameObject object2) {
+		ArrayList<Rect> zones1 = object1.collisionZones();
+		ArrayList<Rect> zones2 = object2.collisionZones();
+		ArrayList<Rect> collisions = new ArrayList<Rect>();
+		
+		for (int i = 0; i < zones1.size(); i++) {
+			for (int j = 0; j < zones1.size(); j++) {
+				Rect zone1 = zones1.get(i);
+				Rect zone2 = zones2.get(i);
+				Rect collision = new Rect(zone1);
+				if (collision.intersect(zone2)) {
+					collisions.add(collision);
+				}
+			}
+		}
+		
+		if (collisions.size() > 0) {
+			object1.resolveCollisions(collisions);
+			object2.resolveCollisions(collisions);
+		}
 	}
 
 

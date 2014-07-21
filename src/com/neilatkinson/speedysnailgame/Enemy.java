@@ -3,8 +3,6 @@ package com.neilatkinson.speedysnailgame;
 import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
-import android.graphics.Rect;
-
 public abstract class Enemy extends GameObject {
 
 	protected PlayerCharacter playerCharacter;
@@ -27,22 +25,10 @@ public abstract class Enemy extends GameObject {
 	public void update() {
         follow();
         setRegion();
-        resolveCollisions();
     }
 
 	public void setRegion() {
 		region.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
-	}
-
-	@Override
-	public void resolveCollisions() {
-		if (Rect.intersects(region, playerCharacter.yellowRed)) {
-			if (Rect.intersects(region, playerCharacter.rect)
-				|| Rect.intersects(region, playerCharacter.rect2)
-	            || Rect.intersects(region, playerCharacter.rect3)
-	            || Rect.intersects(region, playerCharacter.rect4)) {
-			}
-        }
 	}
 
 	private void follow() {

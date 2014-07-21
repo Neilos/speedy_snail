@@ -1,10 +1,11 @@
 package com.neilatkinson.gameobject;
 
+import java.util.ArrayList;
+
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
 import android.graphics.Rect;
-import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
@@ -85,8 +86,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
     	}
 
 		// Update Position
-        centerX += speedX;
-        centerY += speedY;
+        centerX += getSpeedX();
+        centerY += getSpeedY();
 
         setRegion();
 	}
@@ -203,11 +204,6 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	@Override
-	public boolean collidedWith(GameObject otherObject) {
-		return Rect.intersects(this.region, otherObject.region);
-	}
-
-	@Override
 	public int getCenterX() {
 		return centerX;
 	}
@@ -280,6 +276,45 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	public boolean isDead() {
 		return isDead;
 	}
+	
+	public boolean inVicinityOf(GameObject otherObject) {
+		return Rect.intersects(otherObject.currentAnimation.getVicinity(), currentAnimation.getVicinity());
+	}
 
+	
+	public ArrayList<Rect> collisionZones() {
+		return currentAnimation.getCollisionZones();
+	}
+	
+	public ArrayList<Rect> attackZones() {
+		return currentAnimation.getAttackZones();
+	}
+	
+	public ArrayList<Rect> damageZones() {
+		return currentAnimation.getDamageZones();
+	}
+
+	
+	@Override
+	public void resolveCollisions(ArrayList<Rect> collisions) {
+		int numberOfCollisions = collisions.size();
+		for (int i = 0; i < numberOfCollisions; i++) {
+			Rect collision = collisions.get(i);
+			int xIntrusion = collision.width() / 2;
+			int yIntrusion = collision.height() / 2;
+
+			if (collision.centerX() > centerX) {
+				centerX -= xIntrusion;
+			} else {
+				centerX += xIntrusion;
+			}
+
+			if (collision.centerY() > centerY) {
+				centerY -= yIntrusion;
+			} else {
+				centerY += yIntrusion;
+			}
+		}
+	}
 
 }

@@ -53,39 +53,39 @@ public class PlayerCharacter extends GameObject {
 		stationaryFacingDownAnimation = new Animation();
 		stationaryFacingRightAnimation = new Animation();
 
-		moveUpAnimation.addFrame(Assets.characterJump, 1000);
+		moveUpAnimation.addFrame(Assets.characterJump, 1000, null ,null ,null , null);
 
-		moveLeftAnimation.addFrame(Assets.character, 1250);
-		moveLeftAnimation.addFrame(Assets.character2, 50);
-		moveLeftAnimation.addFrame(Assets.character3, 50);
-		moveLeftAnimation.addFrame(Assets.character2, 50);
+		moveLeftAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		moveLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		moveLeftAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		moveLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
-		moveDownAnimation.addFrame(Assets.characterDown, 1000);
+		moveDownAnimation.addFrame(Assets.characterDown, 1000, null ,null ,null , null);
 
-		moveRightAnimation.addFrame(Assets.character, 1250);
-		moveRightAnimation.addFrame(Assets.character2, 50);
-		moveRightAnimation.addFrame(Assets.character3, 50);
-		moveRightAnimation.addFrame(Assets.character2, 50);
+		moveRightAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		moveRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		moveRightAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		moveRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
-		stationaryFacingUpAnimation.addFrame(Assets.character, 1250);
-		stationaryFacingUpAnimation.addFrame(Assets.character2, 50);
-		stationaryFacingUpAnimation.addFrame(Assets.character3, 50);
-		stationaryFacingUpAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingUpAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		stationaryFacingUpAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		stationaryFacingUpAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		stationaryFacingUpAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
-		stationaryFacingLeftAnimation.addFrame(Assets.character, 1250);
-		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50);
-		stationaryFacingLeftAnimation.addFrame(Assets.character3, 50);
-		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingLeftAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		stationaryFacingLeftAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
-		stationaryFacingDownAnimation.addFrame(Assets.character, 1250);
-		stationaryFacingDownAnimation.addFrame(Assets.character2, 50);
-		stationaryFacingDownAnimation.addFrame(Assets.character3, 50);
-		stationaryFacingDownAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingDownAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		stationaryFacingDownAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		stationaryFacingDownAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		stationaryFacingDownAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
-		stationaryFacingRightAnimation.addFrame(Assets.character, 1250);
-		stationaryFacingRightAnimation.addFrame(Assets.character2, 50);
-		stationaryFacingRightAnimation.addFrame(Assets.character3, 50);
-		stationaryFacingRightAnimation.addFrame(Assets.character2, 50);
+		stationaryFacingRightAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
+		stationaryFacingRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
+		stationaryFacingRightAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
+		stationaryFacingRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
 
 		currentAnimation = stationaryFacingRightAnimation;
 	}
@@ -166,13 +166,6 @@ public class PlayerCharacter extends GameObject {
         yellowRed.set(centerX - 110, centerY - 110, centerX + 70, centerY + 70);
         footleft.set(centerX - 50, centerY + 20, centerX, centerY + 35);
         footright.set(centerX, centerY + 20, centerX+50, centerY+35);
-	}
-
-
-	@Override
-	public void resolveCollisions() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package com.neilatkinson.gameobject;
 
-public interface Collidable {
+import java.util.ArrayList;
 
-	public void resolveCollisions();
-	boolean collidedWith(GameObject gameObject);
+import android.graphics.Rect;
+
+public interface Collidable extends Interactable  {
+
+	public void resolveCollisions(ArrayList<Rect> collisions);
 	void setRegion();
 
 }
