@@ -19,7 +19,6 @@ public class Tile extends GameObject{
 	    	int moveSpeed, 
 			int startingCenterX, 
 			int startingCenterY,
-			Animation stationeryAnimation,
 			int typeInt) {
 
     	super(gameScreen,

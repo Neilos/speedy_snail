@@ -8,10 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
-import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
-import com.neilatkinson.gameobject.Animation;
 
 public class GameScreen extends Screen {
 
@@ -68,66 +66,45 @@ public class GameScreen extends Screen {
  
 
 	private void loadMap() {
-		ArrayList<String> lines = new ArrayList<String>();
-		int width = 0;
-		int height = 0;
+		int startingCenterX, startingCenterY, type;
+		char ch;
+		String line;
+		Tile tile;
 
-		Scanner scanner = new Scanner(SpeedySnailGame.map);
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
+		ArrayList<String> lines = loadLines();
 
-			// no more lines to read
-			if (line == null) {
-				break;
-			}
-
-			if (!line.startsWith("!")) {
-				lines.add(line);
-				width = Math.max(width, line.length());
-
-			}
-		}
-		height = lines.size();
-		int moveSpeed = 0;
-		int startingCenterX;
-		int startingCenterY;
-		int type;
-		Animation tileAnimation = new Animation();
-		Image staticFrame;
+		int height = lines.size();
 		for (int j = 0; j < height; j++) {
-			String line = (String) lines.get(j);
+			line = (String) lines.get(j);
+			int width = line.length();
 			for (int i = 0; i < width; i++) {
-
 				if (i < line.length()) {
 					startingCenterX = i * 40;
 					startingCenterY = j * 40;
-					char ch = line.charAt(i);
-					
+					ch = line.charAt(i);
 					type = Character.getNumericValue(ch);
-					if (type == 5) {
-						staticFrame = Assets.tiledirt;
-			        } else if (type == 8) {
-			        	staticFrame = Assets.tilegrassTop;
-			        } else if (type == 4) {
-			        	staticFrame = Assets.tilegrassLeft;
-			        } else if (type == 6) {
-			        	staticFrame = Assets.tilegrassRight;
-			        } else if (type == 2) {
-			        	staticFrame = Assets.tilegrassBot;
-			        } else {
-			            type = 0;
-			            staticFrame = null;
-			        }
-					tileAnimation.addFrame(staticFrame, 1000);
-					Tile t = new Tile(this, moveSpeed,
-							startingCenterX, startingCenterY,
-							tileAnimation, type);
-					tilearray.add(t);
+					tile = new Tile(this, 0, startingCenterX, startingCenterY, type);
+					tilearray.add(tile);
 				}
+			}
+		}
+	}
 
+
+	private ArrayList<String> loadLines() {
+		ArrayList<String> lines = new ArrayList<String>();
+		Scanner scanner = new Scanner(SpeedySnailGame.map);
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (line == null) {
+				// no more lines to read
+				break;
+			} else if (!line.startsWith("!")) {
+				lines.add(line);
 			}
 		}
 		scanner.close();
+		return lines;
 	}
 
 	
