@@ -8,92 +8,26 @@ import android.graphics.Rect;
 
 public class PlayerCharacter extends GameObject {
 
-    final int JUMPSPEED = -15;
+	public PlayerCharacter(GameScreen gameScreen,
+			int centerX, int centerY, int moveSpeed, int speedX, int speedY,
+			Rect vicinity, int health, boolean isDead, boolean isMovingUp,
+			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
+			Animation moveUpAnimation, Animation moveLeftAnimation,
+			Animation moveDownAnimation, Animation moveRightAnimation,
+			Animation faceUpAnimation, Animation faceLeftAnimation,
+			Animation faceDownAnimation, Animation faceRightAnimation,
+			Animation currentAnimation) {
 
-    public Rect rect = new Rect(0, 0, 0, 0);
-    public Rect rect2 = new Rect(0, 0, 0, 0);
-    public Rect rect3 = new Rect(0, 0, 0, 0);
-    public Rect rect4 = new Rect(0, 0, 0, 0);
-    public Rect yellowRed = new Rect(0, 0, 0, 0);
-    public Rect footleft = new Rect(0,0,0,0);
-    public Rect footright = new Rect(0,0,0,0);
+		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
+				vicinity, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
+				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
+				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
+				faceDownAnimation, faceRightAnimation, currentAnimation);
 
-    public PlayerCharacter(
-    		GameScreen gameScreen,
-    		int moveSpeed, 
-    		int startingCenterX, 
-    		int startingCenterY) {
-
-    	super(gameScreen, 
-			moveSpeed,
-			startingCenterX, startingCenterY);
-
-        rect = new Rect(0, 0, 0, 0);
-        rect2 = new Rect(0, 0, 0, 0);
-        rect3 = new Rect(0, 0, 0, 0);
-        rect4 = new Rect(0, 0, 0, 0);
-        yellowRed = new Rect(0, 0, 0, 0);
-        footleft = new Rect(0,0,0,0);
-        footright = new Rect(0,0,0,0);
-
-        setRegion();
-    }
-
-	@Override
-	public void setUpAnimations() {
-		currentAnimation = new Animation();
-
-		moveUpAnimation = new Animation();
-		moveLeftAnimation = new Animation();
-		moveDownAnimation = new Animation();
-		moveRightAnimation = new Animation();
-
-		stationaryFacingUpAnimation = new Animation();
-		stationaryFacingLeftAnimation = new Animation();
-		stationaryFacingDownAnimation = new Animation();
-		stationaryFacingRightAnimation = new Animation();
-
-		moveUpAnimation.addFrame(Assets.characterJump, 1000, null ,null ,null , null);
-
-		moveLeftAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		moveLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		moveLeftAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		moveLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		moveDownAnimation.addFrame(Assets.characterDown, 1000, null ,null ,null , null);
-
-		moveRightAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		moveRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		moveRightAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		moveRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		stationaryFacingUpAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		stationaryFacingUpAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		stationaryFacingUpAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		stationaryFacingUpAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		stationaryFacingLeftAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		stationaryFacingLeftAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		stationaryFacingLeftAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		stationaryFacingDownAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		stationaryFacingDownAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		stationaryFacingDownAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		stationaryFacingDownAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		stationaryFacingRightAnimation.addFrame(Assets.character, 1250, null ,null ,null , null);
-		stationaryFacingRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-		stationaryFacingRightAnimation.addFrame(Assets.character3, 50, null ,null ,null , null);
-		stationaryFacingRightAnimation.addFrame(Assets.character2, 50, null ,null ,null , null);
-
-		currentAnimation = stationaryFacingRightAnimation;
 	}
-
 
     public void update() {
     	move();
-        setRegion();
     }
 
 
@@ -155,17 +89,6 @@ public class PlayerCharacter extends GameObject {
 		gameScreen.setBackgroundSpeedY(0);
 		setSpeedX(0);
 		setSpeedY(0);
-	}
-
-
-    public void setRegion() {
-    	rect.set(centerX - 34, centerY - 63, centerX + 34, centerY);
-        rect2.set(rect.left, rect.top + 63, rect.left+68, rect.top + 128);
-        rect3.set(rect.left - 26, rect.top+32, rect.left, rect.top+52);
-        rect4.set(rect.left + 68, rect.top+32, rect.left+94, rect.top+52);
-        yellowRed.set(centerX - 110, centerY - 110, centerX + 70, centerY + 70);
-        footleft.set(centerX - 50, centerY + 20, centerX, centerY + 35);
-        footright.set(centerX, centerY + 20, centerX+50, centerY+35);
 	}
 
 	@Override

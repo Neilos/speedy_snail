@@ -24,18 +24,12 @@ public class Animation {
 	}
 
 
-	public synchronized void addFrame(Image image, int duration, Rect vicinity,
+	public synchronized void addFrame(Image image, int duration,
 								    ArrayList<Rect> collisionZones,
 								    ArrayList<Rect> damageZones,
 								    ArrayList<Rect> attackZones) {
         totalDuration += duration;
         AnimFrame frame = new AnimFrame(image, totalDuration);
-
-        if (vicinity == null) {
-        	frame.setVicinity(new Rect());
-        } else {
-        	frame.setVicinity(vicinity);
-        }
         
         if (collisionZones == null) {
         	frame.setCollisionZones(new ArrayList<Rect>());
@@ -83,14 +77,6 @@ public class Animation {
             return getFrame(currentFrame).image;
         }
     }
-	
-	public synchronized Rect getVicinity() {
-		if (frames.size() == 0) {
-            return null;
-        } else {
-            return getFrame(currentFrame).vicinity;
-        }
-	}
 
 	public synchronized ArrayList<Rect> getCollisionZones() {
 		if (frames.size() == 0) {
@@ -125,7 +111,6 @@ public class Animation {
     private class AnimFrame {
         Image image;
 		long endTime;
-        Rect vicinity;
         ArrayList<Rect> collisionZones;
         ArrayList<Rect> damageZones;
         ArrayList<Rect> attackZones;
@@ -134,10 +119,6 @@ public class Animation {
             this.image = image;
             this.endTime = endTime;
         }
-
-		public void setVicinity(Rect vicinity) {
-			this.vicinity = vicinity;
-		}
 
 		public void setCollisionZones(ArrayList<Rect> collisionZones) {
 			this.collisionZones = collisionZones;

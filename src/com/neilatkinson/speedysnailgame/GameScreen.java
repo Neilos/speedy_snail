@@ -7,6 +7,7 @@ import java.util.Scanner;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
@@ -47,9 +48,10 @@ public class GameScreen extends Screen {
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 
-		playerCharacter = new PlayerCharacter(this, 4, 100, 377);
-		enemies.add(new Heliboy(this, 1, 340, 360, 5));
-		enemies.add(new Heliboy(this, 1, 700, 360, 5));
+		playerCharacter = PlayerCharacterFactory.build(this, 100, 377);
+		enemies.add(HeliboyFactory.build(this, 340, 360));
+		enemies.add(HeliboyFactory.build(this, 700, 360));
+
 
 		loadMap();
 
@@ -86,8 +88,10 @@ public class GameScreen extends Screen {
 					startingCenterY = j * 40;
 					ch = line.charAt(i);
 					type = Character.getNumericValue(ch);
-					tile = new Tile(this, 0, startingCenterX, startingCenterY, type);
-					tilearray.add(tile);
+					tile = TileFactory.build(this, startingCenterX, startingCenterY, type);
+					if (tile != null) {
+						tilearray.add(tile);
+					}
 				}
 			}
 		}
@@ -114,9 +118,6 @@ public class GameScreen extends Screen {
 	@Override
 	public void update(int elapsedTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
-        // We have four separate update methods in this example.
-        // Depending on the state of the game, we call different update methods.
 
         if (state == GameState.Ready)
             updateReady(touchEvents);
@@ -196,17 +197,23 @@ public class GameScreen extends Screen {
 		ArrayList<Rect> zones2 = object2.collisionZones();
 		ArrayList<Rect> collisions = new ArrayList<Rect>();
 		
+		Log.i("zones1", "zones1 = " + object1.collisionZones());
+		Log.i("zones2", "zones2 = " + object2.collisionZones());
+		
 		for (int i = 0; i < zones1.size(); i++) {
-			for (int j = 0; j < zones1.size(); j++) {
+			for (int j = 0; j < zones2.size(); j++) {
 				Rect zone1 = zones1.get(i);
-				Rect zone2 = zones2.get(i);
+				Rect zone2 = zones2.get(j);
 				Rect collision = new Rect(zone1);
 				if (collision.intersect(zone2)) {
+					Log.i("collision detected", "collision detected");
 					collisions.add(collision);
 				}
 			}
 		}
-		
+
+		Log.i("COLLISIONS", "collisions count = " + collisions.size());
+
 		if (collisions.size() > 0) {
 			object1.resolveCollisions(collisions);
 			object2.resolveCollisions(collisions);
@@ -262,7 +269,6 @@ public class GameScreen extends Screen {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 				if (inBounds(event, 0, 0, 800, 240)) {
-
 					if (!inBounds(event, 0, 0, 35, 35)) {
 						resume();
 					}
@@ -299,6 +305,8 @@ public class GameScreen extends Screen {
 		paint2 = null;
 		bg1 = null;
 		bg2 = null;
+		bg3 = null;
+		bg4 = null;
 
 		directionControl = null;
 		pauseButton = null;
@@ -324,8 +332,22 @@ public class GameScreen extends Screen {
 		drawBackground(g);
 		drawTiles(g);
 
-		g.drawImage(playerCharacter.getImage(), playerCharacter.getCenterX() - 61,
-				playerCharacter.getCenterY() - 63);
+		g.drawImage(playerCharacter.getImage(), playerCharacter.centerX() - 61,
+				playerCharacter.centerY() - 63);
+		g.drawRect( playerCharacter.vicinity().left,
+					playerCharacter.vicinity().top,
+					playerCharacter.vicinity().width(),
+					playerCharacter.vicinity().height(),
+					Color.argb(50, 255, 0, 0));
+		for(int i = 0; i < playerCharacter.collisionZones().size(); i++){
+			Rect collisionZone = playerCharacter.collisionZones().get(i);
+			g.drawRect( collisionZone.left,
+						collisionZone.top,
+						collisionZone.width(),
+						collisionZone.height(),
+						Color.argb(100, 255, 0, 0));
+		}
+		
 		drawEnemies(g);
 
         // 2. draw the UI above the game elements.
@@ -351,7 +373,20 @@ public class GameScreen extends Screen {
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			g.drawImage(enemy.getImage(), enemy.getCenterX() - 48, enemy.getCenterY() - 48);
+			g.drawImage(enemy.getImage(), enemy.centerX() - 48, enemy.centerY() - 48);
+			g.drawRect( enemy.vicinity().left,
+					enemy.vicinity().top,
+					enemy.vicinity().width(),
+					enemy.vicinity().height(),
+					Color.argb(50, 0, 255, 0));
+			for(int j = 0; j < enemy.collisionZones().size(); j++){
+				Rect collisionZone = enemy.collisionZones().get(j);
+				g.drawRect( collisionZone.left,
+							collisionZone.top,
+							collisionZone.width(),
+							collisionZone.height(),
+							Color.argb(100, 0, 255, 0));
+			}
 		}
 	}
 
@@ -359,9 +394,7 @@ public class GameScreen extends Screen {
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
-			if (t.type != 0) {
-				g.drawImage(t.getImage(), t.getCenterX(), t.getCenterY());
-			}
+			g.drawImage(t.getImage(), t.centerX(), t.centerY());
 		}
 	}
 

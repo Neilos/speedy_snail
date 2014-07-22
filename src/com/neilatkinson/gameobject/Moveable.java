@@ -15,19 +15,24 @@ public interface Moveable {
 
 	public void move();
 
-	public int getSpeedX();
+	public int speedX();
 	public void setSpeedX(int speedX);
-	public int getSpeedY();
+	public int speedY();
 	public void setSpeedY(int speedY);
 	
-	public int getCenterX();
-	public void setCenterX(int centerX);
-	public int getCenterY();
-	public void setCenterY(int centerY);
+	public int centerX();
+	public int centerY();
+	public void updatePosition(int newCenterX, int newCenterY);
 
 	public boolean nearTopOfScreen();
 	public boolean nearLeftOfScreen();
 	public boolean nearBottomOfScreen();
 	public boolean nearRightOfScreen();
+
+	public void moveUp();
+	public void moveLeft();
+	public void moveDown();
+	public void moveRight();
+	public void remainStationary();
 
 }
