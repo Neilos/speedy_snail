@@ -320,11 +320,6 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		return centerX() >= gameScreen.getWidth() - 200;
 	}
 
-	@Override
-	public boolean isInBounds(Rect bounds) {
-		return bounds.contains(vicinity());
-	}
-
 
 	public Image getImage() {
 		return currentAnimation.getImage();

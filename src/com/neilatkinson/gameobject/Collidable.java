@@ -8,6 +8,4 @@ public interface Collidable extends Interactable  {
 
 	public void resolveCollisions(ArrayList<Rect> collisions);
 
-	boolean isInBounds(Rect rectangle);
-
 }

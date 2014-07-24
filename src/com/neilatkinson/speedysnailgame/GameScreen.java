@@ -30,11 +30,13 @@ public class GameScreen extends Screen {
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public PlayerCharacter playerCharacter;
 	public ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+	ArrayList<GameObject> onScreenGameObjects = new ArrayList<GameObject>();
 
     int livesLeft = 1;
     Paint paint, paint2;
 
 	private PauseButton pauseButton;
+	private Rect screenSpace;
     
     public GameScreen(Game game) {
         super(game);
@@ -57,6 +59,8 @@ public class GameScreen extends Screen {
 		gameObjects.add(playerCharacter);
 		gameObjects.addAll(enemies);
 		gameObjects.addAll(tilearray);
+
+		screenSpace = new Rect(-20, -20, game.getFrameBufferWidth() + 20, game.getFrameBufferWidth() + 20);
 
         // Defining a paint object
 		paint = new Paint();
@@ -183,6 +187,7 @@ public class GameScreen extends Screen {
 		updateBackground();
 		updateTiles(elapsedTime);
 		updateEnemies(elapsedTime);
+		this.onScreenGameObjects = refreshOnScreenGameObjects();
 		
 		// 4. Check for and trigger interactions
 		evaluateCollisions();
@@ -192,12 +197,11 @@ public class GameScreen extends Screen {
 	public void evaluateCollisions() {
 		GameObject object1;
 		GameObject object2;
-		ArrayList<GameObject> onScreenObjects = onScreenGameObjects();
-		int gameObjectCount = onScreenGameObjects().size();
+		int gameObjectCount = onScreenGameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			for (int j = i + 1; j < gameObjectCount; j++) {
-				object1 = onScreenObjects.get(i);
-				object2 = onScreenObjects.get(j);
+				object1 = onScreenGameObjects.get(i);
+				object2 = onScreenGameObjects.get(j);
 				if (object1.inVicinityOf(object2)) {
 					evaluateCollisionsBetween(object1, object2);
 					object1.attack(object2);
@@ -233,13 +237,12 @@ public class GameScreen extends Screen {
 		}
 	}
 
-	private ArrayList<GameObject> onScreenGameObjects() {
-		Rect screenSpace = new Rect(0, 0, game.getFrameBufferWidth(), game.getFrameBufferWidth());
+	private ArrayList<GameObject> refreshOnScreenGameObjects() {
 		ArrayList<GameObject> onScreenGameObjects = new ArrayList<GameObject>();
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
-			if (object.isInBounds(screenSpace)) {
+			if (Rect.intersects(object.vicinity(), screenSpace)) {
 				onScreenGameObjects.add(object);
 			}
 		}
@@ -356,11 +359,7 @@ public class GameScreen extends Screen {
         // g.drawImage(Assets.character, characterX, characterY);
 
 		drawBackground(g);
-		drawTiles(g);
-
-		drawPlayerCharacter(g);
-		
-		drawEnemies(g);
+		drawOnScreenGameObjects(g);
 
         // 2. draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -371,6 +370,13 @@ public class GameScreen extends Screen {
             drawPausedUI();
         if (state == GameState.GameOver)
             drawGameOverUI();
+	}
+
+
+	private void drawOnScreenGameObjects(Graphics g) {
+		drawTiles(g);
+		drawPlayerCharacter(g);
+		drawEnemies(g);
 	}
 
 
@@ -403,20 +409,22 @@ public class GameScreen extends Screen {
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			enemy.drawSelf(g);
-//			g.drawRect( enemy.vicinity().left,
-//					enemy.vicinity().top,
-//					enemy.vicinity().width(),
-//					enemy.vicinity().height(),
-//					Color.argb(50, 0, 255, 0));
-//			for(int j = 0; j < enemy.collisionZones().size(); j++){
-//				Rect collisionZone = enemy.collisionZones().get(j);
-//				g.drawRect( collisionZone.left,
-//							collisionZone.top,
-//							collisionZone.width(),
-//							collisionZone.height(),
-//							Color.argb(100, 0, 255, 0));
-//			}
+			if (onScreenGameObjects.contains(enemy)) {
+				enemy.drawSelf(g);
+	//			g.drawRect( enemy.vicinity().left,
+	//					enemy.vicinity().top,
+	//					enemy.vicinity().width(),
+	//					enemy.vicinity().height(),
+	//					Color.argb(50, 0, 255, 0));
+	//			for(int j = 0; j < enemy.collisionZones().size(); j++){
+	//				Rect collisionZone = enemy.collisionZones().get(j);
+	//				g.drawRect( collisionZone.left,
+	//							collisionZone.top,
+	//							collisionZone.width(),
+	//							collisionZone.height(),
+	//							Color.argb(100, 0, 255, 0));
+	//			}
+			}
 		}
 	}
 
@@ -424,15 +432,17 @@ public class GameScreen extends Screen {
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
-			t.drawSelf(g);
-//			for(int j = 0; j < t.collisionZones().size(); j++){
-//				Rect collisionZone = t.collisionZones().get(j);
-//				g.drawRect( collisionZone.left,
-//							collisionZone.top,
-//							collisionZone.width(),
-//							collisionZone.height(),
-//							Color.argb(100, 0, 0, 255));
-//			}
+			if (onScreenGameObjects.contains(t)) {
+				t.drawSelf(g);
+	//			for(int j = 0; j < t.collisionZones().size(); j++){
+	//				Rect collisionZone = t.collisionZones().get(j);
+	//				g.drawRect( collisionZone.left,
+	//							collisionZone.top,
+	//							collisionZone.width(),
+	//							collisionZone.height(),
+	//							Color.argb(100, 0, 0, 255));
+	//			}
+			}
 		}
 	}
 
