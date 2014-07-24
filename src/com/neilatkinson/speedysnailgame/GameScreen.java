@@ -197,26 +197,24 @@ public class GameScreen extends Screen {
 		ArrayList<Rect> zones2 = object2.collisionZones();
 		ArrayList<Rect> collisions = new ArrayList<Rect>();
 		
-		Log.i("zones1", "zones1 = " + object1.collisionZones());
-		Log.i("zones2", "zones2 = " + object2.collisionZones());
-		
 		for (int i = 0; i < zones1.size(); i++) {
 			for (int j = 0; j < zones2.size(); j++) {
 				Rect zone1 = zones1.get(i);
 				Rect zone2 = zones2.get(j);
 				Rect collision = new Rect(zone1);
 				if (collision.intersect(zone2)) {
-					Log.i("collision detected", "collision detected");
 					collisions.add(collision);
 				}
 			}
 		}
 
-		Log.i("COLLISIONS", "collisions count = " + collisions.size());
-
 		if (collisions.size() > 0) {
-			object1.resolveCollisions(collisions);
-			object2.resolveCollisions(collisions);
+			if (object1.isMoving()) {
+				object1.resolveCollisions(collisions);
+			}
+			if (object2.isMoving()) {
+				object2.resolveCollisions(collisions);
+			}
 		}
 	}
 
