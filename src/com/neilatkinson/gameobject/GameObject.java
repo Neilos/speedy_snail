@@ -117,7 +117,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			collisionZone.offset(zoneOffsetX, zoneOffsetY);
 		}
 	}
-	
+
+
 	@Override
 	public void move() {
 		if (isMovingUp()) {
@@ -241,6 +242,11 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	public boolean isMovingRight() {
 		return isMovingRight;
 	}
+	
+	@Override
+	public boolean isMoving() {
+		return isMovingUp() || isMovingLeft() || isMovingDown() || isMovingRight();
+	}
 
 
 	@Override
@@ -261,6 +267,11 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	@Override
 	public int speedY() {
 		return speedY;
+	}
+
+	@Override
+	public int currentSpeed() {
+		return Math.max(speedX(), speedY());
 	}
 
 

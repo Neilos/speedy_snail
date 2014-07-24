@@ -12,6 +12,7 @@ public interface Moveable {
 	public boolean isMovingLeft();
 	public boolean isMovingDown();
 	public boolean isMovingRight();
+	public boolean isMoving();
 
 	public void move();
 
@@ -19,6 +20,7 @@ public interface Moveable {
 	public void setSpeedX(int speedX);
 	public int speedY();
 	public void setSpeedY(int speedY);
+	public int currentSpeed();
 	
 	public int centerX();
 	public int centerY();
@@ -34,5 +36,6 @@ public interface Moveable {
 	public void moveDown();
 	public void moveRight();
 	public void remainStationary();
+
 
 }
