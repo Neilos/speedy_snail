@@ -185,14 +185,14 @@ public class GameScreen extends Screen {
 		for(int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
 			if (enemy.inVicinityOf(playerCharacter)) {
-				checkForCollisionsBetween(getPlayerCharacter(), enemy);
+				evaluateCollisionsBetween(getPlayerCharacter(), enemy);
 				playerCharacter.attack(enemy);
 				enemy.attack(playerCharacter);
 			}
 		}
 	}
 	
-	private void checkForCollisionsBetween(GameObject object1, GameObject object2) {
+	private void evaluateCollisionsBetween(GameObject object1, GameObject object2) {
 		ArrayList<Rect> zones1 = object1.collisionZones();
 		ArrayList<Rect> zones2 = object2.collisionZones();
 		ArrayList<Rect> collisions = new ArrayList<Rect>();
