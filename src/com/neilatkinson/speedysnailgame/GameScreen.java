@@ -192,11 +192,12 @@ public class GameScreen extends Screen {
 	public void evaluateCollisions() {
 		GameObject object1;
 		GameObject object2;
-		int gameObjectCount = gameObjects.size();
+		ArrayList<GameObject> onScreenObjects = onScreenGameObjects();
+		int gameObjectCount = onScreenGameObjects().size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			for (int j = i + 1; j < gameObjectCount; j++) {
-				object1 = gameObjects.get(i);
-				object2 = gameObjects.get(j);
+				object1 = onScreenObjects.get(i);
+				object2 = onScreenObjects.get(j);
 				if (object1.inVicinityOf(object2)) {
 					evaluateCollisionsBetween(object1, object2);
 					object1.attack(object2);
@@ -230,6 +231,19 @@ public class GameScreen extends Screen {
 				object2.resolveCollisions(collisions);
 			}
 		}
+	}
+
+	private ArrayList<GameObject> onScreenGameObjects() {
+		Rect screenSpace = new Rect(0, 0, game.getFrameBufferWidth(), game.getFrameBufferWidth());
+		ArrayList<GameObject> onScreenGameObjects = new ArrayList<GameObject>();
+		int gameObjectCount = gameObjects.size();
+		for (int i = 0; i < gameObjectCount; i++) {
+			GameObject object = gameObjects.get(i);
+			if (object.isInBounds(screenSpace)) {
+				onScreenGameObjects.add(object);
+			}
+		}
+		return onScreenGameObjects;
 	}
 
 
