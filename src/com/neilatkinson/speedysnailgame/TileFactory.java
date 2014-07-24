@@ -1,4 +1,4 @@
-package com.neilatkinson.speedysnailgame;
+	package com.neilatkinson.speedysnailgame;
 
 import java.util.ArrayList;
 
@@ -38,11 +38,11 @@ public class TileFactory {
 		Animation faceDownAnimation = new Animation();
 		Animation faceRightAnimation = new Animation();
 
-	    vicinity = new Rect(centerX - 48, centerY - 48, centerX + 48, centerY + 48);
+	    vicinity = new Rect(centerX - 20, centerY - 20, centerX + 20, centerY + 20);
 
-	    collisionZones.add(vicinity);
-		damageZones.add(vicinity);
-	    attackZones.add(vicinity);
+	    collisionZones.add(new Rect(vicinity));
+		damageZones.add(new Rect(vicinity));
+	    attackZones.add(new Rect(vicinity));
 
 		Image frameImage = null;
 		if (type == 5) {

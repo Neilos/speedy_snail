@@ -7,7 +7,6 @@ import java.util.Scanner;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
@@ -30,6 +29,7 @@ public class GameScreen extends Screen {
 	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public PlayerCharacter playerCharacter;
+	public ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
     int livesLeft = 1;
     Paint paint, paint2;
@@ -47,13 +47,16 @@ public class GameScreen extends Screen {
 
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
-
+		
+		// Create game objects
 		playerCharacter = PlayerCharacterFactory.build(this, 100, 377);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
-
-
 		loadMap();
+		
+		gameObjects.add(playerCharacter);
+		gameObjects.addAll(enemies);
+		gameObjects.addAll(tilearray);
 
         // Defining a paint object
 		paint = new Paint();
@@ -84,8 +87,8 @@ public class GameScreen extends Screen {
 			int width = line.length();
 			for (int i = 0; i < width; i++) {
 				if (i < line.length()) {
-					startingCenterX = i * 40;
-					startingCenterY = j * 40;
+					startingCenterX = i * 40 + 20;
+					startingCenterY = j * 40 + 20;
 					ch = line.charAt(i);
 					type = Character.getNumericValue(ch);
 					tile = TileFactory.build(this, startingCenterX, startingCenterY, type);
@@ -182,12 +185,23 @@ public class GameScreen extends Screen {
 		updateEnemies(elapsedTime);
 		
 		// 4. Check for and trigger interactions
-		for(int i = 0; i < enemies.size(); i++) {
-			Enemy enemy = enemies.get(i);
-			if (enemy.inVicinityOf(playerCharacter)) {
-				evaluateCollisionsBetween(getPlayerCharacter(), enemy);
-				enemy.attack(playerCharacter);
-				playerCharacter.attack(enemy);
+		evaluateCollisions();
+	}
+
+
+	public void evaluateCollisions() {
+		GameObject object1;
+		GameObject object2;
+		int gameObjectCount = gameObjects.size();
+		for (int i = 0; i < gameObjectCount; i++) {
+			for (int j = i + 1; j < gameObjectCount; j++) {
+				object1 = gameObjects.get(i);
+				object2 = gameObjects.get(j);
+				if (object1.inVicinityOf(object2)) {
+					evaluateCollisionsBetween(object1, object2);
+					object1.attack(object2);
+					object2.attack(object1);
+				}
 			}
 		}
 	}
@@ -330,21 +344,7 @@ public class GameScreen extends Screen {
 		drawBackground(g);
 		drawTiles(g);
 
-		g.drawImage(playerCharacter.getImage(), playerCharacter.centerX() - 61,
-				playerCharacter.centerY() - 63);
-		g.drawRect( playerCharacter.vicinity().left,
-					playerCharacter.vicinity().top,
-					playerCharacter.vicinity().width(),
-					playerCharacter.vicinity().height(),
-					Color.argb(50, 255, 0, 0));
-		for(int i = 0; i < playerCharacter.collisionZones().size(); i++){
-			Rect collisionZone = playerCharacter.collisionZones().get(i);
-			g.drawRect( collisionZone.left,
-						collisionZone.top,
-						collisionZone.width(),
-						collisionZone.height(),
-						Color.argb(100, 255, 0, 0));
-		}
+		drawPlayerCharacter(g);
 		
 		drawEnemies(g);
 
@@ -360,6 +360,25 @@ public class GameScreen extends Screen {
 	}
 
 
+	public void drawPlayerCharacter(Graphics g) {
+		g.drawImage(playerCharacter.getImage(), playerCharacter.centerX() - 61,
+				playerCharacter.centerY() - 63);
+//		g.drawRect( playerCharacter.vicinity().left,
+//					playerCharacter.vicinity().top,
+//					playerCharacter.vicinity().width(),
+//					playerCharacter.vicinity().height(),
+//					Color.argb(50, 255, 0, 0));
+//		for(int i = 0; i < playerCharacter.collisionZones().size(); i++){
+//			Rect collisionZone = playerCharacter.collisionZones().get(i);
+//			g.drawRect( collisionZone.left,
+//						collisionZone.top,
+//						collisionZone.width(),
+//						collisionZone.height(),
+//						Color.argb(100, 255, 0, 0));
+//		}
+	}
+
+
 	private void drawBackground(Graphics g) {
 		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
 		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
@@ -372,19 +391,19 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
 			g.drawImage(enemy.getImage(), enemy.centerX() - 48, enemy.centerY() - 48);
-			g.drawRect( enemy.vicinity().left,
-					enemy.vicinity().top,
-					enemy.vicinity().width(),
-					enemy.vicinity().height(),
-					Color.argb(50, 0, 255, 0));
-			for(int j = 0; j < enemy.collisionZones().size(); j++){
-				Rect collisionZone = enemy.collisionZones().get(j);
-				g.drawRect( collisionZone.left,
-							collisionZone.top,
-							collisionZone.width(),
-							collisionZone.height(),
-							Color.argb(100, 0, 255, 0));
-			}
+//			g.drawRect( enemy.vicinity().left,
+//					enemy.vicinity().top,
+//					enemy.vicinity().width(),
+//					enemy.vicinity().height(),
+//					Color.argb(50, 0, 255, 0));
+//			for(int j = 0; j < enemy.collisionZones().size(); j++){
+//				Rect collisionZone = enemy.collisionZones().get(j);
+//				g.drawRect( collisionZone.left,
+//							collisionZone.top,
+//							collisionZone.width(),
+//							collisionZone.height(),
+//							Color.argb(100, 0, 255, 0));
+//			}
 		}
 	}
 
@@ -392,7 +411,15 @@ public class GameScreen extends Screen {
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
-			g.drawImage(t.getImage(), t.centerX(), t.centerY());
+			g.drawImage(t.getImage(), t.centerX() - 20, t.centerY() - 20	);
+//			for(int j = 0; j < t.collisionZones().size(); j++){
+//				Rect collisionZone = t.collisionZones().get(j);
+//				g.drawRect( collisionZone.left,
+//							collisionZone.top,
+//							collisionZone.width(),
+//							collisionZone.height(),
+//							Color.argb(100, 0, 0, 255));
+//			}
 		}
 	}
 
