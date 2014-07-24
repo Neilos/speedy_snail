@@ -186,8 +186,8 @@ public class GameScreen extends Screen {
 			Enemy enemy = enemies.get(i);
 			if (enemy.inVicinityOf(playerCharacter)) {
 				evaluateCollisionsBetween(getPlayerCharacter(), enemy);
-				playerCharacter.attack(enemy);
 				enemy.attack(playerCharacter);
+				playerCharacter.attack(enemy);
 			}
 		}
 	}
