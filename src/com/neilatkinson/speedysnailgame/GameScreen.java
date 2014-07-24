@@ -361,8 +361,7 @@ public class GameScreen extends Screen {
 
 
 	public void drawPlayerCharacter(Graphics g) {
-		g.drawImage(playerCharacter.getImage(), playerCharacter.centerX() - 61,
-				playerCharacter.centerY() - 63);
+		getPlayerCharacter().drawSelf(g);
 //		g.drawRect( playerCharacter.vicinity().left,
 //					playerCharacter.vicinity().top,
 //					playerCharacter.vicinity().width(),
@@ -390,7 +389,7 @@ public class GameScreen extends Screen {
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			g.drawImage(enemy.getImage(), enemy.centerX() - 48, enemy.centerY() - 48);
+			enemy.drawSelf(g);
 //			g.drawRect( enemy.vicinity().left,
 //					enemy.vicinity().top,
 //					enemy.vicinity().width(),
@@ -411,7 +410,7 @@ public class GameScreen extends Screen {
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
-			g.drawImage(t.getImage(), t.centerX() - 20, t.centerY() - 20	);
+			t.drawSelf(g);
 //			for(int j = 0; j < t.collisionZones().size(); j++){
 //				Rect collisionZone = t.collisionZones().get(j);
 //				g.drawRect( collisionZone.left,

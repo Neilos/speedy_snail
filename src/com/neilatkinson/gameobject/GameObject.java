@@ -2,6 +2,7 @@ package com.neilatkinson.gameobject;
 
 import java.util.ArrayList;
 
+import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
@@ -407,6 +408,12 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			
 			updatePosition(offsetX, offsetY);
 		}
+	}
+	
+	public void drawSelf(Graphics graphics) {
+		int left = centerX() - vicinity().width() / 2;
+		int top = centerY() - vicinity().height() / 2;
+		graphics.drawImage(getImage(), left, top);
 	}
 
 }
