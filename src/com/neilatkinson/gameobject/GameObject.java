@@ -6,7 +6,6 @@ import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
-
 import android.graphics.Rect;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
@@ -14,10 +13,15 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Screen gameScreen;
 	private int centerX;
 	private int centerY;
-	protected final int moveSpeed;
 	protected int speedX;
 	protected int speedY;
-	protected Rect vicinity;
+	protected final int moveSpeed;
+	protected int maxUpSpeed;
+	protected int maxLeftSpeed;
+	protected int maxDownSpeed;
+
+	protected int maxRightSpeed;
+	protected Rect area;
 
 	private Animation currentAnimation;
 	private Animation moveUpAnimation;
@@ -36,6 +40,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private boolean isMovingDown;
 	private boolean isMovingRight;
 
+
 	public GameObject(
 			Screen gameScreen,
 			int centerX,
@@ -43,7 +48,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			final int moveSpeed,
 			int speedX,
 			int speedY,
-			Rect vicinity,
+			Rect area,
 			int health,
 			boolean isDead,
 			boolean isMovingUp,
@@ -66,7 +71,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.moveSpeed = moveSpeed;
 		this.speedX = speedX;
 		this.speedY = speedY;
-		this.vicinity = vicinity;
+		this.area = area;
 		this.health = health;
 		this.isDead = isDead;
 		this.isMovingUp = isMovingUp;
@@ -82,11 +87,12 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceDownAnimation = faceDownAnimation;
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
-
+		
+		resetMaxSpeeds();
 	}
 	
 	public void updateZones(int zoneOffsetX, int zoneOffsetY) {
-		vicinity().offset(zoneOffsetX, zoneOffsetY);
+		area().offset(zoneOffsetX, zoneOffsetY);
 		updateCollisionZones(zoneOffsetX, zoneOffsetY);
 		updateDamageZones(zoneOffsetX, zoneOffsetY);
 		updateAttackZones(zoneOffsetX, zoneOffsetY);
@@ -119,9 +125,13 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		}
 	}
 
+	@Override
+	public void update(int elapsedTime) {
+		move(elapsedTime);
+	}
 
 	@Override
-	public void move() {
+	public void move(int elapsedTime) {
 		if (isMovingUp()) {
 	        moveUp();
 		} else if (isMovingLeft()) {
@@ -133,33 +143,33 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
     	} else {
     		remainStationary();
     	}
-
-		// Update Position
-        updatePosition(centerX() + speedX(), centerY() + speedY());
+		updatePosition(centerX() + speedX(), centerY() + speedY());
+		animate(elapsedTime);
+        resetMaxSpeeds();
 	}
 
 
 	@Override
 	public void moveUp() {
 		setSpeedX(gameScreen.getBackgroundSpeedX());
-		setSpeedY(-moveSpeed + gameScreen.getBackgroundSpeedY());
+		setSpeedY(-maxUpSpeed() + gameScreen.getBackgroundSpeedY());
 	}
 
 	@Override
 	public void moveLeft() {
-		setSpeedX(-moveSpeed + gameScreen.getBackgroundSpeedX());
+		setSpeedX(-maxLeftSpeed() + gameScreen.getBackgroundSpeedX());
 		setSpeedY(gameScreen.getBackgroundSpeedY());
 	}
 
 	@Override
 	public void moveDown() {
 		setSpeedX(gameScreen.getBackgroundSpeedX());
-		setSpeedY(moveSpeed + gameScreen.getBackgroundSpeedY());
+		setSpeedY(maxDownSpeed() + gameScreen.getBackgroundSpeedY());
 	}
 
 	@Override
 	public void moveRight() {
-		setSpeedX(moveSpeed + gameScreen.getBackgroundSpeedX());
+		setSpeedX(maxRightSpeed() + gameScreen.getBackgroundSpeedX());
 		setSpeedY(gameScreen.getBackgroundSpeedY());
 	}
 
@@ -270,6 +280,53 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		return speedY;
 	}
 
+	public int maxUpSpeed() {
+		return maxUpSpeed;
+	}
+
+	public int maxLeftSpeed() {
+		return maxLeftSpeed;
+	}
+
+	public int maxDownSpeed() {
+		return maxDownSpeed;
+	}
+
+	public int maxRightSpeed() {
+		return maxRightSpeed;
+	}
+
+	public void updateMaxUpSpeed(int newMaxUpSpeed) {
+		if (newMaxUpSpeed < maxUpSpeed) {
+			this.maxUpSpeed = newMaxUpSpeed;
+		}
+	}
+
+	public void updateMaxLeftSpeed(int newMaxLeftSpeed) {
+		if (newMaxLeftSpeed < maxLeftSpeed) {
+			this.maxLeftSpeed = newMaxLeftSpeed;
+		}
+	}
+	
+	public void updateMaxDownSpeed(int newMaxDownSpeed) {
+		if (newMaxDownSpeed < maxDownSpeed) {
+			this.maxDownSpeed = newMaxDownSpeed;
+		}
+	}
+	
+	public void updateMaxRightSpeed(int newMaxRightSpeed) {
+		if (newMaxRightSpeed < maxRightSpeed) {
+			this.maxRightSpeed = newMaxRightSpeed;
+		}
+	}
+	private void resetMaxSpeeds() {
+		this.maxUpSpeed = moveSpeed;
+		this.maxLeftSpeed = moveSpeed;
+		this.maxDownSpeed = moveSpeed;
+		this.maxRightSpeed = moveSpeed;
+	}
+
+	
 	@Override
 	public int currentSpeed() {
 		return Math.max(speedX(), speedY());
@@ -325,15 +382,19 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		return currentAnimation.getImage();
 	}
 
-	@Override
 	public void animate(int elapsedTime) {
 		currentAnimation.update(elapsedTime);
 	}
 
 	@Override
-	public void attack(Damageable damageable) {
-		// TODO Auto-generated method stub
-		
+	public void attack(ArrayList<Collision> collisions) {
+		int collisionCount = collisions.size();
+		for (int i = 0; i < collisionCount; i++) {
+			Collision collision = collisions.get(i);
+			if (collision.didHappen()) {
+				collision.getOtherObject().takeDamage(1);
+			}
+		}
 	}
 	
 	@Override
@@ -361,19 +422,49 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		return isDead;
 	}
 	
+	public Rect area() {
+		return area;
+	}
+	
 	public Rect vicinity() {
-		return vicinity;
+		return new Rect(area().left - moveSpeed - 1,
+				area().top - moveSpeed - 1,
+				area().right + moveSpeed + 1,
+				area().bottom + moveSpeed + 1);
 	}
 
-	
 	public boolean inVicinityOf(GameObject otherObject) {
-		return Rect.intersects(otherObject.vicinity(), vicinity());
+		return Rect.intersects(otherObject.area(), vicinity());
 	}
 
 	
 	public ArrayList<Rect> collisionZones() {
 		return currentAnimation.getCollisionZones();
 	}
+	
+	public ArrayList<Rect> getProjectedCollisionZones() {
+        ArrayList<Rect> projectedCollisionZones = new ArrayList<Rect>();
+
+        ArrayList<Rect> collisionZones = collisionZones();
+        int collisionZonesCount = collisionZones().size();
+        for (int i = 0; i < collisionZonesCount; i++) {
+            Rect projectedCollisionZone = new Rect(collisionZones.get(i));
+            if (isMovingUp()) {
+                projectedCollisionZone.offset(0, -moveSpeed);
+            } else if (isMovingLeft()) {
+                projectedCollisionZone.offset(-moveSpeed, 0);
+            } else if (isMovingDown()) {
+                projectedCollisionZone.offset(0, moveSpeed);
+            } else if (isMovingRight()) {
+                projectedCollisionZone.offset(moveSpeed, 0);
+            } else {
+                
+            }
+            projectedCollisionZones.add(projectedCollisionZone);
+        }
+        
+        return projectedCollisionZones;
+    }
 	
 	public ArrayList<Rect> attackZones() {
 		return currentAnimation.getAttackZones();
@@ -384,36 +475,50 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	
-	@Override
-	public void resolveCollisions(ArrayList<Rect> collisions) {
-		int numberOfCollisions = collisions.size();
-		for (int i = 0; i < numberOfCollisions; i++) {
-			Rect collision = collisions.get(i);
-			int xIntrusion = collision.width() / 2;
-			int yIntrusion = collision.height() / 2;
-			int offsetX;
-			int offsetY;
-
-			if (collision.centerX() > centerX()) {
-				offsetX = centerX() - xIntrusion;
-			} else {
-				offsetX = centerX() + xIntrusion;
-			}
-
-			if (collision.centerY() > centerY()) {
-				offsetY = centerY() - yIntrusion;
-			} else {
-				offsetY = centerY() + yIntrusion;
-			}
-			
-			updatePosition(offsetX, offsetY);
-		}
+	public void drawSelf(Graphics graphics) {
+		int left = centerX() - area().width() / 2;
+		int top = centerY() - area().height() / 2;
+		graphics.drawImage(getImage(), left, top);
 	}
 	
-	public void drawSelf(Graphics graphics) {
-		int left = centerX() - vicinity().width() / 2;
-		int top = centerY() - vicinity().height() / 2;
-		graphics.drawImage(getImage(), left, top);
+	@Override
+	public Collision evaluateCollisionWith(GameObject otherObject) {
+		ArrayList<Rect> collisionIntrusionZones = getCollisionIntrusionZones(otherObject);
+		Collision collision = new Collision(this, otherObject, collisionIntrusionZones);
+		if (collision.didHappen()) {
+			updateMaxSpeeds(collision);
+		}
+		return collision;
+	}
+
+	private ArrayList<Rect> getCollisionIntrusionZones(GameObject otherObject) {
+		ArrayList<Rect> collisionIntrusionZones = new ArrayList<Rect>();
+		ArrayList<Rect> otherObjectCollisionZones = otherObject.collisionZones();
+		ArrayList<Rect> myProjectedCollisionZones = getProjectedCollisionZones();
+
+		for (int i = 0; i < myProjectedCollisionZones.size(); i++) {
+			for (int j = 0; j < otherObjectCollisionZones.size(); j++) {
+				Rect myCollisionZone = myProjectedCollisionZones.get(i);
+				Rect otherObjectCollisionZone = otherObjectCollisionZones.get(j);
+				Rect collisionZone = new Rect(myCollisionZone);
+				if (collisionZone.intersect(otherObjectCollisionZone)) {
+					collisionIntrusionZones.add(collisionZone);
+				}
+			}
+		}
+		return collisionIntrusionZones;
+	}
+
+	public void updateMaxSpeeds(Collision collision) {
+		if (isMovingUp()) {
+			updateMaxUpSpeed(moveSpeed - collision.yDimension());
+		} else if (isMovingLeft()) {
+			updateMaxLeftSpeed(moveSpeed - collision.xDimension());
+		} else if (isMovingDown()) {
+			updateMaxDownSpeed(moveSpeed - collision.yDimension());
+		} else if (isMovingRight()) {
+			updateMaxRightSpeed(moveSpeed - collision.xDimension());
+		}
 	}
 
 }

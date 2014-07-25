@@ -10,7 +10,7 @@ public abstract class Enemy extends GameObject {
 	public PlayerCharacter playerCharacter;
 
 	public Enemy(GameScreen gameScreen, int centerX,
-			int centerY, int moveSpeed, int speedX, int speedY, Rect vicinity,
+			int centerY, int moveSpeed, int speedX, int speedY, Rect area,
 			int health, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,
@@ -20,16 +20,18 @@ public abstract class Enemy extends GameObject {
 			Animation currentAnimation) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
-				vicinity, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
+				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
 				faceDownAnimation, faceRightAnimation, currentAnimation);
 		this.playerCharacter = gameScreen.getPlayerCharacter();
 	}
 
-	public void update() {
-        follow();
-    }
+	@Override
+	public void update(int elapsedTime) {
+		follow();
+		move(elapsedTime);
+	}
 
 	private void follow() {
 		int xDistanceToPlayer = playerCharacter.centerX() - centerX();
@@ -54,7 +56,7 @@ public abstract class Enemy extends GameObject {
 				setStopped();
 			}
 		}
-		move();
+		
 	}
 
 }

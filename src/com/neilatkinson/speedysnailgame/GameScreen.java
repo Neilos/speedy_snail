@@ -1,18 +1,22 @@
 package com.neilatkinson.speedysnailgame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.gameobject.Collision;
 import com.neilatkinson.gameobject.GameObject;
+import com.neilatkinson.gameobject.SortByGameObjectSpeed;
 
 public class GameScreen extends Screen {
 
@@ -51,7 +55,7 @@ public class GameScreen extends Screen {
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 		
 		// Create game objects
-		playerCharacter = PlayerCharacterFactory.build(this, 100, 377);
+		playerCharacter = PlayerCharacterFactory.build(this, 100, 200);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();
@@ -179,61 +183,35 @@ public class GameScreen extends Screen {
 		if (playerCharacter.isDead()) {
 			state = GameState.GameOver;
 		}
+		
+		// 3. Check for and trigger interactions
+		evaluateInterractions(elapsedTime);
 
-		// 3. Call individual update() methods here.
-		// This is where all the game updates happen.
-		// For example, playerCharacter.update();
-		updatePlayerCharacter(elapsedTime);
-		updateBackground();
-		updateTiles(elapsedTime);
-		updateEnemies(elapsedTime);
 		this.onScreenGameObjects = refreshOnScreenGameObjects();
 		
-		// 4. Check for and trigger interactions
-		evaluateCollisions();
 	}
 
 
-	public void evaluateCollisions() {
+	public void evaluateInterractions(int elapsedTime) {
 		GameObject object1;
+		ArrayList<Collision> object1Collisions = new ArrayList<Collision>();
 		GameObject object2;
+//		SortByGameObjectSpeed sorter = new SortByGameObjectSpeed();
+//		Collections.sort(onScreenGameObjects, sorter);
 		int gameObjectCount = onScreenGameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
-			for (int j = i + 1; j < gameObjectCount; j++) {
-				object1 = onScreenGameObjects.get(i);
-				object2 = onScreenGameObjects.get(j);
-				if (object1.inVicinityOf(object2)) {
-					evaluateCollisionsBetween(object1, object2);
-					object1.attack(object2);
-					object2.attack(object1);
+			object1 = onScreenGameObjects.get(i);
+			for (int j = 0; j < gameObjectCount; j++) {
+				if (j != i) {
+					object2 = onScreenGameObjects.get(j);
+					if (object1.inVicinityOf(object2)) {
+						object1Collisions.add(object1.evaluateCollisionWith(object2));
+					}
 				}
 			}
-		}
-	}
-	
-	private void evaluateCollisionsBetween(GameObject object1, GameObject object2) {
-		ArrayList<Rect> zones1 = object1.collisionZones();
-		ArrayList<Rect> zones2 = object2.collisionZones();
-		ArrayList<Rect> collisions = new ArrayList<Rect>();
-		
-		for (int i = 0; i < zones1.size(); i++) {
-			for (int j = 0; j < zones2.size(); j++) {
-				Rect zone1 = zones1.get(i);
-				Rect zone2 = zones2.get(j);
-				Rect collision = new Rect(zone1);
-				if (collision.intersect(zone2)) {
-					collisions.add(collision);
-				}
-			}
-		}
-
-		if (collisions.size() > 0) {
-			if (object1.isMoving()) {
-				object1.resolveCollisions(collisions);
-			}
-			if (object2.isMoving()) {
-				object2.resolveCollisions(collisions);
-			}
+			object1.update(elapsedTime);
+//			object1.attack(object1Collisions);
+//			object1Collisions.clear();
 		}
 	}
 
@@ -242,7 +220,7 @@ public class GameScreen extends Screen {
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
-			if (Rect.intersects(object.vicinity(), screenSpace)) {
+			if (Rect.intersects(object.area(), screenSpace)) {
 				onScreenGameObjects.add(object);
 			}
 		}
@@ -250,26 +228,11 @@ public class GameScreen extends Screen {
 	}
 
 
-	private void updateBackground() {
+	public void updateBackground() {
 		bg1.update();
 		bg2.update();
 		bg3.update();
 		bg4.update();
-	}
-
-
-	private void updatePlayerCharacter(int elapsedTime) {
-		playerCharacter.update();
-		playerCharacter.animate(elapsedTime);
-	}
-
-
-	private void updateEnemies(int elapsedTime) {
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy enemy = (Enemy) enemies.get(i);
-			enemy.update();
-			enemy.animate(elapsedTime);
-		}
 	}
 
 	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
@@ -280,15 +243,6 @@ public class GameScreen extends Screen {
 			return true;
 		else
 			return false;
-	}
-	
-	
-	private void updateTiles(int elapsedTime) {
-		for (int i = 0; i < tilearray.size(); i++) {
-			Tile t = (Tile) tilearray.get(i);
-			t.update();
-			t.animate(elapsedTime);
-		}
 	}
 
 	
@@ -411,11 +365,11 @@ public class GameScreen extends Screen {
 			Enemy enemy = enemies.get(i);
 			if (onScreenGameObjects.contains(enemy)) {
 				enemy.drawSelf(g);
-	//			g.drawRect( enemy.vicinity().left,
-	//					enemy.vicinity().top,
-	//					enemy.vicinity().width(),
-	//					enemy.vicinity().height(),
-	//					Color.argb(50, 0, 255, 0));
+//				g.drawRect( enemy.vicinity().left,
+//						enemy.vicinity().top,
+//						enemy.vicinity().width(),
+//						enemy.vicinity().height(),
+//						Color.argb(50, 0, 255, 0));
 	//			for(int j = 0; j < enemy.collisionZones().size(); j++){
 	//				Rect collisionZone = enemy.collisionZones().get(j);
 	//				g.drawRect( collisionZone.left,

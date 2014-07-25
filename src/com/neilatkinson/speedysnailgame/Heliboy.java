@@ -8,7 +8,7 @@ import com.neilatkinson.gameobject.GameObject;
 public class Heliboy extends Enemy {
 
 	public Heliboy(GameScreen gameScreen, GameObject playerCharacter, int centerX,
-			int centerY, int moveSpeed, int speedX, int speedY, Rect vicinity,
+			int centerY, int moveSpeed, int speedX, int speedY, Rect area,
 			int health, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,
@@ -18,9 +18,10 @@ public class Heliboy extends Enemy {
 			Animation currentAnimation) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
-				vicinity, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
+				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
 				faceDownAnimation, faceRightAnimation, currentAnimation);
 	}
+
 }

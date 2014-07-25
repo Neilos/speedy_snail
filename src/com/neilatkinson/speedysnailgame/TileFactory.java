@@ -6,12 +6,10 @@ import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.gameobject.Animation;
-import com.neilatkinson.gameobject.GameObject;
 
 public class TileFactory {
 	
 	public static Tile build(GameScreen gameScreen, int centerX, int centerY, int type) {
-		GameObject playerCharacter = gameScreen.getPlayerCharacter();
 		int moveSpeed = 0;
 		int speedX = 0;
 		int speedY = 0;
@@ -87,7 +85,6 @@ public class TileFactory {
 		
 			Tile tile = new Tile(
 							gameScreen,
-							playerCharacter,
 							centerX,
 							centerY,
 							moveSpeed,

@@ -2,7 +2,6 @@ package com.neilatkinson.gameobject;
 
 public interface Updateable {
 
-	public void update();
-	public void animate(int elapsedTime);
+	public void update(int elapsedTime);
 
 }

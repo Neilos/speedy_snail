@@ -1,8 +1,6 @@
 package com.neilatkinson.speedysnailgame;
 
-import com.neilatkinson.gameobject.Updateable;
-
-public class Background implements Updateable{
+public class Background {
 	
 	private int bgX, bgY;
 	private int speedX, speedY;
@@ -17,8 +15,7 @@ public class Background implements Updateable{
         speedX = 0;
         speedY = 0;
     }
-
-
+	
     public void update() {
         bgX += getSpeedX();
         if (bgX <= -width){
@@ -71,12 +68,6 @@ public class Background implements Updateable{
 
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
-	}
-
-
-	@Override
-	public void animate(int elapsedTime) {
-
 	}
 
 }
