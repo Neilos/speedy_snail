@@ -1,22 +1,18 @@
 package com.neilatkinson.speedysnailgame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
-
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Collision;
 import com.neilatkinson.gameobject.GameObject;
-import com.neilatkinson.gameobject.SortByGameObjectSpeed;
 
 public class GameScreen extends Screen {
 
@@ -196,8 +192,6 @@ public class GameScreen extends Screen {
 		GameObject object1;
 		ArrayList<Collision> object1Collisions = new ArrayList<Collision>();
 		GameObject object2;
-//		SortByGameObjectSpeed sorter = new SortByGameObjectSpeed();
-//		Collections.sort(onScreenGameObjects, sorter);
 		int gameObjectCount = onScreenGameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			object1 = onScreenGameObjects.get(i);

@@ -484,11 +484,12 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	@Override
 	public Collision evaluateCollisionWith(GameObject otherObject) {
 		ArrayList<Rect> collisionIntrusionZones = getCollisionIntrusionZones(otherObject);
-		Collision collision = new Collision(this, otherObject, collisionIntrusionZones);
-		if (collision.didHappen()) {
+		if (collisionIntrusionZones.size() > 0) {
+			Collision collision = new Collision(this, otherObject, collisionIntrusionZones);
 			updateMaxSpeeds(collision);
+			return collision;
 		}
-		return collision;
+		return null;
 	}
 
 	private ArrayList<Rect> getCollisionIntrusionZones(GameObject otherObject) {
