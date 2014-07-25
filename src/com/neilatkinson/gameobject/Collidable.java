@@ -1,9 +1,7 @@
 package com.neilatkinson.gameobject;
 
-public interface Collidable {
+public interface Collidable extends Interactable  {
 
-	public void resolveCollisions();
-	boolean collidedWith(GameObject gameObject);
-	void setRegion();
+	public void evaluateCollisionWith(GameObject otherObject);
 
 }

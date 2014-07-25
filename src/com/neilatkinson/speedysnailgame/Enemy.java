@@ -1,53 +1,41 @@
 package com.neilatkinson.speedysnailgame;
 
-import com.neilatkinson.gameobject.Damageable;
-import com.neilatkinson.gameobject.GameObject;
-
 import android.graphics.Rect;
 
+import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.GameObject;
+
 public abstract class Enemy extends GameObject {
+	
+	public GameObject playerCharacter;
 
-	protected PlayerCharacter playerCharacter;
+	public Enemy(GameScreen gameScreen, int centerX,
+			int centerY, int moveSpeed, int speedX, int speedY, Rect area,
+			int health, boolean isDead, boolean isMovingUp,
+			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
+			Animation moveUpAnimation, Animation moveLeftAnimation,
+			Animation moveDownAnimation, Animation moveRightAnimation,
+			Animation faceUpAnimation, Animation faceLeftAnimation,
+			Animation faceDownAnimation, Animation faceRightAnimation,
+			Animation currentAnimation) {
 
-	public Enemy(
-			GameScreen gameScreen,
-			int moveSpeed, 
-			int startingCenterX, 
-			int startingCenterY,
-			int startingHealth) {
-
-		super(gameScreen,
-			moveSpeed,
-			startingCenterX, startingCenterY,
-			startingHealth);
-		playerCharacter = gameScreen.getPlayerCharacter();
-		setRegion();
-	}
-
-	public void update() {
-        follow();
-        setRegion();
-        resolveCollisions();
-    }
-
-	public void setRegion() {
-		region.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
+		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
+				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
+				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
+				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
+				faceDownAnimation, faceRightAnimation, currentAnimation);
+		this.playerCharacter = gameScreen.getPlayerCharacter();
 	}
 
 	@Override
-	public void resolveCollisions() {
-		if (Rect.intersects(region, playerCharacter.yellowRed)) {
-			if (Rect.intersects(region, playerCharacter.rect)
-				|| Rect.intersects(region, playerCharacter.rect2)
-	            || Rect.intersects(region, playerCharacter.rect3)
-	            || Rect.intersects(region, playerCharacter.rect4)) {
-			}
-        }
+	public void update(int elapsedTime) {
+		follow();
+		move(elapsedTime);
 	}
 
 	private void follow() {
-		int xDistanceToPlayer = playerCharacter.getCenterX() - centerX;
-		int yDistanceToPlayer = playerCharacter.getCenterY() - centerY;
+		int xDistanceToPlayer = playerCharacter.centerX() - centerX();
+		int yDistanceToPlayer = playerCharacter.centerY() - centerY();
 		
 		if (Math.abs(xDistanceToPlayer) >= Math.abs(yDistanceToPlayer)) {
 			// Move in the x direction
@@ -68,12 +56,7 @@ public abstract class Enemy extends GameObject {
 				setStopped();
 			}
 		}
-		move();
-	}
-
-	@Override
-	public void attack(Damageable damageable) {
-		// TODO Auto-generated method stub
+		
 	}
 
 }

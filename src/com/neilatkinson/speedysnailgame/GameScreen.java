@@ -6,10 +6,14 @@ import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.Log;
+
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.gameobject.GameObject;
 
 public class GameScreen extends Screen {
 
@@ -26,11 +30,14 @@ public class GameScreen extends Screen {
 	public ArrayList<Tile> tilearray = new ArrayList<Tile>();
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public PlayerCharacter playerCharacter;
+	public ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+	ArrayList<GameObject> onScreenGameObjects = new ArrayList<GameObject>();
 
     int livesLeft = 1;
     Paint paint, paint2;
 
 	private PauseButton pauseButton;
+	private Rect screenSpace;
     
     public GameScreen(Game game) {
         super(game);
@@ -43,12 +50,18 @@ public class GameScreen extends Screen {
 
 		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
-
-		playerCharacter = new PlayerCharacter(this, 10, 100, 377);
-		enemies.add(new Heliboy(this, 1, 340, 360, 5));
-		enemies.add(new Heliboy(this, 1, 700, 360, 5));
-
+		
+		// Create game objects
+		playerCharacter = PlayerCharacterFactory.build(this, 100, 372);
+		enemies.add(HeliboyFactory.build(this, 340, 360));
+		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();
+		
+		gameObjects.add(playerCharacter);
+		gameObjects.addAll(enemies);
+		gameObjects.addAll(tilearray);
+
+		screenSpace = new Rect(-20, -20, game.getFrameBufferWidth() + 20, game.getFrameBufferWidth() + 20);
 
         // Defining a paint object
 		paint = new Paint();
@@ -79,17 +92,18 @@ public class GameScreen extends Screen {
 			int width = line.length();
 			for (int i = 0; i < width; i++) {
 				if (i < line.length()) {
-					startingCenterX = i * 40;
-					startingCenterY = j * 40;
+					startingCenterX = i * 40 + 20;
+					startingCenterY = j * 40 + 20;
 					ch = line.charAt(i);
 					type = Character.getNumericValue(ch);
-					tile = new Tile(this, 0, startingCenterX, startingCenterY, type);
-					tilearray.add(tile);
+					tile = TileFactory.build(this, startingCenterX, startingCenterY, type);
+					if (tile != null) {
+						tilearray.add(tile);
+					}
 				}
 			}
 		}
 	}
-
 
 	private ArrayList<String> loadLines() {
 		ArrayList<String> lines = new ArrayList<String>();
@@ -111,9 +125,6 @@ public class GameScreen extends Screen {
 	@Override
 	public void update(int elapsedTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
-        // We have four separate update methods in this example.
-        // Depending on the state of the game, we call different update methods.
 
         if (state == GameState.Ready)
             updateReady(touchEvents);
@@ -137,7 +148,6 @@ public class GameScreen extends Screen {
 
 	
 	private void updateRunning(List<TouchEvent> touchEvents, int elapsedTime) {
-
 		// 1. All touch input is handled here:
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
@@ -168,38 +178,90 @@ public class GameScreen extends Screen {
 		if (playerCharacter.isDead()) {
 			state = GameState.GameOver;
 		}
+		
+		// 3. Check for and trigger interactions
+		evaluateInterractions(elapsedTime);
 
-		// 3. Call individual update() methods here.
-		// This is where all the game updates happen.
-		// For example, playerCharacter.update();
-		updatePlayerCharacter(elapsedTime);
-		updateBackground();
-		updateTiles(elapsedTime);
-		updateEnemies(elapsedTime);
+		refreshOnScreenGameObjects();
+		
 	}
 
 
-	private void updateBackground() {
+	public void evaluateInterractions(int elapsedTime) {
+		GameObject object1;
+		GameObject object2;
+		int onScreenGameObjectCount = onScreenGameObjects.size();
+		for (int i = 0; i < onScreenGameObjectCount; i++) {
+			object1 = onScreenGameObjects.get(i);
+			for (int j = 0; j < onScreenGameObjectCount; j++) {
+				if (j != i) {
+					object2 = onScreenGameObjects.get(j);
+					if (object1.inVicinityOf(object2)) {
+						object1.attack(object2);
+						object1.evaluateCollisionWith(object2);
+					}
+				}
+			}
+			object1.update(elapsedTime);
+		}
+		
+		// update off screen objects as well
+		int gameObjectCount = gameObjects.size();
+		for (int i = 0; i < gameObjectCount; i++) {
+			GameObject object = gameObjects.get(i);
+			if (!onScreenGameObjects.contains(object)) {
+				object.update(elapsedTime);
+			}
+		}
+		
+		refreshOnScreenGameObjects();
+	}
+
+	private void refreshOnScreenGameObjects() {
+		onScreenGameObjects.clear();
+		int gameObjectCount = gameObjects.size();
+		for (int i = 0; i < gameObjectCount; i++) {
+			GameObject object = gameObjects.get(i);
+			if (Rect.intersects(object.area(), screenSpace)) {
+				onScreenGameObjects.add(object);
+			}
+		}
+	}
+
+
+	public void updateBackground() {
 		bg1.update();
 		bg2.update();
 		bg3.update();
 		bg4.update();
 	}
-
-
-	private void updatePlayerCharacter(int elapsedTime) {
-		playerCharacter.update();
-		playerCharacter.animate(elapsedTime);
+	
+	@Override
+	public void setBackgroundSpeedX(int xSpeed) {
+		bg1.setSpeedX(xSpeed);
+		bg2.setSpeedX(xSpeed);
+		bg3.setSpeedX(xSpeed);
+		bg4.setSpeedX(xSpeed);
 	}
 
-
-	private void updateEnemies(int elapsedTime) {
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy enemy = (Enemy) enemies.get(i);
-			enemy.update();
-			enemy.animate(elapsedTime);
-		}
+	@Override
+	public void setBackgroundSpeedY(int ySpeed) {
+		bg1.setSpeedY(ySpeed);
+		bg2.setSpeedY(ySpeed);
+		bg3.setSpeedY(ySpeed);
+		bg4.setSpeedY(ySpeed);
 	}
+	
+	@Override
+	public int getBackgroundSpeedX() {
+		return bg1.getSpeedX();
+	}
+
+	@Override
+	public int getBackgroundSpeedY() {
+		return bg1.getSpeedY();
+	}
+
 
 	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
 		if (event.x > x
@@ -210,15 +272,6 @@ public class GameScreen extends Screen {
 		else
 			return false;
 	}
-	
-	
-	private void updateTiles(int elapsedTime) {
-		for (int i = 0; i < tilearray.size(); i++) {
-			Tile t = (Tile) tilearray.get(i);
-			t.update();
-			t.animate(elapsedTime);
-		}
-	}
 
 	
 	private void updatePaused(List<TouchEvent> touchEvents) {
@@ -227,7 +280,6 @@ public class GameScreen extends Screen {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 				if (inBounds(event, 0, 0, 800, 240)) {
-
 					if (!inBounds(event, 0, 0, 35, 35)) {
 						resume();
 					}
@@ -264,6 +316,8 @@ public class GameScreen extends Screen {
 		paint2 = null;
 		bg1 = null;
 		bg2 = null;
+		bg3 = null;
+		bg4 = null;
 
 		directionControl = null;
 		pauseButton = null;
@@ -282,16 +336,8 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		
 		// 1. draw the game elements.
-        // Example:
-        // g.drawImage(Assets.background, 0, 0);
-        // g.drawImage(Assets.character, characterX, characterY);
-
 		drawBackground(g);
-		drawTiles(g);
-
-		g.drawImage(playerCharacter.getImage(), playerCharacter.getCenterX() - 61,
-				playerCharacter.getCenterY() - 63);
-		drawEnemies(g);
+		drawOnScreenGameObjects(g);
 
         // 2. draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -305,6 +351,15 @@ public class GameScreen extends Screen {
 	}
 
 
+	private void drawOnScreenGameObjects(Graphics g) {
+		Log.i("screen space", "screen space is " + screenSpace);
+		Log.i("game objects", "game objects count = " + gameObjects.size());
+		Log.i("game objects", "On screen game objects count = " + onScreenGameObjects.size());
+		drawTiles(g);
+		playerCharacter.drawSelf(g);;
+		drawEnemies(g);
+	}
+
 	private void drawBackground(Graphics g) {
 		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
 		g.drawImage(Assets.background, bg2.getBgX(), bg2.getBgY());
@@ -316,27 +371,27 @@ public class GameScreen extends Screen {
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			g.drawImage(enemy.getImage(), enemy.getCenterX() - 48, enemy.getCenterY() - 48);
+			if (onScreenGameObjects.contains(enemy)) {
+				enemy.drawSelf(g);
+			}
 		}
 	}
 
 	
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
-			Tile t = (Tile) tilearray.get(i);
-			if (t.type != 0) {
-				g.drawImage(t.getImage(), t.getCenterX(), t.getCenterY());
+			Tile tile = (Tile) tilearray.get(i);
+			if (onScreenGameObjects.contains(tile)) {
+				tile.drawSelf(g);
 			}
 		}
 	}
 
-	
 	private void drawReadyUI() {
 		Graphics g = game.getGraphics();
 		g.drawARGB(155, 0, 0, 0);
 		g.drawString("Tap to Start.", 400, 240, paint);
 	}
-
 	
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
@@ -344,7 +399,6 @@ public class GameScreen extends Screen {
 		g.drawImage(Assets.button, 0, 0, 0, 195, 35, 35);
 	}
 
-	
 	private void drawPausedUI() {
 		Graphics g = game.getGraphics();
         // Darken the entire screen so you we display the Paused screen.
@@ -353,7 +407,6 @@ public class GameScreen extends Screen {
 		g.drawString("Menu", 400, 360, paint2);
 	}
 
-	
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
         g.drawRect(0, 0, 1281, 801, Color.BLACK);
@@ -374,19 +427,16 @@ public class GameScreen extends Screen {
 		if (state == GameState.Paused)
 			state = GameState.Running;
 	}
-
 	
 	@Override
 	public void dispose() {
 
 	}
 
-	
 	@Override
 	public void backButton() {
 		pause();
 	}
-	
 	
 	private void goToMenu() {
 		game.setScreen(new MainMenuScreen(game));
@@ -396,31 +446,5 @@ public class GameScreen extends Screen {
 
 	public PlayerCharacter getPlayerCharacter() {
 		return playerCharacter;
-	}
-
-	@Override
-	public void setBackgroundSpeedX(int xSpeed) {
-		bg1.setSpeedX(xSpeed);
-		bg2.setSpeedX(xSpeed);
-		bg3.setSpeedX(xSpeed);
-		bg4.setSpeedX(xSpeed);
-	}
-
-	@Override
-	public void setBackgroundSpeedY(int ySpeed) {
-		bg1.setSpeedY(ySpeed);
-		bg2.setSpeedY(ySpeed);
-		bg3.setSpeedY(ySpeed);
-		bg4.setSpeedY(ySpeed);
-	}
-	
-	@Override
-	public int getBackgroundSpeedX() {
-		return bg1.getSpeedX();
-	}
-
-	@Override
-	public int getBackgroundSpeedY() {
-		return bg1.getSpeedY();
 	}
 }
