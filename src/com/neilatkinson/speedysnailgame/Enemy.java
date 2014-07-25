@@ -7,7 +7,7 @@ import com.neilatkinson.gameobject.GameObject;
 
 public abstract class Enemy extends GameObject {
 	
-	public PlayerCharacter playerCharacter;
+	public GameObject playerCharacter;
 
 	public Enemy(GameScreen gameScreen, int centerX,
 			int centerY, int moveSpeed, int speedX, int speedY, Rect area,

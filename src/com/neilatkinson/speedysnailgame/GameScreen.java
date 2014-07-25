@@ -7,11 +7,12 @@ import java.util.Scanner;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
 import com.neilatkinson.framework.Screen;
-import com.neilatkinson.gameobject.Collision;
 import com.neilatkinson.gameobject.GameObject;
 
 public class GameScreen extends Screen {
@@ -51,7 +52,7 @@ public class GameScreen extends Screen {
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 		
 		// Create game objects
-		playerCharacter = PlayerCharacterFactory.build(this, 100, 200);
+		playerCharacter = PlayerCharacterFactory.build(this, 100, 372);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();
@@ -104,7 +105,6 @@ public class GameScreen extends Screen {
 		}
 	}
 
-
 	private ArrayList<String> loadLines() {
 		ArrayList<String> lines = new ArrayList<String>();
 		Scanner scanner = new Scanner(SpeedySnailGame.map);
@@ -148,7 +148,6 @@ public class GameScreen extends Screen {
 
 	
 	private void updateRunning(List<TouchEvent> touchEvents, int elapsedTime) {
-
 		// 1. All touch input is handled here:
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
@@ -183,34 +182,43 @@ public class GameScreen extends Screen {
 		// 3. Check for and trigger interactions
 		evaluateInterractions(elapsedTime);
 
-		this.onScreenGameObjects = refreshOnScreenGameObjects();
+		refreshOnScreenGameObjects();
 		
 	}
 
 
 	public void evaluateInterractions(int elapsedTime) {
 		GameObject object1;
-		ArrayList<Collision> object1Collisions = new ArrayList<Collision>();
 		GameObject object2;
-		int gameObjectCount = onScreenGameObjects.size();
-		for (int i = 0; i < gameObjectCount; i++) {
+		int onScreenGameObjectCount = onScreenGameObjects.size();
+		for (int i = 0; i < onScreenGameObjectCount; i++) {
 			object1 = onScreenGameObjects.get(i);
-			for (int j = 0; j < gameObjectCount; j++) {
+			for (int j = 0; j < onScreenGameObjectCount; j++) {
 				if (j != i) {
 					object2 = onScreenGameObjects.get(j);
 					if (object1.inVicinityOf(object2)) {
-						object1Collisions.add(object1.evaluateCollisionWith(object2));
+						object1.attack(object2);
+						object1.evaluateCollisionWith(object2);
 					}
 				}
 			}
 			object1.update(elapsedTime);
-//			object1.attack(object1Collisions);
-//			object1Collisions.clear();
 		}
+		
+		// update off screen objects as well
+		int gameObjectCount = gameObjects.size();
+		for (int i = 0; i < gameObjectCount; i++) {
+			GameObject object = gameObjects.get(i);
+			if (!onScreenGameObjects.contains(object)) {
+				object.update(elapsedTime);
+			}
+		}
+		
+		refreshOnScreenGameObjects();
 	}
 
-	private ArrayList<GameObject> refreshOnScreenGameObjects() {
-		ArrayList<GameObject> onScreenGameObjects = new ArrayList<GameObject>();
+	private void refreshOnScreenGameObjects() {
+		onScreenGameObjects.clear();
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
@@ -218,7 +226,6 @@ public class GameScreen extends Screen {
 				onScreenGameObjects.add(object);
 			}
 		}
-		return onScreenGameObjects;
 	}
 
 
@@ -228,6 +235,33 @@ public class GameScreen extends Screen {
 		bg3.update();
 		bg4.update();
 	}
+	
+	@Override
+	public void setBackgroundSpeedX(int xSpeed) {
+		bg1.setSpeedX(xSpeed);
+		bg2.setSpeedX(xSpeed);
+		bg3.setSpeedX(xSpeed);
+		bg4.setSpeedX(xSpeed);
+	}
+
+	@Override
+	public void setBackgroundSpeedY(int ySpeed) {
+		bg1.setSpeedY(ySpeed);
+		bg2.setSpeedY(ySpeed);
+		bg3.setSpeedY(ySpeed);
+		bg4.setSpeedY(ySpeed);
+	}
+	
+	@Override
+	public int getBackgroundSpeedX() {
+		return bg1.getSpeedX();
+	}
+
+	@Override
+	public int getBackgroundSpeedY() {
+		return bg1.getSpeedY();
+	}
+
 
 	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
 		if (event.x > x
@@ -302,10 +336,6 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		
 		// 1. draw the game elements.
-        // Example:
-        // g.drawImage(Assets.background, 0, 0);
-        // g.drawImage(Assets.character, characterX, characterY);
-
 		drawBackground(g);
 		drawOnScreenGameObjects(g);
 
@@ -322,29 +352,13 @@ public class GameScreen extends Screen {
 
 
 	private void drawOnScreenGameObjects(Graphics g) {
+		Log.i("screen space", "screen space is " + screenSpace);
+		Log.i("game objects", "game objects count = " + gameObjects.size());
+		Log.i("game objects", "On screen game objects count = " + onScreenGameObjects.size());
 		drawTiles(g);
-		drawPlayerCharacter(g);
+		playerCharacter.drawSelf(g);;
 		drawEnemies(g);
 	}
-
-
-	public void drawPlayerCharacter(Graphics g) {
-		getPlayerCharacter().drawSelf(g);
-//		g.drawRect( playerCharacter.vicinity().left,
-//					playerCharacter.vicinity().top,
-//					playerCharacter.vicinity().width(),
-//					playerCharacter.vicinity().height(),
-//					Color.argb(50, 255, 0, 0));
-//		for(int i = 0; i < playerCharacter.collisionZones().size(); i++){
-//			Rect collisionZone = playerCharacter.collisionZones().get(i);
-//			g.drawRect( collisionZone.left,
-//						collisionZone.top,
-//						collisionZone.width(),
-//						collisionZone.height(),
-//						Color.argb(100, 255, 0, 0));
-//		}
-	}
-
 
 	private void drawBackground(Graphics g) {
 		g.drawImage(Assets.background, bg1.getBgX(), bg1.getBgY());
@@ -359,19 +373,6 @@ public class GameScreen extends Screen {
 			Enemy enemy = enemies.get(i);
 			if (onScreenGameObjects.contains(enemy)) {
 				enemy.drawSelf(g);
-//				g.drawRect( enemy.vicinity().left,
-//						enemy.vicinity().top,
-//						enemy.vicinity().width(),
-//						enemy.vicinity().height(),
-//						Color.argb(50, 0, 255, 0));
-	//			for(int j = 0; j < enemy.collisionZones().size(); j++){
-	//				Rect collisionZone = enemy.collisionZones().get(j);
-	//				g.drawRect( collisionZone.left,
-	//							collisionZone.top,
-	//							collisionZone.width(),
-	//							collisionZone.height(),
-	//							Color.argb(100, 0, 255, 0));
-	//			}
 			}
 		}
 	}
@@ -379,28 +380,18 @@ public class GameScreen extends Screen {
 	
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
-			Tile t = (Tile) tilearray.get(i);
-			if (onScreenGameObjects.contains(t)) {
-				t.drawSelf(g);
-	//			for(int j = 0; j < t.collisionZones().size(); j++){
-	//				Rect collisionZone = t.collisionZones().get(j);
-	//				g.drawRect( collisionZone.left,
-	//							collisionZone.top,
-	//							collisionZone.width(),
-	//							collisionZone.height(),
-	//							Color.argb(100, 0, 0, 255));
-	//			}
+			Tile tile = (Tile) tilearray.get(i);
+			if (onScreenGameObjects.contains(tile)) {
+				tile.drawSelf(g);
 			}
 		}
 	}
 
-	
 	private void drawReadyUI() {
 		Graphics g = game.getGraphics();
 		g.drawARGB(155, 0, 0, 0);
 		g.drawString("Tap to Start.", 400, 240, paint);
 	}
-
 	
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
@@ -408,7 +399,6 @@ public class GameScreen extends Screen {
 		g.drawImage(Assets.button, 0, 0, 0, 195, 35, 35);
 	}
 
-	
 	private void drawPausedUI() {
 		Graphics g = game.getGraphics();
         // Darken the entire screen so you we display the Paused screen.
@@ -417,7 +407,6 @@ public class GameScreen extends Screen {
 		g.drawString("Menu", 400, 360, paint2);
 	}
 
-	
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
         g.drawRect(0, 0, 1281, 801, Color.BLACK);
@@ -438,19 +427,16 @@ public class GameScreen extends Screen {
 		if (state == GameState.Paused)
 			state = GameState.Running;
 	}
-
 	
 	@Override
 	public void dispose() {
 
 	}
 
-	
 	@Override
 	public void backButton() {
 		pause();
 	}
-	
 	
 	private void goToMenu() {
 		game.setScreen(new MainMenuScreen(game));
@@ -460,31 +446,5 @@ public class GameScreen extends Screen {
 
 	public PlayerCharacter getPlayerCharacter() {
 		return playerCharacter;
-	}
-
-	@Override
-	public void setBackgroundSpeedX(int xSpeed) {
-		bg1.setSpeedX(xSpeed);
-		bg2.setSpeedX(xSpeed);
-		bg3.setSpeedX(xSpeed);
-		bg4.setSpeedX(xSpeed);
-	}
-
-	@Override
-	public void setBackgroundSpeedY(int ySpeed) {
-		bg1.setSpeedY(ySpeed);
-		bg2.setSpeedY(ySpeed);
-		bg3.setSpeedY(ySpeed);
-		bg4.setSpeedY(ySpeed);
-	}
-	
-	@Override
-	public int getBackgroundSpeedX() {
-		return bg1.getSpeedX();
-	}
-
-	@Override
-	public int getBackgroundSpeedY() {
-		return bg1.getSpeedY();
 	}
 }

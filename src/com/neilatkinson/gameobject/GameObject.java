@@ -6,6 +6,8 @@ import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
 import com.neilatkinson.gameobject.Animation;
+
+import android.graphics.Color;
 import android.graphics.Rect;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
@@ -387,14 +389,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	@Override
-	public void attack(ArrayList<Collision> collisions) {
-		int collisionCount = collisions.size();
-		for (int i = 0; i < collisionCount; i++) {
-			Collision collision = collisions.get(i);
-			if (collision.didHappen()) {
-				collision.getOtherObject().takeDamage(1);
-			}
-		}
+	public void attack(Damageable damageable) {
+		damageable.takeDamage(1);
 	}
 	
 	@Override
@@ -479,17 +475,57 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		int left = centerX() - area().width() / 2;
 		int top = centerY() - area().height() / 2;
 		graphics.drawImage(getImage(), left, top);
+		drawVicinity(graphics);
+		drawCollisionZones(graphics);
+//		drawAttackZones(graphics);
+//		drawDamageZones(graphics);
 	}
-	
+
+	private void drawDamageZones(Graphics graphics) {
+		for(int i = 0; i < damageZones().size(); i++){
+			Rect damageZone = damageZones().get(i);
+			graphics.drawRect(  damageZone.left,
+								damageZone.top,
+								damageZone.width(),
+								damageZone.height(),
+								Color.argb(40, 0, 255, 0));
+		}
+	}
+
+	private void drawAttackZones(Graphics graphics) {
+		for(int i = 0; i < attackZones().size(); i++){
+			Rect attackZone = attackZones().get(i);
+			graphics.drawRect(  attackZone.left,
+								attackZone.top,
+								attackZone.width(),
+								attackZone.height(),
+								Color.argb(40, 0, 255, 0));
+		}
+	}
+
+	private void drawCollisionZones(Graphics graphics) {
+		for(int i = 0; i < collisionZones().size(); i++){
+			Rect collisionZone = collisionZones().get(i);
+			graphics.drawRect(  collisionZone.left,
+								collisionZone.top,
+								collisionZone.width(),
+								collisionZone.height(),
+								Color.argb(40, 0, 0, 255));
+		}
+	}
+
+	private void drawVicinity(Graphics graphics) {
+		graphics.drawRect( vicinity().left, vicinity().top, vicinity().width(), vicinity().height(), Color.argb(20, 100, 100, 100));
+	}
+
+
 	@Override
-	public Collision evaluateCollisionWith(GameObject otherObject) {
+	public void evaluateCollisionWith(GameObject otherObject) {
 		ArrayList<Rect> collisionIntrusionZones = getCollisionIntrusionZones(otherObject);
 		if (collisionIntrusionZones.size() > 0) {
 			Collision collision = new Collision(this, otherObject, collisionIntrusionZones);
 			updateMaxSpeeds(collision);
-			return collision;
 		}
-		return null;
 	}
 
 	private ArrayList<Rect> getCollisionIntrusionZones(GameObject otherObject) {
