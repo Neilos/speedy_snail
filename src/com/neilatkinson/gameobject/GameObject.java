@@ -5,14 +5,19 @@ import java.util.ArrayList;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.framework.implementation.AndroidGame;
 import com.neilatkinson.gameobject.Animation;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
+	protected enum Attitude {
+		Aggressive, Passive
+	}
+
 	protected Screen gameScreen;
 	private int centerX;
 	private int centerY;
@@ -43,7 +48,10 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private boolean isMovingDown;
 	private boolean isMovingRight;
 	private boolean ouch;
+	private Attitude attitude;
 
+	protected Activity game;
+	protected long passiveDuration;
 
 	public GameObject(
 			Screen gameScreen,
@@ -91,11 +99,14 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceDownAnimation = faceDownAnimation;
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
-		
+
+		this.attitude = Attitude.Aggressive;
+		this.passiveDuration = 1000; 
+		game = ((AndroidGame) gameScreen.game);
 		this.ouch = false;
 		resetMaxSpeeds();
 	}
-	
+
 	public void updateZones(int zoneOffsetX, int zoneOffsetY) {
 		area().offset(zoneOffsetX, zoneOffsetY);
 		updateCollisionZones(zoneOffsetX, zoneOffsetY);
@@ -391,16 +402,35 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		currentAnimation.update(elapsedTime);
 	}
 
+
 	@Override
 	public void attack(Damageable damageable) {
-        for (Rect attackZone : attackZones()) {
-        	for (Rect damageZone : damageable.damageZones()) {
-        		if (Rect.intersects(attackZone, damageZone)) {
-        			Log.i("Attack", this + "attacking " + damageable);
-        			damageable.takeDamage(1);
-        		}
-        	}
-        }
+		if (attitude == Attitude.Aggressive) {
+	        for (Rect attackZone : attackZones()) {
+	        	for (Rect damageZone : damageable.damageZones()) {
+	        		if (Rect.intersects(attackZone, damageZone)) {
+	        			damageable.takeDamage(1);
+	        			bePassiveTemporarily();
+	        		}
+	        	}
+	        }
+		}
+	}
+
+	public void bePassiveTemporarily() {
+		this.attitude = Attitude.Passive;
+		final GameObject self = this;
+		game.runOnUiThread(new Runnable() {
+			@Override
+			public synchronized void run() {
+				try {
+					wait(self.passiveDuration);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				self.attitude = Attitude.Aggressive;
+			}
+		});
 	}
 
 	@Override

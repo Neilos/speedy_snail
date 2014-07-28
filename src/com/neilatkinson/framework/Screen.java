@@ -1,7 +1,7 @@
 package com.neilatkinson.framework;
 
 public abstract class Screen {
-	protected final Game game;
+	public final Game game;
 
 	public Screen(Game game) {
 		this.game = game;
