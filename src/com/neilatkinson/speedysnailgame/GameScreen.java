@@ -378,7 +378,7 @@ public class GameScreen extends Screen {
 
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
-		g.drawRect(0, 0, getWidth(), getHeight(), Color.BLACK); //g.drawRect(screenSpace.rectangle(), Color.BLACK);
+		g.drawRect(screenSpace.rectangle(), Color.BLACK);
         g.drawString("GAME OVER.", 400, 240, paint2);
 		g.drawString("(Touch screen to return to main menu)", 400, 290, paint);
 	}
