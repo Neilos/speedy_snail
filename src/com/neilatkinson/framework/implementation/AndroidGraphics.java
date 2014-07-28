@@ -149,7 +149,7 @@ public class AndroidGraphics implements Graphics {
 	@Override
 	public void drawARGB(int a, int r, int g, int b) {
 		paint.setStyle(Style.FILL);
-	       canvas.drawARGB(a, r, g, b);
+	    canvas.drawARGB(a, r, g, b);
 
 	}
 
