@@ -1,6 +1,7 @@
 package com.neilatkinson.speedysnailgame;
 
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
 import android.graphics.Rect;
@@ -88,20 +89,15 @@ public class PlayerCharacter extends GameObject {
 		setSpeedX(0);
 		setSpeedY(0);
 	}
+    
+    @Override
+    public void attack(Damageable damageable) {
 
-	@Override
-	public void takeDamage(int damage) {
-		
-	}
-
-	@Override
-	public void heal(int damage) {
-		
-	}
-
-	@Override
-	public void die() {
-		
-	}
+    }
+    
+    @Override
+    public void die() {
+    	
+    }
 
 }

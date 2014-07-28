@@ -38,7 +38,7 @@ public class TileFactory {
 
 	    vicinity = new Rect(centerX - 20, centerY - 20, centerX + 20, centerY + 20);
 
-	    collisionZones.add(new Rect(vicinity));
+	    collisionZones.add(new Rect(vicinity.left - 1, vicinity.top - 1, vicinity.right + 1, vicinity.bottom + 1));
 		damageZones.add(new Rect(vicinity));
 	    attackZones.add(new Rect(vicinity));
 

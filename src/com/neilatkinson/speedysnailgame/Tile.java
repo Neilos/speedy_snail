@@ -3,6 +3,7 @@ package com.neilatkinson.speedysnailgame;
 import android.graphics.Rect;
 
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.Damageable;
 import com.neilatkinson.gameobject.GameObject;
 
 public class Tile extends GameObject{
@@ -24,7 +25,11 @@ public class Tile extends GameObject{
 				faceDownAnimation, faceRightAnimation, currentAnimation);
 
 	}
+	
+	@Override
+	public void attack(Damageable damageable) {
 
+	}
 
 	@Override
 	public void takeDamage(int damage) {

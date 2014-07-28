@@ -9,6 +9,7 @@ import com.neilatkinson.gameobject.Animation;
 
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
@@ -41,6 +42,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private boolean isMovingLeft;
 	private boolean isMovingDown;
 	private boolean isMovingRight;
+	private boolean ouch;
 
 
 	public GameObject(
@@ -90,6 +92,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
 		
+		this.ouch = false;
 		resetMaxSpeeds();
 	}
 	
@@ -390,22 +393,34 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 	@Override
 	public void attack(Damageable damageable) {
-		damageable.takeDamage(1);
+        for (Rect attackZone : attackZones()) {
+        	for (Rect damageZone : damageable.damageZones()) {
+        		if (Rect.intersects(attackZone, damageZone)) {
+        			Log.i("Attack", this + "attacking " + damageable);
+        			damageable.takeDamage(1);
+        		}
+        	}
+        }
 	}
-	
+
 	@Override
 	public void takeDamage(int damage) {
 		if (!isDead()) {
 			this.health -= damage;
-			if (health <= 0)
+			this.ouch = true;
+			if (health() <= 0)
 				die();
 		}
 	}
 
+	public int health() {
+		return health;
+	}
+
 	@Override
-	public void heal(int damage) {
+	public void heal(int sustenance) {
 		if (!isDead()){
-			this.health += damage;
+			this.health += sustenance;
 		}
 	}
 
@@ -475,10 +490,13 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		int left = centerX() - area().width() / 2;
 		int top = centerY() - area().height() / 2;
 		graphics.drawImage(getImage(), left, top);
-		drawVicinity(graphics);
-		drawCollisionZones(graphics);
+//		drawVicinity(graphics);
+//		drawCollisionZones(graphics);
+		if (ouch == true) {
+			drawDamageZones(graphics);
+			this.ouch = false;
+		}
 //		drawAttackZones(graphics);
-//		drawDamageZones(graphics);
 	}
 
 	private void drawDamageZones(Graphics graphics) {
@@ -488,7 +506,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 								damageZone.top,
 								damageZone.width(),
 								damageZone.height(),
-								Color.argb(40, 0, 255, 0));
+								Color.argb(40, 255, 0, 0));
 		}
 	}
 

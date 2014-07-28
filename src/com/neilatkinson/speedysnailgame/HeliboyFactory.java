@@ -39,12 +39,12 @@ public class HeliboyFactory {
 		ArrayList<Rect> damageZones = new ArrayList<Rect>();
 	    ArrayList<Rect> attackZones = new ArrayList<Rect>();
 
-	    vicinity = new Rect(centerX - 48, centerY - 48, centerX + 48, centerY + 48);
-	    Rect rect = new Rect(vicinity.left + 10, vicinity.top + 5, vicinity.left + 72, vicinity.top + 88);
+	    vicinity = new Rect(centerX - 46, centerY - 48, centerX + 48, centerY + 48);
+	    Rect rect = new Rect(vicinity.left + 11, vicinity.top + 6, vicinity.left + 73, vicinity.top + 86);
 
 		collisionZones.add(new Rect(rect));
-		damageZones.add(new Rect(rect));
-	    attackZones.add(new Rect(rect));
+		damageZones.add(new Rect(rect.left - 1, rect.top -1, rect.right + 1, rect.bottom + 1));
+	    attackZones.add(new Rect(rect.left - 1, rect.top -1, rect.right + 1, rect.bottom + 1));
 
 		// moveUpAnimation
 	    frameImage = Assets.heliboy;

@@ -39,9 +39,7 @@ public class GameScreen extends Screen {
 
 	private ImageControl pauseButton;
 	private ScreenRegion screenSpace;
-
 	private ScreenRegion resumeControl;
-
 	private ScreenRegion returnToMenuControl;
     
     public GameScreen(Game game) {
@@ -127,7 +125,7 @@ public class GameScreen extends Screen {
 		return lines;
 	}
 
-	
+
 	@Override
 	public void update(int elapsedTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
@@ -178,10 +176,10 @@ public class GameScreen extends Screen {
 		if (playerCharacter.isDead()) {
 			state = GameState.GameOver;
 		}
-		
+
 		// 3. Check for and trigger interactions
 		evaluateInterractions(elapsedTime);
-		
+
 	}
 
 
@@ -202,7 +200,7 @@ public class GameScreen extends Screen {
 			}
 			object1.update(elapsedTime);
 		}
-		
+
 		// update off screen objects as well
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
@@ -211,7 +209,7 @@ public class GameScreen extends Screen {
 				object.update(elapsedTime);
 			}
 		}
-		
+
 		refreshOnScreenGameObjects();
 	}
 
@@ -405,7 +403,11 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void backButton() {
-		pause();
+		if (state == GameState.Paused) {
+			resume();
+		} else {
+			pause();
+		}
 	}
 	
 	private void goToMenu() {
