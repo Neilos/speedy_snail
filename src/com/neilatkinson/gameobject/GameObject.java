@@ -11,11 +11,38 @@ import com.neilatkinson.gameobject.Animation;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
 	protected enum Attitude {
 		Aggressive, Passive
+	}
+	
+	private class ReturnToAggressiveAttitude extends AsyncTask<Long, Integer, Attitude> {
+		@Override
+	    protected Attitude doInBackground(Long... durations) {
+			long duration = durations[0];
+			try {
+				Thread.sleep(duration);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return Attitude.Aggressive;
+	    }
+	
+		@Override
+	    protected void onProgressUpdate(Integer... progress) {
+	    }
+	
+		@Override
+	    protected void onPostExecute(Attitude newAttitude) {
+			attitude = newAttitude;
+	        Log.i("Attitude", "Attitude now aggressive again!");
+	    }
 	}
 
 	protected Screen gameScreen;
@@ -75,7 +102,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			Animation faceLeftAnimation,
 			Animation faceDownAnimation,
 			Animation faceRightAnimation,
-			Animation currentAnimation) {
+			Animation currentAnimation,
+			int passiveDuration) {
 
 		this.gameScreen = gameScreen;
 		this.centerX = centerX;
@@ -99,9 +127,9 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceDownAnimation = faceDownAnimation;
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
+		this.passiveDuration = passiveDuration;
 
 		this.attitude = Attitude.Aggressive;
-		this.passiveDuration = 1000; 
 		game = ((AndroidGame) gameScreen.game);
 		this.ouch = false;
 		resetMaxSpeeds();
@@ -406,31 +434,18 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	@Override
 	public void attack(Damageable damageable) {
 		if (attitude == Attitude.Aggressive) {
+			Log.i("Attitude", "Attitude is aggressive");
 	        for (Rect attackZone : attackZones()) {
 	        	for (Rect damageZone : damageable.damageZones()) {
 	        		if (Rect.intersects(attackZone, damageZone)) {
 	        			damageable.takeDamage(1);
-	        			bePassiveTemporarily();
+	        			this.attitude = Attitude.Passive;
+	        			Log.i("Damage", this + " attacking " + damageable);
+	        			new ReturnToAggressiveAttitude().execute(passiveDuration);
 	        		}
 	        	}
 	        }
 		}
-	}
-
-	public void bePassiveTemporarily() {
-		this.attitude = Attitude.Passive;
-		final GameObject self = this;
-		game.runOnUiThread(new Runnable() {
-			@Override
-			public synchronized void run() {
-				try {
-					wait(self.passiveDuration);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				self.attitude = Attitude.Aggressive;
-			}
-		});
 	}
 
 	@Override

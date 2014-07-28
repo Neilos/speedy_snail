@@ -20,6 +20,7 @@ public class PlayerCharacterFactory {
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 1000;
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -248,7 +249,8 @@ public class PlayerCharacterFactory {
 						faceLeftAnimation,
 						faceDownAnimation,
 						faceRightAnimation,
-						currentAnimation);
+						currentAnimation,
+						passiveDuration);
 
 		return playerCharacter;
 	}

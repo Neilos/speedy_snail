@@ -15,13 +15,14 @@ public class Heliboy extends Enemy {
 			Animation moveDownAnimation, Animation moveRightAnimation,
 			Animation faceUpAnimation, Animation faceLeftAnimation,
 			Animation faceDownAnimation, Animation faceRightAnimation,
-			Animation currentAnimation) {
+			Animation currentAnimation,
+			int passiveDuration) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
 				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
-				faceDownAnimation, faceRightAnimation, currentAnimation);
+				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration);
 	}
 
 }

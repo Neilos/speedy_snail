@@ -20,6 +20,7 @@ public class TileFactory {
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 1000;
 		
 		int duration;
 		ArrayList<Rect> collisionZones = new ArrayList<Rect>();
@@ -105,7 +106,8 @@ public class TileFactory {
 							faceLeftAnimation,
 							faceDownAnimation,
 							faceRightAnimation,
-							currentAnimation);
+							currentAnimation,
+							passiveDuration);
 	
 			return tile;
 		} else {

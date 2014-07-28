@@ -22,6 +22,7 @@ public class HeliboyFactory {
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 5000;
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -212,7 +213,8 @@ public class HeliboyFactory {
 						faceLeftAnimation,
 						faceDownAnimation,
 						faceRightAnimation,
-						currentAnimation);
+						currentAnimation,
+						passiveDuration);
 
 		return heliboy;
 	}
