@@ -181,8 +181,6 @@ public class GameScreen extends Screen {
 		
 		// 3. Check for and trigger interactions
 		evaluateInterractions(elapsedTime);
-
-		refreshOnScreenGameObjects();
 		
 	}
 
@@ -350,7 +348,6 @@ public class GameScreen extends Screen {
             drawGameOverUI();
 	}
 
-
 	private void drawOnScreenGameObjects(Graphics g) {
 		Log.i("screen space", "screen space is " + screenSpace);
 		Log.i("game objects", "game objects count = " + gameObjects.size());
@@ -367,7 +364,6 @@ public class GameScreen extends Screen {
 		g.drawImage(Assets.background, bg4.getBgX(), bg4.getBgY());
 	}
 
-
 	private void drawEnemies(Graphics g) {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
@@ -377,7 +373,6 @@ public class GameScreen extends Screen {
 		}
 	}
 
-	
 	private void drawTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile tile = (Tile) tilearray.get(i);
@@ -421,7 +416,6 @@ public class GameScreen extends Screen {
 			 state = GameState.Paused;
 	}
 
-	
 	@Override
 	public void resume() {
 		if (state == GameState.Paused)
@@ -442,7 +436,6 @@ public class GameScreen extends Screen {
 		game.setScreen(new MainMenuScreen(game));
 
 	}
-
 
 	public PlayerCharacter getPlayerCharacter() {
 		return playerCharacter;
