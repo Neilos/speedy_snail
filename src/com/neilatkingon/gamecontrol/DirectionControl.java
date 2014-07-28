@@ -1,10 +1,9 @@
-package com.neilatkinson.speedysnailgame;
+package com.neilatkingon.gamecontrol;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Input.TouchEvent;
-import com.neilatkinson.gameobject.GameControl;
 
-public class DirectionControl extends GameControl {
+public class DirectionControl extends ImageControl {
 
 	private int buttonWidth;
 	private int buttonHeight;
@@ -12,31 +11,31 @@ public class DirectionControl extends GameControl {
 
 	public DirectionControl(Image image, int x, int y, int srcX, int srcY, int width, int height) {
 		super(image, x, y, srcX, srcY, width, height);
-		buttonWidth = this.width / 3;
-		buttonHeight = this.height / 3;
+		this.buttonWidth = this.width / 3;
+		this.buttonHeight = this.height / 3;
 	}
 
 	public boolean upButtonPressed(TouchEvent touchEvent) {
-		int upButtonX = getPositionX() + buttonWidth;
-		int upButtonY = getPositionY();
+		int upButtonX = positionX() + buttonWidth;
+		int upButtonY = positionY();
 		return inBounds(touchEvent, upButtonX, upButtonY, buttonWidth, buttonHeight);
 	}
 
 	public boolean leftButtonPressed(TouchEvent touchEvent) {
-		int leftButtonX = getPositionX();
-		int leftButtonY = getPositionY() + buttonHeight;
+		int leftButtonX = positionX();
+		int leftButtonY = positionY() + buttonHeight;
 		return inBounds(touchEvent, leftButtonX, leftButtonY, buttonWidth, buttonHeight);
 	}
 
 	public boolean downButtonPressed(TouchEvent touchEvent) {
-		int downButtonX = getPositionX() + buttonWidth;
-		int downButtonY = getPositionY() + 2 * buttonHeight;
+		int downButtonX = positionX() + buttonWidth;
+		int downButtonY = positionY() + 2 * buttonHeight;
 		return inBounds(touchEvent, downButtonX, downButtonY, buttonWidth, buttonHeight);
 	}
 
 	public boolean rightButtonPressed(TouchEvent touchEvent) {
-		int rightButtonX = getPositionX() + 2 * buttonWidth;
-		int rightButtonY = getPositionY() + buttonHeight;
+		int rightButtonX = positionX() + 2 * buttonWidth;
+		int rightButtonY = positionY() + buttonHeight;
 		return inBounds(touchEvent, rightButtonX, rightButtonY, buttonWidth, buttonHeight);
 	}
 	

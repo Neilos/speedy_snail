@@ -9,6 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.neilatkingon.gamecontrol.DirectionControl;
+import com.neilatkingon.gamecontrol.ImageControl;
+import com.neilatkingon.gamecontrol.ScreenRegion;
 import com.neilatkinson.framework.Game;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Input.TouchEvent;
@@ -36,8 +39,12 @@ public class GameScreen extends Screen {
     int livesLeft = 1;
     Paint paint, paint2;
 
-	private PauseButton pauseButton;
-	private Rect screenSpace;
+	private ImageControl pauseButton;
+	private ScreenRegion screenSpace;
+
+	private ScreenRegion resumeControl;
+
+	private ScreenRegion returnToMenuControl;
     
     public GameScreen(Game game) {
         super(game);
@@ -48,8 +55,11 @@ public class GameScreen extends Screen {
 		bg3 = new Background(0, 480, 2160, 480);
 		bg4 = new Background(2160, 480, 2160, 480);
 
-		pauseButton = new PauseButton(Assets.directionControl, 0, 0, 0, 195, 35, 35);
+		this.screenSpace = new ScreenRegion(0, 0, game.getFrameBufferWidth(), game.getFrameBufferWidth());
+		pauseButton = new ImageControl(Assets.button, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
+		resumeControl =  new ScreenRegion(0, 36, 800, 240);
+		returnToMenuControl =  new ScreenRegion(0, 240, 800, 240);
 		
 		// Create game objects
 		playerCharacter = PlayerCharacterFactory.build(this, 100, 372);
@@ -60,8 +70,6 @@ public class GameScreen extends Screen {
 		gameObjects.add(playerCharacter);
 		gameObjects.addAll(enemies);
 		gameObjects.addAll(tilearray);
-
-		screenSpace = new Rect(-20, -20, game.getFrameBufferWidth() + 20, game.getFrameBufferWidth() + 20);
 
         // Defining a paint object
 		paint = new Paint();
@@ -153,7 +161,6 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_DOWN) {
-				
 				if (directionControl.upButtonPressed(event)) {
 					playerCharacter.setMovingUp();
 				} else if (directionControl.leftButtonPressed(event)) {
@@ -162,12 +169,11 @@ public class GameScreen extends Screen {
 					playerCharacter.setMovingDown();
 				} else if (directionControl.rightButtonPressed(event)) {
 					playerCharacter.setMovingRight();
-				} else {  }
-			}
-
-			if (event.type == TouchEvent.TOUCH_UP) {
+				} else {
+				}
+			} else if (event.type == TouchEvent.TOUCH_UP) {
 				playerCharacter.setStopped();
-				if (pauseButton.isPressed(event)) {
+				if (pauseButton.isTouched(event)) {
 					pause();
 				}
 			}
@@ -220,7 +226,7 @@ public class GameScreen extends Screen {
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
-			if (Rect.intersects(object.area(), screenSpace)) {
+			if (Rect.intersects(object.area(), screenSpace.rectangle())) {
 				onScreenGameObjects.add(object);
 			}
 		}
@@ -259,49 +265,28 @@ public class GameScreen extends Screen {
 	public int getBackgroundSpeedY() {
 		return bg1.getSpeedY();
 	}
-
-
-	private boolean inBounds(TouchEvent event, int x, int y, int width, int height) {
-		if (event.x > x
-			&& event.x < x + width - 1
-			&& event.y > y
-			&& event.y < y + height - 1)
-			return true;
-		else
-			return false;
-	}
-
 	
 	private void updatePaused(List<TouchEvent> touchEvents) {
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
-			if (event.type == TouchEvent.TOUCH_UP) {
-				if (inBounds(event, 0, 0, 800, 240)) {
-					if (!inBounds(event, 0, 0, 35, 35)) {
-						resume();
-					}
-				}
-
-				if (inBounds(event, 0, 240, 800, 240)) {
-					nullify();
-					goToMenu();
-				}
+			if (resumeControl.isTouchedUpInside(event) ){
+				resume();
+			} else if (returnToMenuControl.isTouchedUpInside(event)) {
+				nullify();
+				goToMenu();
 			}
 		}
 	}
 
-	
 	private void updateGameOver(List<TouchEvent> touchEvents) {
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
-			if (event.type == TouchEvent.TOUCH_DOWN) {
-				if (inBounds(event, 0, 0, 800, 480)) {
-					nullify();
-					game.setScreen(new MainMenuScreen(game));
-					return;
-				}
+			if (screenSpace.isTouchedUpInside(event)) {
+				nullify();
+				game.setScreen(new MainMenuScreen(game));
+				return;
 			}
 		}
 	}
@@ -349,9 +334,6 @@ public class GameScreen extends Screen {
 	}
 
 	private void drawOnScreenGameObjects(Graphics g) {
-		Log.i("screen space", "screen space is " + screenSpace);
-		Log.i("game objects", "game objects count = " + gameObjects.size());
-		Log.i("game objects", "On screen game objects count = " + onScreenGameObjects.size());
 		drawTiles(g);
 		playerCharacter.drawSelf(g);;
 		drawEnemies(g);
@@ -390,8 +372,8 @@ public class GameScreen extends Screen {
 	
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
-		directionControl.draw(g);
-		g.drawImage(Assets.button, 0, 0, 0, 195, 35, 35);
+		directionControl.drawSelf(g);
+		pauseButton.drawSelf(g);
 	}
 
 	private void drawPausedUI() {
@@ -404,9 +386,9 @@ public class GameScreen extends Screen {
 
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
-        g.drawRect(0, 0, 1281, 801, Color.BLACK);
+        g.drawRect(0, 0, 1281, 801, Color.BLACK); // fill the screen with transparent black
         g.drawString("GAME OVER.", 400, 240, paint2);
-		g.drawString("Tap to return.", 400, 290, paint);
+		g.drawString("(Touch screen to return to main menu)", 400, 290, paint);
 	}
 
 	
