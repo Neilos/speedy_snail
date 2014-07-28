@@ -7,8 +7,6 @@ import java.util.Scanner;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
-
 import com.neilatkingon.gamecontrol.DirectionControl;
 import com.neilatkingon.gamecontrol.ImageControl;
 import com.neilatkingon.gamecontrol.ScreenRegion;
@@ -144,17 +142,13 @@ public class GameScreen extends Screen {
             updateGameOver(touchEvents);
 	}
 
-	
 	private void updateReady(List<TouchEvent> touchEvents) {
-		// This example starts with a "Ready" screen.
         // When the user touches the screen, the game begins. 
         // state now becomes GameState.Running.
-        // Now the updateRunning() method will be called!
         if (touchEvents.size() > 0)
             state = GameState.Running;
 	}
 
-	
 	private void updateRunning(List<TouchEvent> touchEvents, int elapsedTime) {
 		// 1. All touch input is handled here:
 		int len = touchEvents.size();
@@ -386,7 +380,7 @@ public class GameScreen extends Screen {
 
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
-        g.drawRect(0, 0, 1281, 801, Color.BLACK); // fill the screen with transparent black
+		g.drawRect(screenSpace.rectangle(), Color.BLACK);
         g.drawString("GAME OVER.", 400, 240, paint2);
 		g.drawString("(Touch screen to return to main menu)", 400, 290, paint);
 	}
