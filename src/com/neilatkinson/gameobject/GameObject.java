@@ -483,13 +483,6 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	@Override
-	public void heal(int sustenance) {
-		if (!isDead()){
-			this.health += sustenance;
-		}
-	}
-
-	@Override
 	public void die() {
 		this.isDead = true;
 	}
