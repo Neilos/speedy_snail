@@ -451,17 +451,19 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	@Override
-	public void tryAttacking(Damageable damageable) {
+	public boolean inRangeOf(Damageable damageable) {
 		for (Rect attackZone : attackZones()) {
 			for (Rect damageZone : damageable.damageZones()) {
 				if (Rect.intersects(attackZone, damageZone)) {
-					attack(damageable);
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
-	protected void attack(Damageable damageable) {
+	@Override
+	public void attack(Damageable damageable) {
 		damageable.takeDamage(damage);
 		this.attitude = Attitude.Passive;
 		Log.i("Damage", this + " attacking " + damageable);

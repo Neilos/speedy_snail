@@ -194,7 +194,9 @@ public class GameScreen extends Screen {
 					object2 = onScreenGameObjects.get(j);
 					if (object1.inVicinityOf(object2)) {
 						if (object1.canAttack(object2)) {
-							object1.tryAttacking(object2);
+							if (object1.inRangeOf(object2)) {
+								object1.attack(object2);
+							}
 						}
 						object1.evaluateCollisionWith(object2);
 					}
