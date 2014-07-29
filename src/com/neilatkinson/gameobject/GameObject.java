@@ -5,13 +5,61 @@ import java.util.ArrayList;
 import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.framework.Screen;
+import com.neilatkinson.framework.implementation.AndroidGame;
 import com.neilatkinson.gameobject.Animation;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.util.Log;
 
 public abstract class GameObject implements Collidable, Updateable, AttackCapable, Damageable, Moveable {
 	
+	protected enum Attitude {
+		Aggressive, Passive
+	}
+	
+	private class ReturnToAggressiveAttitude extends AsyncTask<Long, Integer, Attitude> {
+		@Override
+	    protected Attitude doInBackground(Long... durations) {
+			long duration = durations[0];
+			try {
+				Thread.sleep(duration);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return Attitude.Aggressive;
+	    }
+	
+		@Override
+	    protected void onProgressUpdate(Integer... progress) {
+	    }
+	
+		@Override
+	    protected void onPostExecute(Attitude newAttitude) {
+			attitude = newAttitude;
+	    }
+	}
+	
+	private class Ouch {
+		
+		private Rect area;
+		private int pain;
+
+		public Ouch(Rect area, int pain) {
+			this.area = area;
+			this.pain = pain;
+		}
+		
+		public void drawSelf(Graphics graphics) {
+			Log.i("ouch", "That hurt");
+			graphics.drawCircle(area.centerX(), area.centerY(), pain * 10, Color.argb(40, 255, 0, 0));
+		}
+	}
+
 	protected Screen gameScreen;
 	private int centerX;
 	private int centerY;
@@ -36,12 +84,18 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private Animation faceRightAnimation;
 
 	private int health;
+	private int damage;
 	private boolean isDead;
 	private boolean isMovingUp;
 	private boolean isMovingLeft;
 	private boolean isMovingDown;
 	private boolean isMovingRight;
+	private ArrayList<Ouch> ouches;
+	private Attitude attitude;
 
+	protected Activity game;
+	protected long passiveDuration;
+	private ArrayList<Class<? extends GameObject>> damageableTypes;
 
 	public GameObject(
 			Screen gameScreen,
@@ -52,6 +106,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			int speedY,
 			Rect area,
 			int health,
+			int damage,
 			boolean isDead,
 			boolean isMovingUp,
 			boolean isMovingLeft,
@@ -65,7 +120,9 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			Animation faceLeftAnimation,
 			Animation faceDownAnimation,
 			Animation faceRightAnimation,
-			Animation currentAnimation) {
+			Animation currentAnimation,
+			int passiveDuration,
+			ArrayList<Class<? extends GameObject>> damageableTypes) {
 
 		this.gameScreen = gameScreen;
 		this.centerX = centerX;
@@ -75,6 +132,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.speedY = speedY;
 		this.area = area;
 		this.health = health;
+		this.damage = damage;
 		this.isDead = isDead;
 		this.isMovingUp = isMovingUp;
 		this.isMovingLeft = isMovingLeft;
@@ -89,10 +147,15 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceDownAnimation = faceDownAnimation;
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
-		
+		this.passiveDuration = passiveDuration;
+		this.damageableTypes = damageableTypes;
+
+		this.attitude = Attitude.Aggressive;
+		game = ((AndroidGame) gameScreen.game);
+		this.ouches = new ArrayList();
 		resetMaxSpeeds();
 	}
-	
+
 	public void updateZones(int zoneOffsetX, int zoneOffsetY) {
 		area().offset(zoneOffsetX, zoneOffsetY);
 		updateCollisionZones(zoneOffsetX, zoneOffsetY);
@@ -388,25 +451,60 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		currentAnimation.update(elapsedTime);
 	}
 
+
 	@Override
-	public void attack(Damageable damageable) {
-		damageable.takeDamage(1);
+	public boolean canAttack(Damageable damageable) {
+		return (attitude == Attitude.Aggressive & canDamage(damageable));
 	}
 	
-	@Override
-	public void takeDamage(int damage) {
-		if (!isDead()) {
-			this.health -= damage;
-			if (health <= 0)
-				die();
+	protected boolean canDamage(Damageable damageable) {
+		for (Class<? extends GameObject> klass : damageableTypes) {
+			if (klass.isInstance(damageable)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	@Override
-	public void heal(int damage) {
-		if (!isDead()){
-			this.health += damage;
+	public Rect getImpactZone(Damageable damageable) {
+		for (Rect attackZone : attackZones()) {
+			for (Rect damageZone : damageable.damageZones()) {
+				if (Rect.intersects(attackZone, damageZone)) {
+					Rect intersection = new Rect(attackZone);
+					intersection.intersect(damageZone);
+					return intersection;
+				}
+			}
 		}
+		return new Rect();
+	}
+
+	@Override
+	public void attack(Damageable damageable, Rect impactZone) {
+		damageable.takeDamage(damage, impactZone);
+		this.attitude = Attitude.Passive;
+		Log.i("Damage", this + " attacking " + damageable);
+		new ReturnToAggressiveAttitude().execute(passiveDuration);
+	}
+
+	@Override
+	public void takeDamage(int damage, Rect impactZone) {
+		if (!isDead()) {
+			this.health -= damage;
+			this.ouches.add(new Ouch(impactZone, damage));
+			if (health() <= 0)
+				die();
+		}
+	}
+	
+
+	protected ArrayList<Ouch> ouches() {
+		return ouches;
+	}
+
+	public int health() {
+		return health;
 	}
 
 	@Override
@@ -475,48 +573,58 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		int left = centerX() - area().width() / 2;
 		int top = centerY() - area().height() / 2;
 		graphics.drawImage(getImage(), left, top);
-		drawVicinity(graphics);
-		drawCollisionZones(graphics);
-//		drawAttackZones(graphics);
+		drawAttackImpacts(graphics);
+//		drawVicinity(graphics);
+//		drawCollisionZones(graphics);
 //		drawDamageZones(graphics);
+//		drawAttackZones(graphics);
 	}
-
-	private void drawDamageZones(Graphics graphics) {
-		for(int i = 0; i < damageZones().size(); i++){
-			Rect damageZone = damageZones().get(i);
-			graphics.drawRect(  damageZone.left,
-								damageZone.top,
-								damageZone.width(),
-								damageZone.height(),
-								Color.argb(40, 0, 255, 0));
+	
+	private void drawAttackImpacts(Graphics graphics) {
+		if (!ouches().isEmpty()) {
+			for (Ouch ouch : ouches()) {
+				ouch.drawSelf(graphics);
+			}
+			ouches().clear();
 		}
 	}
 
-	private void drawAttackZones(Graphics graphics) {
-		for(int i = 0; i < attackZones().size(); i++){
-			Rect attackZone = attackZones().get(i);
-			graphics.drawRect(  attackZone.left,
-								attackZone.top,
-								attackZone.width(),
-								attackZone.height(),
-								Color.argb(40, 0, 255, 0));
-		}
-	}
-
-	private void drawCollisionZones(Graphics graphics) {
-		for(int i = 0; i < collisionZones().size(); i++){
-			Rect collisionZone = collisionZones().get(i);
-			graphics.drawRect(  collisionZone.left,
-								collisionZone.top,
-								collisionZone.width(),
-								collisionZone.height(),
-								Color.argb(40, 0, 0, 255));
-		}
-	}
-
-	private void drawVicinity(Graphics graphics) {
-		graphics.drawRect( vicinity().left, vicinity().top, vicinity().width(), vicinity().height(), Color.argb(20, 100, 100, 100));
-	}
+//	private void drawDamageZones(Graphics graphics) {
+//		for(int i = 0; i < damageZones().size(); i++){
+//			Rect damageZone = damageZones().get(i);
+//			graphics.drawRect(  damageZone.left,
+//								damageZone.top,
+//								damageZone.width(),
+//								damageZone.height(),
+//								Color.argb(40, 255, 0, 0));
+//		}
+//	}
+//
+//	private void drawAttackZones(Graphics graphics) {
+//		for(int i = 0; i < attackZones().size(); i++){
+//			Rect attackZone = attackZones().get(i);
+//			graphics.drawRect(  attackZone.left,
+//								attackZone.top,
+//								attackZone.width(),
+//								attackZone.height(),
+//								Color.argb(40, 0, 255, 0));
+//		}
+//	}
+//
+//	private void drawCollisionZones(Graphics graphics) {
+//		for(int i = 0; i < collisionZones().size(); i++){
+//			Rect collisionZone = collisionZones().get(i);
+//			graphics.drawRect(  collisionZone.left,
+//								collisionZone.top,
+//								collisionZone.width(),
+//								collisionZone.height(),
+//								Color.argb(40, 0, 0, 255));
+//		}
+//	}
+//
+//	private void drawVicinity(Graphics graphics) {
+//		graphics.drawRect( vicinity().left, vicinity().top, vicinity().width(), vicinity().height(), Color.argb(20, 100, 100, 100));
+//	}
 
 
 	@Override

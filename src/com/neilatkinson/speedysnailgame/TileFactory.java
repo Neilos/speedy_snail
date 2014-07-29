@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.GameObject;
 
 public class TileFactory {
 	
@@ -14,12 +15,16 @@ public class TileFactory {
 		int speedX = 0;
 		int speedY = 0;
 		int health = 1;
+		int damage = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 2000;
+		
+		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		
 		int duration;
 		ArrayList<Rect> collisionZones = new ArrayList<Rect>();
@@ -36,9 +41,9 @@ public class TileFactory {
 		Animation faceDownAnimation = new Animation();
 		Animation faceRightAnimation = new Animation();
 
-	    vicinity = new Rect(centerX - 20, centerY - 20, centerX + 20, centerY + 20);
+	    vicinity = new Rect(centerX - 21, centerY - 21, centerX + 21, centerY + 21);
 
-	    collisionZones.add(new Rect(vicinity));
+	    collisionZones.add(new Rect(vicinity.left + 2, vicinity.top + 2, vicinity.right - 2, vicinity.bottom - 2));
 		damageZones.add(new Rect(vicinity));
 	    attackZones.add(new Rect(vicinity));
 
@@ -92,6 +97,7 @@ public class TileFactory {
 							speedY,
 							vicinity,
 							health,
+							damage,
 							isDead,
 							isMovingUp,
 							isMovingLeft,
@@ -105,7 +111,9 @@ public class TileFactory {
 							faceLeftAnimation,
 							faceDownAnimation,
 							faceRightAnimation,
-							currentAnimation);
+							currentAnimation,
+							passiveDuration,
+							damageableTypes);
 	
 			return tile;
 		} else {

@@ -15,13 +15,18 @@ public class HeliboyFactory {
 		int moveSpeed = 1;
 		int speedX = 0;
 		int speedY = 0;
-		int health = 2;
+		int health = 1;
+		int damage = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 5000;
+
+		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
+		damageableTypes.add(PlayerCharacter.class);
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -39,12 +44,12 @@ public class HeliboyFactory {
 		ArrayList<Rect> damageZones = new ArrayList<Rect>();
 	    ArrayList<Rect> attackZones = new ArrayList<Rect>();
 
-	    vicinity = new Rect(centerX - 48, centerY - 48, centerX + 48, centerY + 48);
-	    Rect rect = new Rect(vicinity.left + 10, vicinity.top + 5, vicinity.left + 72, vicinity.top + 88);
+	    vicinity = new Rect(centerX - 46, centerY - 48, centerX + 48, centerY + 48);
+	    Rect rect = new Rect(vicinity.left + 11, vicinity.top + 6, vicinity.left + 73, vicinity.top + 86);
 
 		collisionZones.add(new Rect(rect));
-		damageZones.add(new Rect(rect));
-	    attackZones.add(new Rect(rect));
+		damageZones.add(new Rect(rect.left - 1, rect.top -1, rect.right + 1, rect.bottom + 1));
+	    attackZones.add(new Rect(rect.left - 1, rect.top -1, rect.right + 1, rect.bottom + 1));
 
 		// moveUpAnimation
 	    frameImage = Assets.heliboy;
@@ -199,6 +204,7 @@ public class HeliboyFactory {
 						speedY,
 						vicinity,
 						health,
+						damage,
 						isDead,
 						isMovingUp,
 						isMovingLeft,
@@ -212,7 +218,9 @@ public class HeliboyFactory {
 						faceLeftAnimation,
 						faceDownAnimation,
 						faceRightAnimation,
-						currentAnimation);
+						currentAnimation,
+						passiveDuration,
+						damageableTypes);
 
 		return heliboy;
 	}

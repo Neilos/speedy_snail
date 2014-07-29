@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.GameObject;
 
 public class PlayerCharacterFactory {
 
@@ -14,12 +15,16 @@ public class PlayerCharacterFactory {
 		int speedX = 0;
 		int speedY = 0;
 		int health = 5;
+		int damage = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
 		Rect vicinity;
+		int passiveDuration = 1000;
+
+		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -38,6 +43,7 @@ public class PlayerCharacterFactory {
 	    ArrayList<Rect> attackZones = new ArrayList<Rect>();
 
 	    vicinity = new Rect(centerX - 61, centerY - 63, centerX + 61, centerY + 63);
+
 	    Rect rect = new Rect(centerX - 34, centerY - 63, centerX + 34, centerY);
 	    Rect rect2 = new Rect(rect.left, rect.top + 63, rect.left + 68, rect.top + 128);
 	    Rect rect3 = new Rect(rect.left - 26, rect.top + 32, rect.left, rect.top + 52);
@@ -51,20 +57,27 @@ public class PlayerCharacterFactory {
 		collisionZones.add(new Rect(rect4));
 		collisionZones.add(new Rect(footleft));
 		collisionZones.add(new Rect(footright));
+		
+		Rect damageAttackRect = new Rect(rect.left - 1, rect.top - 1, rect.right + 1, rect.bottom + 1);
+		Rect damageAttackRect2 = new Rect(rect2.left - 1, rect2.top - 1, rect2.right + 1, rect2.bottom + 1);
+		Rect damageAttackRect3 = new Rect(rect3.left - 1, rect3.top - 1, rect3.right + 1, rect3.bottom + 1);
+		Rect damageAttackRect4 = new Rect(rect4.left - 1, rect4.top - 1, rect4.right + 1, rect4.bottom + 1);
+		Rect damageAttackRectFootleft = new Rect(footleft.left - 1, footleft.top - 1, footleft.right + 1, footleft.bottom + 1);
+		Rect damageAttackRectFootright = new Rect(footright.left - 1, footright.top - 1, footright.right + 1, footright.bottom + 1);
 
-		damageZones.add(new Rect(rect));
-		damageZones.add(new Rect(rect2));
-		damageZones.add(new Rect(rect3));
-		damageZones.add(new Rect(rect4));
-		damageZones.add(new Rect(footleft));
-		damageZones.add(new Rect(footright));
+		damageZones.add(new Rect(damageAttackRect));
+		damageZones.add(new Rect(damageAttackRect2));
+		damageZones.add(new Rect(damageAttackRect3));
+		damageZones.add(new Rect(damageAttackRect4));
+		damageZones.add(new Rect(damageAttackRectFootleft));
+		damageZones.add(new Rect(damageAttackRectFootright));
 
-		attackZones.add(new Rect(rect));
-		attackZones.add(new Rect(rect2));
-		attackZones.add(new Rect(rect3));
-		attackZones.add(new Rect(rect4));
-		attackZones.add(new Rect(footleft));
-		attackZones.add(new Rect(footright));
+		attackZones.add(new Rect(damageAttackRect));
+		attackZones.add(new Rect(damageAttackRect2));
+		attackZones.add(new Rect(damageAttackRect3));
+		attackZones.add(new Rect(damageAttackRect4));
+		attackZones.add(new Rect(damageAttackRectFootleft));
+		attackZones.add(new Rect(damageAttackRectFootright));
 
 		// moveUpAnimation
 	    frameImage = Assets.character;
@@ -227,6 +240,7 @@ public class PlayerCharacterFactory {
 						speedY,
 						vicinity,
 						health,
+						damage,
 						isDead,
 						isMovingUp,
 						isMovingLeft,
@@ -240,7 +254,9 @@ public class PlayerCharacterFactory {
 						faceLeftAnimation,
 						faceDownAnimation,
 						faceRightAnimation,
-						currentAnimation);
+						currentAnimation,
+						passiveDuration,
+						damageableTypes);
 
 		return playerCharacter;
 	}

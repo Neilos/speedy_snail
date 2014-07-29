@@ -1,6 +1,7 @@
 package com.neilatkinson.framework;
 
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public interface Graphics {
     public static enum ImageFormat {
@@ -14,6 +15,7 @@ public interface Graphics {
     public void drawLine(int x, int y, int x2, int y2, int color);
 
     public void drawRect(int x, int y, int width, int height, int color);
+    public void drawRect(Rect rectangle, int color);
 
     public void drawImage(Image image, int x, int y, int srcX, int srcY,
             int srcWidth, int srcHeight);
@@ -27,5 +29,7 @@ public interface Graphics {
     public int getHeight();
 
     public void drawARGB(int i, int j, int k, int l);
+
+	public void drawCircle(int centerX, int centerY, int radius, int color);
 	
 }
