@@ -2,6 +2,7 @@ package com.neilatkinson.gameobject;
 
 public interface AttackCapable {
 
-	public void attack(Damageable damageable);
+	public boolean canAttack(Damageable damageable);
+	public void tryAttacking(Damageable damageable);
 
 }

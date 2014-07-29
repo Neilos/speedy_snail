@@ -41,7 +41,6 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		@Override
 	    protected void onPostExecute(Attitude newAttitude) {
 			attitude = newAttitude;
-	        Log.i("Attitude", "Attitude now aggressive again!");
 	    }
 	}
 
@@ -432,20 +431,26 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 
 	@Override
-	public void attack(Damageable damageable) {
-		if (attitude == Attitude.Aggressive) {
-			Log.i("Attitude", "Attitude is aggressive");
-	        for (Rect attackZone : attackZones()) {
-	        	for (Rect damageZone : damageable.damageZones()) {
-	        		if (Rect.intersects(attackZone, damageZone)) {
-	        			damageable.takeDamage(1);
-	        			this.attitude = Attitude.Passive;
-	        			Log.i("Damage", this + " attacking " + damageable);
-	        			new ReturnToAggressiveAttitude().execute(passiveDuration);
-	        		}
-	        	}
-	        }
+	public boolean canAttack(Damageable damageable) {
+		return (attitude == Attitude.Aggressive);
+	}
+
+	@Override
+	public void tryAttacking(Damageable damageable) {
+		for (Rect attackZone : attackZones()) {
+			for (Rect damageZone : damageable.damageZones()) {
+				if (Rect.intersects(attackZone, damageZone)) {
+					attack(damageable);
+				}
+			}
 		}
+	}
+
+	protected void attack(Damageable damageable) {
+		damageable.takeDamage(1);
+		this.attitude = Attitude.Passive;
+		Log.i("Damage", this + " attacking " + damageable);
+		new ReturnToAggressiveAttitude().execute(passiveDuration);
 	}
 
 	@Override

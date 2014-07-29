@@ -26,10 +26,10 @@ public class Tile extends GameObject{
 
 	}
 	
-	@Override
-	public void attack(Damageable damageable) {
-
-	}
+    @Override
+    public boolean canAttack(Damageable damageable) {
+    	return false;
+    }
 
 	@Override
 	public void takeDamage(int damage) {

@@ -91,8 +91,8 @@ public class PlayerCharacter extends GameObject {
 	}
     
     @Override
-    public void attack(Damageable damageable) {
-
+    public boolean canAttack(Damageable damageable) {
+    	return false;
     }
     
     @Override
