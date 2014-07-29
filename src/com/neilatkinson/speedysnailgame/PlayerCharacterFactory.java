@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.gameobject.Animation;
+import com.neilatkinson.gameobject.GameObject;
 
 public class PlayerCharacterFactory {
 
@@ -21,6 +22,8 @@ public class PlayerCharacterFactory {
 		boolean isMovingRight = false;
 		Rect vicinity;
 		int passiveDuration = 1000;
+
+		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -250,7 +253,8 @@ public class PlayerCharacterFactory {
 						faceDownAnimation,
 						faceRightAnimation,
 						currentAnimation,
-						passiveDuration);
+						passiveDuration,
+						damageableTypes);
 
 		return playerCharacter;
 	}

@@ -15,7 +15,7 @@ public class HeliboyFactory {
 		int moveSpeed = 1;
 		int speedX = 0;
 		int speedY = 0;
-		int health = 2;
+		int health = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
@@ -23,6 +23,9 @@ public class HeliboyFactory {
 		boolean isMovingRight = false;
 		Rect vicinity;
 		int passiveDuration = 5000;
+
+		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
+		damageableTypes.add(PlayerCharacter.class);
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -214,7 +217,8 @@ public class HeliboyFactory {
 						faceDownAnimation,
 						faceRightAnimation,
 						currentAnimation,
-						passiveDuration);
+						passiveDuration,
+						damageableTypes);
 
 		return heliboy;
 	}

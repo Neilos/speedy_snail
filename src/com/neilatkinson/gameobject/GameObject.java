@@ -78,6 +78,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 	protected Activity game;
 	protected long passiveDuration;
+	private ArrayList<Class<? extends GameObject>> damageableTypes;
 
 	public GameObject(
 			Screen gameScreen,
@@ -102,7 +103,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			Animation faceDownAnimation,
 			Animation faceRightAnimation,
 			Animation currentAnimation,
-			int passiveDuration) {
+			int passiveDuration,
+			ArrayList<Class<? extends GameObject>> damageableTypes) {
 
 		this.gameScreen = gameScreen;
 		this.centerX = centerX;
@@ -127,6 +129,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.faceRightAnimation = faceRightAnimation;
 		this.currentAnimation = currentAnimation;
 		this.passiveDuration = passiveDuration;
+		this.damageableTypes = damageableTypes;
 
 		this.attitude = Attitude.Aggressive;
 		game = ((AndroidGame) gameScreen.game);
@@ -432,7 +435,16 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 	@Override
 	public boolean canAttack(Damageable damageable) {
-		return (attitude == Attitude.Aggressive);
+		return (attitude == Attitude.Aggressive & canDamage(damageable));
+	}
+	
+	protected boolean canDamage(Damageable damageable) {
+		for (Class<? extends GameObject> klass : damageableTypes) {
+			if (klass.isInstance(damageable)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

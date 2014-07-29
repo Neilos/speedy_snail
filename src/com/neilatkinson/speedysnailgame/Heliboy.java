@@ -1,5 +1,7 @@
 package com.neilatkinson.speedysnailgame;
 
+import java.util.ArrayList;
+
 import android.graphics.Rect;
 
 import com.neilatkinson.gameobject.Animation;
@@ -16,13 +18,14 @@ public class Heliboy extends Enemy {
 			Animation faceUpAnimation, Animation faceLeftAnimation,
 			Animation faceDownAnimation, Animation faceRightAnimation,
 			Animation currentAnimation,
-			int passiveDuration) {
+			int passiveDuration, ArrayList<Class<? extends GameObject>> damageableTypes) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
 				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
-				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration);
+				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration,
+				damageableTypes);
 	}
 
 }
