@@ -40,6 +40,21 @@ public abstract class Enemy extends GameObject {
 		int xDistanceToPlayer = playerCharacter.centerX() - centerX();
 		int yDistanceToPlayer = playerCharacter.centerY() - centerY();
 		
+		if (playerCharacter.isMoving()) {
+			closeDistance(xDistanceToPlayer, yDistanceToPlayer);
+		} else {
+			if ((isMovingUp() && yDistanceToPlayer < 0)
+				|| (isMovingLeft() && xDistanceToPlayer < 0)
+				|| (isMovingDown() && yDistanceToPlayer > 0)
+				|| (isMovingRight() && xDistanceToPlayer > 0)) {
+				// keep doing what you're doing
+			} else {
+				closeDistance(xDistanceToPlayer, yDistanceToPlayer);
+			}
+		}
+	}
+
+	protected void closeDistance(int xDistanceToPlayer, int yDistanceToPlayer) {
 		if (Math.abs(xDistanceToPlayer) >= Math.abs(yDistanceToPlayer)) {
 			// Move in the x direction
 			if (xDistanceToPlayer > 0) {
@@ -59,7 +74,6 @@ public abstract class Enemy extends GameObject {
 				setStopped();
 			}
 		}
-		
 	}
 
 }

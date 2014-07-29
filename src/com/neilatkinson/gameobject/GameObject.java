@@ -152,7 +152,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 
 		this.attitude = Attitude.Aggressive;
 		game = ((AndroidGame) gameScreen.game);
-		this.ouches = new ArrayList();
+		this.ouches = new ArrayList<Ouch>();
 		resetMaxSpeeds();
 	}
 
@@ -531,11 +531,11 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		return Rect.intersects(otherObject.area(), vicinity());
 	}
 
-	
+
 	public ArrayList<Rect> collisionZones() {
 		return currentAnimation.getCollisionZones();
 	}
-	
+
 	public ArrayList<Rect> getProjectedCollisionZones() {
         ArrayList<Rect> projectedCollisionZones = new ArrayList<Rect>();
 
