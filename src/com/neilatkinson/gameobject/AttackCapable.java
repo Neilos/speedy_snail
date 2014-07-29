@@ -1,9 +1,11 @@
 package com.neilatkinson.gameobject;
 
+import android.graphics.Rect;
+
 public interface AttackCapable {
 
 	public boolean canAttack(Damageable damageable);
-	public boolean inRangeOf(Damageable damageable);
-	public void attack(Damageable damageable);
-
+	public Rect getImpactZone(Damageable damageable);
+	public void attack(Damageable damageable, Rect attackZone);
+	
 }

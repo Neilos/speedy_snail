@@ -29,5 +29,7 @@ public interface Graphics {
     public int getHeight();
 
     public void drawARGB(int i, int j, int k, int l);
+
+	public void drawCircle(int centerX, int centerY, int radius, int color);
 	
 }
