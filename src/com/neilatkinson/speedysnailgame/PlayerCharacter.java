@@ -11,7 +11,7 @@ public class PlayerCharacter extends GameObject {
 
 	public PlayerCharacter(GameScreen gameScreen,
 			int centerX, int centerY, int moveSpeed, int speedX, int speedY,
-			Rect area, int health, boolean isDead, boolean isMovingUp,
+			Rect area, int health, int damage, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,
 			Animation moveDownAnimation, Animation moveRightAnimation,
@@ -21,7 +21,7 @@ public class PlayerCharacter extends GameObject {
 			ArrayList<Class<? extends GameObject>> damageableTypes) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
-				area, health, isDead, isMovingUp, isMovingLeft, isMovingDown,
+				area, health, damage, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
 				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration,

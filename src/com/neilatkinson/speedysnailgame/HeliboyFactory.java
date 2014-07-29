@@ -16,6 +16,7 @@ public class HeliboyFactory {
 		int speedX = 0;
 		int speedY = 0;
 		int health = 1;
+		int damage = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
@@ -203,6 +204,7 @@ public class HeliboyFactory {
 						speedY,
 						vicinity,
 						health,
+						damage,
 						isDead,
 						isMovingUp,
 						isMovingLeft,

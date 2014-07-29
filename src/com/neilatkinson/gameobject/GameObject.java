@@ -68,6 +68,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	private Animation faceRightAnimation;
 
 	private int health;
+	private int damage;
 	private boolean isDead;
 	private boolean isMovingUp;
 	private boolean isMovingLeft;
@@ -89,6 +90,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			int speedY,
 			Rect area,
 			int health,
+			int damage,
 			boolean isDead,
 			boolean isMovingUp,
 			boolean isMovingLeft,
@@ -114,6 +116,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.speedY = speedY;
 		this.area = area;
 		this.health = health;
+		this.damage = damage;
 		this.isDead = isDead;
 		this.isMovingUp = isMovingUp;
 		this.isMovingLeft = isMovingLeft;
@@ -459,7 +462,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	}
 
 	protected void attack(Damageable damageable) {
-		damageable.takeDamage(1);
+		damageable.takeDamage(damage);
 		this.attitude = Attitude.Passive;
 		Log.i("Damage", this + " attacking " + damageable);
 		new ReturnToAggressiveAttitude().execute(passiveDuration);

@@ -15,6 +15,7 @@ public class PlayerCharacterFactory {
 		int speedX = 0;
 		int speedY = 0;
 		int health = 5;
+		int damage = 1;
 		boolean isDead = false;
 		boolean isMovingUp = false;
 		boolean isMovingLeft = false;
@@ -239,6 +240,7 @@ public class PlayerCharacterFactory {
 						speedY,
 						vicinity,
 						health,
+						damage,
 						isDead,
 						isMovingUp,
 						isMovingLeft,
