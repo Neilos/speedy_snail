@@ -28,7 +28,6 @@ public class TileFactory {
 		int passiveDuration = 1000;
 		
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
-		damageableTypes.add(PlayerCharacter.class);
 		
 		int duration;
 		ArrayList<Zone> collisionZones = generateCollisionZones(area);
