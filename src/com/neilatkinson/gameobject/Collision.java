@@ -2,16 +2,14 @@ package com.neilatkinson.gameobject;
 
 import java.util.ArrayList;
 
-import android.graphics.Rect;
-
 public class Collision {
 	private GameObject collidingObject;
 	private GameObject otherObject;
 	private int xDimension;
 	private int yDimension;
-	private ArrayList<Rect> collisionIntrusionZones;
+	private ArrayList<Zone> collisionIntrusionZones;
 	
-	public Collision(GameObject object, GameObject otherObject, ArrayList<Rect> collisionIntrusionZones){
+	public Collision(GameObject object, GameObject otherObject, ArrayList<Zone> collisionIntrusionZones){
 		this.collidingObject = object;
 		this.otherObject = otherObject;
 		setCollisionIntrusionZones(collisionIntrusionZones);
@@ -25,7 +23,7 @@ public class Collision {
 		return xDimension;
 	}
 
-	public void setCollisionIntrusionZones(ArrayList<Rect> collisionIntrusionZones) {
+	public void setCollisionIntrusionZones(ArrayList<Zone> collisionIntrusionZones) {
 		this.collisionIntrusionZones = collisionIntrusionZones;
 		calculateXYDimension();
 	}
@@ -40,7 +38,7 @@ public class Collision {
 		
 		int zoneCount = collisionIntrusionZones.size();
 		for (int i = 0; i < zoneCount; i++) {
-			Rect zone = collisionIntrusionZones.get(i);
+			Zone zone = collisionIntrusionZones.get(i);
 			if (zone.width() > xDimension) {
 				xDimension = zone.width();
 			}

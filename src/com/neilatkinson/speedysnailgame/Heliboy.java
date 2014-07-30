@@ -2,15 +2,14 @@ package com.neilatkinson.speedysnailgame;
 
 import java.util.ArrayList;
 
-import android.graphics.Rect;
-
 import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
+import com.neilatkinson.gameobject.Zone;
 
 public class Heliboy extends Enemy {
 
 	public Heliboy(GameScreen gameScreen, GameObject playerCharacter, int centerX,
-			int centerY, int moveSpeed, int speedX, int speedY, Rect area,
+			int centerY, int moveSpeed, int speedX, int speedY, Zone area,
 			int health, int damage, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,

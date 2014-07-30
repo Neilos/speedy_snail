@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
-
-import android.graphics.Rect;
+import com.neilatkinson.gameobject.Zone;
 
 public class PlayerCharacter extends GameObject {
 
 	public PlayerCharacter(GameScreen gameScreen,
 			int centerX, int centerY, int moveSpeed, int speedX, int speedY,
-			Rect area, int health, int damage, boolean isDead, boolean isMovingUp,
+			Zone area, int health, int damage, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,
 			Animation moveDownAnimation, Animation moveRightAnimation,

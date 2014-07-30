@@ -58,7 +58,7 @@ public class GameScreen extends Screen {
 		returnToMenuControl =  new ScreenRegion(0, 240, 800, 240);
 		
 		// Create game objects
-		playerCharacter = SnailCharacterFactory.build(this, 100, 372);
+		playerCharacter = PlayerCharacterFactory.build(this, 100, 372);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();
@@ -194,7 +194,7 @@ public class GameScreen extends Screen {
 					object2 = onScreenGameObjects.get(j);
 					if (object1.inVicinityOf(object2)) {
 						if (object1.canAttack(object2)) {
-							Rect impactZone = object1.getImpactZone(object2);
+							Rect impactZone = object1.getImpact(object2);
 							if (!impactZone.isEmpty()) {
 								object1.attack(object2, impactZone);
 							}
@@ -223,7 +223,7 @@ public class GameScreen extends Screen {
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
-			if (Rect.intersects(object.area(), screenSpace.rectangle())) {
+			if (Rect.intersects(object.area().rect(), screenSpace.rectangle())) {
 				onScreenGameObjects.add(object);
 			}
 		}
@@ -344,8 +344,7 @@ public class GameScreen extends Screen {
 	}
 
 	private void drawEnemies(Graphics g) {
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy enemy = enemies.get(i);
+		for (Enemy enemy : enemies) {
 			if (onScreenGameObjects.contains(enemy)) {
 				enemy.drawSelf(g);
 			}
@@ -353,8 +352,7 @@ public class GameScreen extends Screen {
 	}
 
 	private void drawTiles(Graphics g) {
-		for (int i = 0; i < tilearray.size(); i++) {
-			Tile tile = (Tile) tilearray.get(i);
+		for (Tile tile : tilearray) {
 			if (onScreenGameObjects.contains(tile)) {
 				tile.drawSelf(g);
 			}
