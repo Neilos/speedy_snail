@@ -82,151 +82,149 @@ public class PlayerCharacterFactory {
 		// moveUpAnimation
 	    frameImage = Assets.character;
 		duration = 1250;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character2;
 		duration = 50;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character3;
 		duration = 50;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character2;
 		duration = 1000;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 
 		// moveLeftAnimation
 	    frameImage = Assets.character;
 		duration = 1250;
-	    moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character2;
 		duration = 50;
-	    moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character3;
 		duration = 50;
-	    moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.character2;
 		duration = 1000;
-	    moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 
 		// moveDownAnimation
 
 	    frameImage = Assets.character;
 		duration = 1250;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
-
-		frameImage = Assets.character3;
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		duration = 50;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 	    
 		// moveRightAnimation
 
 		frameImage = Assets.character;
 		duration = 1250;
-	    moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character3;
 		duration = 50;
-	    moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 	    
 		// faceUpAnimation
 
 		frameImage = Assets.character;
 		duration = 1250;
-	    faceUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character3;
 		duration = 50;
-	    faceUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 
 		// faceLeftAnimation
 
 		frameImage = Assets.character;
 		duration = 1250;
-	    faceLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character3;
 		duration = 50;
-	    faceLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 	    
 		// faceDownAnimation
 
 		frameImage = Assets.character;
 		duration = 1250;
-	    faceDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character3;
 		duration = 50;
-	    faceDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 50;
-	    faceDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 	    
 		// faceRightAnimation
 
 		frameImage = Assets.character;
 		duration = 1000;
-	    faceRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 1000;
-	    faceRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character3;
 		duration = 1000;
-	    faceRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.character2;
 		duration = 1000;
-	    faceRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+	    faceRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		Animation currentAnimation = faceRightAnimation;
 		

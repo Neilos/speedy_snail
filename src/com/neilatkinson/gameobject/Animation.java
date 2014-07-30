@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.graphics.Rect;
 
+import com.neilatkinson.framework.Graphics;
 import com.neilatkinson.framework.Image;
 
 public class Animation {
@@ -24,12 +25,16 @@ public class Animation {
 	}
 
 
-	public synchronized void addFrame(Image image, int duration,
+	public synchronized void addFrame(Image image,
+									int srcX, int srcY,
+									int srcWidth, int srcHeight,
+									int duration,
 								    ArrayList<Rect> collisionZones,
 								    ArrayList<Rect> damageZones,
 								    ArrayList<Rect> attackZones) {
         totalDuration += duration;
-        AnimFrame frame = new AnimFrame(image, totalDuration);
+        AnimFrame frame = new AnimFrame(image, srcX, srcY,
+				srcWidth, srcHeight, totalDuration);
         
         if (collisionZones == null) {
         	frame.setCollisionZones(new ArrayList<Rect>());
@@ -68,15 +73,6 @@ public class Animation {
             }
         }
     }
-	
-	
-	public synchronized Image getImage() {
-        if (frames.size() == 0) {
-            return null;
-        } else {
-            return getFrame(currentFrame).image;
-        }
-    }
 
 	public synchronized ArrayList<Rect> getCollisionZones() {
 		if (frames.size() == 0) {
@@ -102,21 +98,33 @@ public class Animation {
         }
 	}
 
-	
     private AnimFrame getFrame(int i) {
         return (AnimFrame) frames.get(i);
     }
 
+	public void drawImage(Graphics graphics, int left, int top) {
+		getFrame(currentFrame).drawSelf(graphics, left, top);
+		
+	}
     
     private class AnimFrame {
         Image image;
+        int srcX;
+        int srcY;
+		int srcWidth;
+		int srcHeight;
 		long endTime;
         ArrayList<Rect> collisionZones;
         ArrayList<Rect> damageZones;
         ArrayList<Rect> attackZones;
         
-		public AnimFrame(Image image, long endTime) {
+		public AnimFrame(Image image, int srcX, int srcY,
+				int srcWidth, int srcHeight, long endTime) {
             this.image = image;
+            this.srcX = srcX;
+            this.srcY = srcY;
+            this.srcWidth = srcWidth;
+            this.srcHeight = srcHeight;
             this.endTime = endTime;
         }
 
@@ -132,6 +140,9 @@ public class Animation {
 			this.attackZones = attackZones;
 		}
 
+		public void drawSelf(Graphics graphics, int x, int y) {
+			graphics.drawImage(image, x, y, srcX, srcY, srcWidth, srcHeight);
+		}
     }
 
 }

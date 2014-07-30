@@ -54,137 +54,137 @@ public class HeliboyFactory {
 		// moveUpAnimation
 	    frameImage = Assets.heliboy;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy2;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy3;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy4;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy5;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy4;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy3;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.heliboy2;
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		
 		// moveLeftAnimation
 	    frameImage = Assets.heliboy;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy2;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy3;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy4;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy5;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy4;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy3;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.heliboy2;
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		
 		// moveDownAnimation
 	    frameImage = Assets.heliboy;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy2;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy3;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy4;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy5;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy4;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy3;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.heliboy2;
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		
 		// moveRightAnimation
 	    frameImage = Assets.heliboy;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy2;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy3;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 	    frameImage = Assets.heliboy4;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy5;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy4;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 		
 		frameImage = Assets.heliboy3;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		frameImage = Assets.heliboy2;
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 
 		faceUpAnimation = moveUpAnimation;

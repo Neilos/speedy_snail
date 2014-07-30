@@ -64,19 +64,19 @@ public class TileFactory {
 	    
 		// moveUpAnimation
 		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveUpAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 		// moveLeftAnimation
 		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveLeftAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 	    
 		// moveDownAnimation
 		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveDownAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 		// moveRightAnimation
 		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		moveRightAnimation.addFrame(frameImage, 0, 0, vicinity.width(), vicinity.height(), duration, collisionZones, damageZones, attackZones);
 
 
 		faceUpAnimation = moveUpAnimation;
