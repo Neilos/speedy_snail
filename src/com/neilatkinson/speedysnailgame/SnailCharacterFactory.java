@@ -42,7 +42,7 @@ public class SnailCharacterFactory {
 		Animation faceRightAnimation = new Animation();
 
 		Image frameImage = Assets.snail;
-		int duration = 50;
+		int duration = 100;
 
 
 		// moveDownAnimation
@@ -133,17 +133,18 @@ public class SnailCharacterFactory {
 		ArrayList<Zone> moveUpCollisionZones = generateMoveUpCollisionZones(area);
 		ArrayList<Zone> moveUpDamageZones = generateMoveUpDamageZones(area);
 	    ArrayList<Zone> moveUpAttackZones = generateMoveUpAttackZones(area);
-		moveUpAnimation.addFrame(frameImage, 0, 2 * spriteHeight,
+
+	    moveUpAnimation.addFrame(frameImage, 0, 2 * spriteHeight,
 				areaWidth, areaHeight, duration,
-				moveUpAttackZones, moveUpAttackZones, moveUpAttackZones);
+				moveUpCollisionZones, moveUpDamageZones, moveUpAttackZones);
 
 		moveUpAnimation.addFrame(frameImage, 1 * spriteWidth, 2 * spriteHeight,
 				areaWidth, areaHeight, duration,
-				moveUpAttackZones, moveUpAttackZones, moveUpAttackZones);
+				moveUpCollisionZones, moveUpDamageZones, moveUpAttackZones);
 	    
 		moveUpAnimation.addFrame(frameImage, 2 * spriteWidth, 2 * spriteHeight,
 				areaWidth, areaHeight, duration,
-				moveUpAttackZones, moveUpAttackZones, moveUpAttackZones);
+				moveUpCollisionZones, moveUpDamageZones, moveUpAttackZones);
 	    
 		moveUpAnimation.addFrame(frameImage, 3 * spriteWidth, 2 * spriteHeight,
 				areaWidth, areaHeight, duration,
@@ -256,88 +257,100 @@ public class SnailCharacterFactory {
 
 		return playerCharacter;
 	}
-	
+
+
 	private static ArrayList<Zone> generateMoveLeftAttackZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 6, area.top() + 34, area.right() - 30, area.bottom() - 10);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveLeftDamageZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 7, area.top() + 19, area.right() - 7, area.bottom() - 3);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveLeftCollisionZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(area.deepClone());		
+		Rect rect = new Rect(area.left() + 8, area.top() + 20, area.right() - 8, area.bottom() - 4);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));		
 		return zones;
 	}
 
+
 	private static ArrayList<Zone> generateMoveUpAttackZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 19, area.top() + 9, area.right() - 19, area.bottom() - 37);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveUpDamageZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 11, area.top() + 9, area.right() - 11, area.bottom() - 3);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));	
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveUpCollisionZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(area.deepClone());		
+		Rect rect = new Rect(area.left() + 12, area.top() + 10, area.right() - 12, area.bottom() - 4);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));		
 		return zones;
 	}
 
+
 	private static ArrayList<Zone> generateMoveRightAttackZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 30, area.top() + 34, area.right() - 6, area.bottom() - 10);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveRightDamageZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect = new Rect(area.left() + 7, area.top() + 19, area.right() - 7, area.bottom() - 3);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveRightCollisionZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(area.deepClone());		
+		Rect rect = new Rect(area.left() + 8, area.top() + 20, area.right() - 8, area.bottom() - 4);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));		
 		return zones;
 	}
 
+
 	private static ArrayList<Zone> generateMoveDownAttackZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+		Rect rect2 = new Rect(area.left() + 19, area.top() + 37, area.right() - 19, area.bottom() - 3);
+		zones.add(new Zone(rect2, rect2.centerX() - area.centerX(), rect2.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveDownDamageZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone(new Rect(area.left() - 1, area.top() -1, area.right() + 1, area.bottom() + 1), 0, 0));
+
+		Rect rect = new Rect(area.left() + 11, area.top() + 11, area.right() - 11, area.bottom() - 11);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
+		
+		Rect rect2 = new Rect(area.left() + 19, area.top() + 37, area.right() - 19, area.bottom() - 3);
+		zones.add(new Zone(rect2, rect2.centerX() - area.centerX(), rect2.centerY() - area.centerY()));
 		return zones;
 	}
 
 	private static ArrayList<Zone> generateMoveDownCollisionZones(Zone area) {
-		// TODO Auto-generated method stub
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		zones.add(area.deepClone());		
+
+		Rect rect = new Rect(area.left() + 12, area.top() + 12, area.right() - 12, area.bottom() - 12);
+		zones.add(new Zone(rect, rect.centerX() - area.centerX(), rect.centerY() - area.centerY()));
+		
+		Rect rect2 = new Rect(area.left() + 20, area.top() + 38, area.right() - 20, area.bottom() - 4);
+		zones.add(new Zone(rect2, rect2.centerX() - area.centerX(), rect2.centerY() - area.centerY()));
 		return zones;
 	}
 }
