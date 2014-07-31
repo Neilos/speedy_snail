@@ -208,9 +208,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveLeftCollisionZonesFrame0(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 20, area.top() + 18, area.right() - 38, area.bottom() - 24);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 26, area.top() + 21, area.right() - 24, area.bottom() - 19);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
@@ -239,9 +236,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveLeftCollisionZonesFrame1(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 20, area.top() + 16, area.right() - 38, area.bottom() - 26);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 26, area.top() + 19, area.right() - 24, area.bottom() - 21);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
@@ -270,9 +264,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveLeftCollisionZonesFrame2(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 20, area.top() + 7, area.right() - 38, area.bottom() - 35);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 26, area.top() + 10, area.right() - 24, area.bottom() - 30);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
@@ -382,9 +373,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveRightCollisionZonesFrame0(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 38, area.top() + 7, area.right() - 20, area.bottom() - 35);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 24, area.top() + 10, area.right() - 26, area.bottom() - 30);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
@@ -413,9 +401,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveRightCollisionZonesFrame1(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 38, area.top() + 16, area.right() - 20, area.bottom() - 26);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 24, area.top() + 19, area.right() - 26, area.bottom() - 21);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
@@ -444,9 +429,6 @@ public class BirdFactory {
 
 	private static ArrayList<Zone> generateMoveRightCollisionZonesFrame2(Zone area) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
-		Rect head = new Rect(area.left() + 38, area.top() + 7, area.right() - 20, area.bottom() - 35);
-		zones.add(new Zone(head, head.centerX() - area.centerX(), head.centerY() - area.centerY()));
-		
 		Rect body = new Rect(area.left() + 24, area.top() + 10, area.right() - 26, area.bottom() - 30);
 		zones.add(new Zone(body, body.centerX() - area.centerX(), body.centerY() - area.centerY()));
 		return zones;
