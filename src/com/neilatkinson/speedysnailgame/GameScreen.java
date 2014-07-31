@@ -46,23 +46,23 @@ public class GameScreen extends Screen {
         super(game);
 
         // Initialize game objects here
-        bg1 = new Background(0, 0, 2160, 480);
-		bg2 = new Background(2160, 0, 2160, 480);
-		bg3 = new Background(0, 480, 2160, 480);
-		bg4 = new Background(2160, 480, 2160, 480);
+        bg1 = new Background(0, 0, 1000, 1000);
+		bg2 = new Background(1000, 0, 1000, 1000);
+		bg3 = new Background(0, 1000, 1000, 1000);
+		bg4 = new Background(1000, 1000, 1000, 1000);
 
 		this.screenSpace = new ScreenRegion(0, 0, game.getFrameBufferWidth(), game.getFrameBufferWidth());
 		pauseButton = new ImageControl(Assets.button, 0, 0, 0, 195, 35, 35);
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 		resumeControl =  new ScreenRegion(0, 36, 800, 240);
 		returnToMenuControl =  new ScreenRegion(0, 240, 800, 240);
-		
+
 		// Create game objects
-		playerCharacter = PlayerCharacterFactory.build(this, 100, 372);
-		enemies.add(HeliboyFactory.build(this, 340, 360));
-		enemies.add(HeliboyFactory.build(this, 700, 360));
+		playerCharacter = SnailPlayerCharacterFactory.build(this, 150, 150);
+		enemies.add(BirdFactory.build(this, 340, 360));
+		enemies.add(BirdFactory.build(this, 700, 360));
 		loadMap();
-		
+
 		gameObjects.add(playerCharacter);
 		gameObjects.addAll(enemies);
 		gameObjects.addAll(tilearray);
@@ -80,7 +80,7 @@ public class GameScreen extends Screen {
 		paint2.setAntiAlias(true);
 		paint2.setColor(Color.WHITE);
     }
- 
+
 
 	private void loadMap() {
 		int startingCenterX, startingCenterY, type;
@@ -194,12 +194,14 @@ public class GameScreen extends Screen {
 					object2 = onScreenGameObjects.get(j);
 					if (object1.inVicinityOf(object2)) {
 						if (object1.canAttack(object2)) {
-							Rect impactZone = object1.getImpactZone(object2);
+							Rect impactZone = object1.getImpact(object2);
 							if (!impactZone.isEmpty()) {
 								object1.attack(object2, impactZone);
 							}
 						}
-						object1.evaluateCollisionWith(object2);
+						if (object1.canCollideWith(object2)) {
+							object1.evaluateCollisionWith(object2);
+						}
 					}
 				}
 			}
@@ -223,7 +225,7 @@ public class GameScreen extends Screen {
 		int gameObjectCount = gameObjects.size();
 		for (int i = 0; i < gameObjectCount; i++) {
 			GameObject object = gameObjects.get(i);
-			if (Rect.intersects(object.area(), screenSpace.rectangle())) {
+			if (Rect.intersects(object.area().rect(), screenSpace.rectangle())) {
 				onScreenGameObjects.add(object);
 			}
 		}
@@ -344,8 +346,7 @@ public class GameScreen extends Screen {
 	}
 
 	private void drawEnemies(Graphics g) {
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy enemy = enemies.get(i);
+		for (Enemy enemy : enemies) {
 			if (onScreenGameObjects.contains(enemy)) {
 				enemy.drawSelf(g);
 			}
@@ -353,8 +354,7 @@ public class GameScreen extends Screen {
 	}
 
 	private void drawTiles(Graphics g) {
-		for (int i = 0; i < tilearray.size(); i++) {
-			Tile tile = (Tile) tilearray.get(i);
+		for (Tile tile : tilearray) {
 			if (onScreenGameObjects.contains(tile)) {
 				tile.drawSelf(g);
 			}

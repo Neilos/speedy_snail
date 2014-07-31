@@ -22,7 +22,6 @@ public interface Moveable {
 	
 	public int centerX();
 	public int centerY();
-	public void updatePosition(int newCenterX, int newCenterY);
 
 	public boolean nearTopOfScreen();
 	public boolean nearLeftOfScreen();
@@ -35,6 +34,7 @@ public interface Moveable {
 	public void moveRight();
 	public void remainStationary();
 	public void move(int elapsedTime);
+	public void updatePosition(int newCenterX, int newCenterY, int elapsedTime);
 
 
 }

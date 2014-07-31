@@ -12,6 +12,8 @@ public class Assets {
 	public static Sound click;
 	public static Music theme;
 	public static Image directionControl;
+	public static Image snail;
+	public static Image bird;
 
 	public static void load(SpeedySnailGame sampleGame) {
 		theme = sampleGame.getAudio().createMusic("menutheme.mp3");

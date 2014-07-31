@@ -8,8 +8,8 @@ public interface Damageable extends Interactable {
 
 	public void die();
 	public boolean isDead();
-	public ArrayList<Rect> damageZones();
-	public ArrayList<Rect> attackZones();
-	public void takeDamage(int damage, Rect damageZone);
+	public ArrayList<Zone> damageZones();
+	public ArrayList<Zone> attackZones();
+	public void takeDamage(int damage, Rect impact);
 
 }

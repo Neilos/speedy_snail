@@ -2,17 +2,16 @@ package com.neilatkinson.speedysnailgame;
 
 import java.util.ArrayList;
 
-import android.graphics.Rect;
-
 import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
+import com.neilatkinson.gameobject.Zone;
 
 public abstract class Enemy extends GameObject {
 	
 	public GameObject playerCharacter;
 
 	public Enemy(GameScreen gameScreen, int centerX,
-			int centerY, int moveSpeed, int speedX, int speedY, Rect area,
+			int centerY, int moveSpeed, int speedX, int speedY, Zone area,
 			int health, int damage, boolean isDead, boolean isMovingUp,
 			boolean isMovingLeft, boolean isMovingDown, boolean isMovingRight,
 			Animation moveUpAnimation, Animation moveLeftAnimation,
@@ -20,13 +19,15 @@ public abstract class Enemy extends GameObject {
 			Animation faceUpAnimation, Animation faceLeftAnimation,
 			Animation faceDownAnimation, Animation faceRightAnimation,
 			Animation currentAnimation, int passiveDuration,
-			ArrayList<Class<? extends GameObject>> damageableTypes) {
+			ArrayList<Class<? extends GameObject>> damageableTypes,
+			ArrayList<Class<? extends GameObject>> collidableTypes) {
 
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY,
 				area, health, damage, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation, moveDownAnimation,
 				moveRightAnimation, faceUpAnimation, faceLeftAnimation,
-				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration, damageableTypes);
+				faceDownAnimation, faceRightAnimation, currentAnimation, passiveDuration,
+				damageableTypes, collidableTypes);
 		this.playerCharacter = gameScreen.getPlayerCharacter();
 	}
 

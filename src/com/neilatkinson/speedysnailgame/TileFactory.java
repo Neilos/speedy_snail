@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import com.neilatkinson.framework.Image;
 import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
+import com.neilatkinson.gameobject.Zone;
 
 public class TileFactory {
 	
@@ -21,15 +22,20 @@ public class TileFactory {
 		boolean isMovingLeft = false;
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
-		Rect vicinity;
-		int passiveDuration = 2000;
+		Zone area = new Zone(new Rect(centerX - 20, centerY - 20, centerX + 20, centerY + 20), 0, 0);
+		int areaWidth = area.width();
+		int areaHeight = area.height();
+		int passiveDuration = 3000;
 		
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		
+		ArrayList<Class<? extends GameObject>> collidableTypes = new ArrayList<Class<? extends GameObject>>();
+		collidableTypes.add(PlayerCharacter.class);
+		
 		int duration;
-		ArrayList<Rect> collisionZones = new ArrayList<Rect>();
-		ArrayList<Rect> damageZones = new ArrayList<Rect>();
-	    ArrayList<Rect> attackZones = new ArrayList<Rect>();
+		ArrayList<Zone> collisionZones = generateCollisionZones(area);
+		ArrayList<Zone> damageZones = generateDamageZones(area);
+	    ArrayList<Zone> attackZones = generateAttackZones(area);
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -40,12 +46,6 @@ public class TileFactory {
 		Animation faceLeftAnimation = new Animation();
 		Animation faceDownAnimation = new Animation();
 		Animation faceRightAnimation = new Animation();
-
-	    vicinity = new Rect(centerX - 21, centerY - 21, centerX + 21, centerY + 21);
-
-	    collisionZones.add(new Rect(vicinity.left + 2, vicinity.top + 2, vicinity.right - 2, vicinity.bottom - 2));
-		damageZones.add(new Rect(vicinity));
-	    attackZones.add(new Rect(vicinity));
 
 		Image frameImage = null;
 		if (type == 5) {
@@ -61,31 +61,42 @@ public class TileFactory {
         } else {
             type = 0;
         }
-	    
+
 		// moveUpAnimation
-		duration = 100;
-		moveUpAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
-	    
+		duration = 1000;
+		moveUpAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+
 		// moveLeftAnimation
-		duration = 100;
-		moveLeftAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
-	    
+		duration = 1000;
+		moveLeftAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+
 		// moveDownAnimation
-		duration = 100;
-		moveDownAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		duration = 1000;
+		moveDownAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
 
 		// moveRightAnimation
-		duration = 100;
-		moveRightAnimation.addFrame(frameImage, duration, collisionZones, damageZones, attackZones);
+		duration = 1000;
+		moveRightAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
 
 
-		faceUpAnimation = moveUpAnimation;
-		faceLeftAnimation = moveLeftAnimation;
-		faceDownAnimation = moveDownAnimation;
-		faceRightAnimation = moveRightAnimation;
-		
+		// faceUpAnimation
+		duration = 1000;
+		faceUpAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+	    
+		// faceLeftAnimation
+		duration = 1000;
+		faceLeftAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+	    
+		// faceDownAnimation
+		duration = 1000;
+		faceDownAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+
+		// faceRightAnimation
+		duration = 1000;
+		faceRightAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration, collisionZones, damageZones, attackZones);
+
 		Animation currentAnimation = faceLeftAnimation;
-		
+
 		if (type != 0) {
 		
 			Tile tile = new Tile(
@@ -95,7 +106,7 @@ public class TileFactory {
 							moveSpeed,
 							speedX,
 							speedY,
-							vicinity,
+							area,
 							health,
 							damage,
 							isDead,
@@ -113,11 +124,30 @@ public class TileFactory {
 							faceRightAnimation,
 							currentAnimation,
 							passiveDuration,
-							damageableTypes);
+							damageableTypes,
+							collidableTypes);
 	
 			return tile;
 		} else {
 			return null;
 		}
+	}
+	
+	private static ArrayList<Zone> generateCollisionZones(Zone area) {
+		ArrayList<Zone> zones = new ArrayList<Zone>();
+		zones.add(new Zone(new Rect(area.left() + 1, area.top() + 1, area.right() - 1, area.bottom() - 1), 0, 0));
+		return zones;
+	}
+	
+	private static ArrayList<Zone> generateAttackZones(Zone area) {
+		ArrayList<Zone> zones = new ArrayList<Zone>();
+		zones.add(area.deepClone());
+		return zones;
+	}
+	
+	private static ArrayList<Zone> generateDamageZones(Zone area) {
+		ArrayList<Zone> zones = new ArrayList<Zone>();
+		zones.add(area.deepClone());
+		return zones;
 	}
 }
