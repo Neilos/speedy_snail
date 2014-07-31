@@ -56,13 +56,13 @@ public class GameScreen extends Screen {
 		directionControl = new DirectionControl(Assets.directionControl, 10, 350, 0, 0, 120, 120);
 		resumeControl =  new ScreenRegion(0, 36, 800, 240);
 		returnToMenuControl =  new ScreenRegion(0, 240, 800, 240);
-		
+
 		// Create game objects
-		playerCharacter = SnailPlayerCharacterFactory.build(this, 100, 372);
+		playerCharacter = SnailPlayerCharacterFactory.build(this, 150, 150);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();
-		
+
 		gameObjects.add(playerCharacter);
 		gameObjects.addAll(enemies);
 		gameObjects.addAll(tilearray);
@@ -80,7 +80,7 @@ public class GameScreen extends Screen {
 		paint2.setAntiAlias(true);
 		paint2.setColor(Color.WHITE);
     }
- 
+
 
 	private void loadMap() {
 		int startingCenterX, startingCenterY, type;
