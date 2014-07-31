@@ -42,7 +42,7 @@ public class SnailCharacterFactory {
 		Animation faceRightAnimation = new Animation();
 
 		Image frameImage = Assets.snail;
-		int duration = 100;
+		int duration = 40;
 
 
 		// moveDownAnimation
