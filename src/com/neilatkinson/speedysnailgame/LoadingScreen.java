@@ -16,7 +16,7 @@ public class LoadingScreen extends Screen {
 		Graphics g = game.getGraphics();
 
         Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
-        Assets.background = g.newImage("background.png", ImageFormat.RGB565);
+        Assets.background = g.newImage("pattern-37wt.png", ImageFormat.RGB565);
         
         Assets.snail = g.newImage("snail.png", ImageFormat.ARGB4444);
         

@@ -46,10 +46,10 @@ public class GameScreen extends Screen {
         super(game);
 
         // Initialize game objects here
-        bg1 = new Background(0, 0, 2160, 480);
-		bg2 = new Background(2160, 0, 2160, 480);
-		bg3 = new Background(0, 480, 2160, 480);
-		bg4 = new Background(2160, 480, 2160, 480);
+        bg1 = new Background(0, 0, 1000, 1000);
+		bg2 = new Background(1000, 0, 1000, 1000);
+		bg3 = new Background(0, 1000, 1000, 1000);
+		bg4 = new Background(1000, 1000, 1000, 1000);
 
 		this.screenSpace = new ScreenRegion(0, 0, game.getFrameBufferWidth(), game.getFrameBufferWidth());
 		pauseButton = new ImageControl(Assets.button, 0, 0, 0, 195, 35, 35);
