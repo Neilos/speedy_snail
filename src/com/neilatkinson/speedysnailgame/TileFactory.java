@@ -25,7 +25,7 @@ public class TileFactory {
 		Zone area = new Zone(new Rect(centerX - 20, centerY - 20, centerX + 20, centerY + 20), 0, 0);
 		int areaWidth = area.width();
 		int areaHeight = area.height();
-		int passiveDuration = 1000;
+		int passiveDuration = 3000;
 		
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		
