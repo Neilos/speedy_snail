@@ -59,8 +59,8 @@ public class GameScreen extends Screen {
 
 		// Create game objects
 		playerCharacter = SnailPlayerCharacterFactory.build(this, 150, 150);
-		enemies.add(HeliboyFactory.build(this, 340, 360));
-		enemies.add(HeliboyFactory.build(this, 700, 360));
+		enemies.add(BirdFactory.build(this, 340, 360));
+		enemies.add(BirdFactory.build(this, 700, 360));
 		loadMap();
 
 		gameObjects.add(playerCharacter);
