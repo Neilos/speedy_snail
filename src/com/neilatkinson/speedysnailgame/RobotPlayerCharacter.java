@@ -17,13 +17,15 @@ public class RobotPlayerCharacter extends PlayerCharacter {
 			Animation faceUpAnimation, Animation faceLeftAnimation,
 			Animation faceDownAnimation, Animation faceRightAnimation,
 			Animation currentAnimation, int passiveDuration,
-			ArrayList<Class<? extends GameObject>> damageableTypes) {
+			ArrayList<Class<? extends GameObject>> damageableTypes,
+			ArrayList<Class<? extends GameObject>> collidableTypes) {
+
 		super(gameScreen, centerX, centerY, moveSpeed, speedX, speedY, area,
 				health, damage, isDead, isMovingUp, isMovingLeft, isMovingDown,
 				isMovingRight, moveUpAnimation, moveLeftAnimation,
 				moveDownAnimation, moveRightAnimation, faceUpAnimation,
 				faceLeftAnimation, faceDownAnimation, faceRightAnimation,
-				currentAnimation, passiveDuration, damageableTypes);
+				currentAnimation, passiveDuration, damageableTypes, collidableTypes);
 		// TODO Auto-generated constructor stub
 	}
 

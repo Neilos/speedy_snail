@@ -33,6 +33,9 @@ public class BirdFactory {
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		damageableTypes.add(PlayerCharacter.class);
 
+		ArrayList<Class<? extends GameObject>> collidableTypes = new ArrayList<Class<? extends GameObject>>();
+		collidableTypes.add(PlayerCharacter.class);
+
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
 		Animation moveDownAnimation = new Animation();
@@ -179,7 +182,8 @@ public class BirdFactory {
 						faceRightAnimation,
 						currentAnimation,
 						passiveDuration,
-						damageableTypes);
+						damageableTypes,
+						collidableTypes);
 
 		return bird;
 	}

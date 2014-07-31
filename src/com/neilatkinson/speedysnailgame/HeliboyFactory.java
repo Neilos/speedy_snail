@@ -30,6 +30,9 @@ public class HeliboyFactory {
 
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		damageableTypes.add(PlayerCharacter.class);
+		
+		ArrayList<Class<? extends GameObject>> collidableTypes = new ArrayList<Class<? extends GameObject>>();
+		collidableTypes.add(PlayerCharacter.class);
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -217,7 +220,8 @@ public class HeliboyFactory {
 						faceRightAnimation,
 						currentAnimation,
 						passiveDuration,
-						damageableTypes);
+						damageableTypes,
+						collidableTypes);
 
 		return heliboy;
 	}

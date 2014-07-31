@@ -30,6 +30,10 @@ public class SnailPlayerCharacterFactory {
 		int spriteHeight = areaHeight;
 
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
+		
+		ArrayList<Class<? extends GameObject>> collidableTypes = new ArrayList<Class<? extends GameObject>>();
+		collidableTypes.add(Enemy.class);
+		collidableTypes.add(Tile.class);
 
 		Animation moveUpAnimation = new Animation();
 		Animation moveLeftAnimation = new Animation();
@@ -253,7 +257,8 @@ public class SnailPlayerCharacterFactory {
 						faceRightAnimation,
 						currentAnimation,
 						passiveDuration,
-						damageableTypes);
+						damageableTypes,
+						collidableTypes);
 
 		return playerCharacter;
 	}

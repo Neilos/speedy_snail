@@ -94,6 +94,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 	protected Activity game;
 	protected long passiveDuration;
 	private ArrayList<Class<? extends GameObject>> damageableTypes;
+	private ArrayList<Class<? extends GameObject>> collidableTypes;
 
 	public GameObject(
 			Screen gameScreen,
@@ -120,7 +121,8 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 			Animation faceRightAnimation,
 			Animation currentAnimation,
 			int passiveDuration,
-			ArrayList<Class<? extends GameObject>> damageableTypes) {
+			ArrayList<Class<? extends GameObject>> damageableTypes,
+			ArrayList<Class<? extends GameObject>> collidableTypes) {
 
 		this.gameScreen = gameScreen;
 		this.centerX = centerX;
@@ -147,6 +149,7 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		this.currentAnimation = currentAnimation;
 		this.passiveDuration = passiveDuration;
 		this.damageableTypes = damageableTypes;
+		this.collidableTypes = collidableTypes;
 
 		this.attitude = Attitude.Aggressive;
 		game = ((AndroidGame) gameScreen.game);
@@ -547,42 +550,42 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		}
 	}
 
-	private void drawDamageZones(Graphics graphics) {
-		for(int i = 0; i < damageZones().size(); i++){
-			Zone damageZone = damageZones().get(i);
-			graphics.drawRect(  damageZone.left(),
-								damageZone.top(),
-								damageZone.width(),
-								damageZone.height(),
-								Color.argb(40, 255, 0, 0));
-		}
-	}
-
-	private void drawAttackZones(Graphics graphics) {
-		for(int i = 0; i < attackZones().size(); i++){
-			Zone attackZone = attackZones().get(i);
-			graphics.drawRect(  attackZone.left(),
-								attackZone.top(),
-								attackZone.width(),
-								attackZone.height(),
-								Color.argb(40, 0, 255, 0));
-		}
-	}
-
-	private void drawCollisionZones(Graphics graphics) {
-		for(int i = 0; i < collisionZones().size(); i++){
-			Zone collisionZone = collisionZones().get(i);
-			graphics.drawRect(  collisionZone.left(),
-								collisionZone.top(),
-								collisionZone.width(),
-								collisionZone.height(),
-								Color.argb(40, 0, 0, 255));
-		}
-	}
-
-	private void drawVicinity(Graphics graphics) {
-		graphics.drawRect( vicinity().left, vicinity().top, vicinity().width(), vicinity().height(), Color.argb(20, 100, 100, 100));
-	}
+//	private void drawDamageZones(Graphics graphics) {
+//		for(int i = 0; i < damageZones().size(); i++){
+//			Zone damageZone = damageZones().get(i);
+//			graphics.drawRect(  damageZone.left(),
+//								damageZone.top(),
+//								damageZone.width(),
+//								damageZone.height(),
+//								Color.argb(40, 255, 0, 0));
+//		}
+//	}
+//
+//	private void drawAttackZones(Graphics graphics) {
+//		for(int i = 0; i < attackZones().size(); i++){
+//			Zone attackZone = attackZones().get(i);
+//			graphics.drawRect(  attackZone.left(),
+//								attackZone.top(),
+//								attackZone.width(),
+//								attackZone.height(),
+//								Color.argb(40, 0, 255, 0));
+//		}
+//	}
+//
+//	private void drawCollisionZones(Graphics graphics) {
+//		for(int i = 0; i < collisionZones().size(); i++){
+//			Zone collisionZone = collisionZones().get(i);
+//			graphics.drawRect(  collisionZone.left(),
+//								collisionZone.top(),
+//								collisionZone.width(),
+//								collisionZone.height(),
+//								Color.argb(40, 0, 0, 255));
+//		}
+//	}
+//
+//	private void drawVicinity(Graphics graphics) {
+//		graphics.drawRect( vicinity().left, vicinity().top, vicinity().width(), vicinity().height(), Color.argb(20, 100, 100, 100));
+//	}
 
 
 	@Override
@@ -620,6 +623,16 @@ public abstract class GameObject implements Collidable, Updateable, AttackCapabl
 		} else if (isMovingRight()) {
 			updateMaxRightSpeed(moveSpeed - collision.xDimension());
 		}
+	}
+
+	@Override
+	public boolean canCollideWith(Collidable collidable) {
+		for (Class<? extends GameObject> klass : collidableTypes) {
+			if (klass.isInstance(collidable)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

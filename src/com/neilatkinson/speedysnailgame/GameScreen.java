@@ -199,7 +199,9 @@ public class GameScreen extends Screen {
 								object1.attack(object2, impactZone);
 							}
 						}
-						object1.evaluateCollisionWith(object2);
+						if (object1.canCollideWith(object2)) {
+							object1.evaluateCollisionWith(object2);
+						}
 					}
 				}
 			}

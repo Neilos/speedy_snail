@@ -29,6 +29,9 @@ public class TileFactory {
 		
 		ArrayList<Class<? extends GameObject>> damageableTypes = new ArrayList<Class<? extends GameObject>>();
 		
+		ArrayList<Class<? extends GameObject>> collidableTypes = new ArrayList<Class<? extends GameObject>>();
+		collidableTypes.add(PlayerCharacter.class);
+		
 		int duration;
 		ArrayList<Zone> collisionZones = generateCollisionZones(area);
 		ArrayList<Zone> damageZones = generateDamageZones(area);
@@ -121,7 +124,8 @@ public class TileFactory {
 							faceRightAnimation,
 							currentAnimation,
 							passiveDuration,
-							damageableTypes);
+							damageableTypes,
+							collidableTypes);
 	
 			return tile;
 		} else {
