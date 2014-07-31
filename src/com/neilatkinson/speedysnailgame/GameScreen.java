@@ -371,6 +371,19 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		directionControl.drawSelf(g);
 		pauseButton.drawSelf(g);
+		drawPlayerHealth(g);
+	}
+
+	protected void drawPlayerHealth(Graphics g) {
+		int heartImageWidth = 40;
+		int insetDistFromScreenEdge = 10;
+		int heartOverlap = heartImageWidth / 3;
+		int left = screenSpace.width() - insetDistFromScreenEdge - heartImageWidth;
+		int top = insetDistFromScreenEdge;
+		for (int i = 0; i < playerCharacter.health(); i++) {
+			left -= heartOverlap;
+			g.drawImage(Assets.heart, left, top);
+		}
 	}
 
 	private void drawPausedUI() {

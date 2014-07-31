@@ -22,7 +22,7 @@ public class BirdFactory {
 		boolean isMovingLeft = false;
 		boolean isMovingDown = false;
 		boolean isMovingRight = false;
-		int passiveDuration = 1000;
+		int passiveDuration = 3000;
 		Zone area = new Zone(new Rect(centerX - 32, centerY - 25, centerX + 32, centerY + 25), 0, 0);
 		int areaWidth = area.width();
 		int areaHeight = area.height();
