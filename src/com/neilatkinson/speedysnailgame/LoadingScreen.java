@@ -20,6 +20,7 @@ public class LoadingScreen extends Screen {
         
         Assets.snail = g.newImage("snail.png", ImageFormat.ARGB4444);
         Assets.bird = g.newImage("bird.png", ImageFormat.ARGB4444);
+        Assets.heart = g.newImage("heart.png", ImageFormat.ARGB4444);
         
         Assets.character = g.newImage("character.png", ImageFormat.ARGB4444);
         Assets.character2 = g.newImage("character2.png", ImageFormat.ARGB4444);
