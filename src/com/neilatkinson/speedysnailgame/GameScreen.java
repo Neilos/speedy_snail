@@ -58,7 +58,7 @@ public class GameScreen extends Screen {
 		returnToMenuControl =  new ScreenRegion(0, 240, 800, 240);
 		
 		// Create game objects
-		playerCharacter = SnailCharacterFactory.build(this, 100, 372);
+		playerCharacter = SnailPlayerCharacterFactory.build(this, 100, 372);
 		enemies.add(HeliboyFactory.build(this, 340, 360));
 		enemies.add(HeliboyFactory.build(this, 700, 360));
 		loadMap();

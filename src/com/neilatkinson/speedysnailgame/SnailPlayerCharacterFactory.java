@@ -9,7 +9,7 @@ import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
 import com.neilatkinson.gameobject.Zone;
 
-public class SnailCharacterFactory {
+public class SnailPlayerCharacterFactory {
 
 	public static PlayerCharacter build(GameScreen gameScreen, int centerX, int centerY) {
 		int moveSpeed = 5;

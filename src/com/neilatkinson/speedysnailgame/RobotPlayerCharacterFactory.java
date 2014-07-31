@@ -9,7 +9,7 @@ import com.neilatkinson.gameobject.Animation;
 import com.neilatkinson.gameobject.GameObject;
 import com.neilatkinson.gameobject.Zone;
 
-public class PlayerCharacterFactory {
+public class RobotPlayerCharacterFactory {
 
 	public static PlayerCharacter build(GameScreen gameScreen, int centerX, int centerY) {
 		int moveSpeed = 5;
@@ -192,7 +192,7 @@ public class PlayerCharacterFactory {
 		faceLeftAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration,
 				faceLeftCollisionZones, faceLeftDamageZones, faceLeftAttackZones);
 
-	    
+
 		// faceDownAnimation
 		ArrayList<Zone> faceDownCollisionZones = generateCollisionZones(centerX, centerY);
 		ArrayList<Zone> faceDownDamageZones = generateDamageZones(centerX, centerY);
@@ -201,12 +201,12 @@ public class PlayerCharacterFactory {
 		duration = 1250;
 		faceDownAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration,
 				faceDownCollisionZones, faceDownDamageZones, faceDownAttackZones);
-	    
+
 	    frameImage = Assets.character2;
 		duration = 50;
 		faceDownAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration,
 				faceDownCollisionZones, faceDownDamageZones, faceDownAttackZones);
-	    
+
 	    frameImage = Assets.character3;
 		duration = 50;
 		faceDownAnimation.addFrame(frameImage, 0, 0, areaWidth, areaHeight, duration,
@@ -245,7 +245,7 @@ public class PlayerCharacterFactory {
 		Animation currentAnimation = faceRightAnimation;
 		
 		PlayerCharacter playerCharacter = 
-				new PlayerCharacter(
+				new RobotPlayerCharacter(
 						gameScreen,
 						centerX,
 						centerY,
@@ -322,7 +322,7 @@ public class PlayerCharacterFactory {
 		
 		return zones;
 	}
-	
+
 	private static ArrayList<Zone> generateDamageZones(int centerX, int centerY) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
 
@@ -332,7 +332,7 @@ public class PlayerCharacterFactory {
 	    Rect rect4 = new Rect(rect.left + 68, rect.top + 32, rect.left + 94, rect.top + 52);
 	    Rect footleft = new Rect(centerX - 50, rect2.bottom - 15, centerX, rect2.bottom);
 	    Rect footright = new Rect(centerX, rect2.bottom - 15, centerX + 50, rect2.bottom);
-	    
+
 	    Rect _rect = new Rect(rect.left - 1, rect.top - 1, rect.right + 1, rect.bottom + 1);
 	    Rect _rect2 = new Rect(rect2.left - 1, rect2.top - 1, rect2.right + 1, rect2.bottom + 1);
 	    Rect _rect3 = new Rect(rect3.left - 1, rect3.top - 1, rect3.right + 1, rect3.bottom + 1);
@@ -346,7 +346,7 @@ public class PlayerCharacterFactory {
 		zones.add(new Zone(_rect4, rect4.centerX() - centerX, rect4.centerY() - centerY));
 		zones.add(new Zone(_footleft, footleft.centerX() - centerX, footleft.centerY() - centerY));
 		zones.add(new Zone(_footright, footright.centerX() - centerX, footright.centerY() - centerY));
-		
+
 		return zones;
 	}
 
